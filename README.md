@@ -84,7 +84,7 @@ NEXT_PUBLIC_FACEBOOK_URL=https://facebook.com/ieeecisuni
 
 ---
 
-## Installation & Development
+## Installation & Development.
 
 1. **Clone the repository:**
    ```bash
