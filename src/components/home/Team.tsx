@@ -57,14 +57,24 @@ const Team = () => {
   };
 
   return (
-    <section className="py-24 px-6 md:px-12 lg:px-24">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
+
+      {/*
+       * FONDO ORBE — "respiración" suave via CSS puro.
+       * hero-orb-a: ciclo 8s  |  hero-orb-b: ciclo 11s (desfasado)
+       * Orbe izquierdo: azul IEEE | Orbe derecho: violeta tecnológico
+       */}
+      <div className="hero-orb-a absolute top-1/3 -left-32 w-[500px] h-[500px] bg-brand-accent rounded-full blur-[130px] -z-10" />
+      <div className="hero-orb-b absolute bottom-1/4 right-0 w-96 h-96 rounded-full blur-[120px] -z-10" style={{ backgroundColor: "#7C3AED" }} />
+
+      {/* Contenido principal — relative z-10 para quedar encima de los orbes */}
+      <div className="relative z-10 max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
             Nuestro Equipo
           </h2>
           <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-            Conoce a la Mesa Directiva
+            Conoce a la Junta Directiva
           </h3>
           <p className="text-white/60 text-lg max-w-2xl mx-auto">
             El corazón de IEEE CIS UNI está compuesto por estudiantes talentosos y apasionados que lideran el camino hacia la excelencia.
@@ -88,7 +98,7 @@ const Team = () => {
             >
               {boardMembers.map((member) => (
                 <motion.div key={member.id} variants={itemVariants}>
-                  <MemberCard 
+                  <MemberCard
                     name={member.nombre}
                     role={member.rol}
                     image={member.image_url || "/images/placeholder-member.png"}
@@ -119,8 +129,8 @@ const Team = () => {
             <Button href="/miembros" variant="outline" icon={<HiChevronRight />}>
               Ver todos los miembros
             </Button>
-            <Button 
-              onClick={() => window.dispatchEvent(new CustomEvent('open-join-modal'))} 
+            <Button
+              onClick={() => window.dispatchEvent(new CustomEvent('open-join-modal'))}
               icon={<HiArrowRight />}
             >
               Quiero ser parte

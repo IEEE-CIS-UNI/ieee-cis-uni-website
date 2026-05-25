@@ -23,7 +23,11 @@ const Button = ({
   
   const variants = {
     primary: "bg-brand-accent text-white hover:bg-brand-accent/90",
-    outline: "border border-white/20 text-white hover:bg-white/5",
+    /* Variant outline reforzado:
+     * ─ border-white/25 siempre visible (antes era brand-border casi invisible)
+     * ─ hover:border-brand-accent/60 + tinte azul para mayor presencia del CTA
+     */
+    outline: "border border-white/25 text-[var(--brand-text)] hover:border-brand-accent/60 hover:bg-brand-accent/10 hover:text-white",
     secondary: "bg-brand-secondary text-white hover:bg-brand-secondary/90",
   };
 

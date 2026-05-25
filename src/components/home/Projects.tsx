@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ProjectCard from "@/components/ui/ProjectCard";
 import Button from "@/components/ui/Button";
+import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import { HiArrowRight, HiCode } from "react-icons/hi";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
@@ -57,17 +58,37 @@ const Projects = () => {
   };
 
   return (
-    <section className="py-24 px-6 md:px-12 lg:px-24 bg-brand-background min-h-[60vh]">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-24 px-6 md:px-12 lg:px-24 bg-[var(--brand-background)] overflow-hidden min-h-[60vh]">
+
+      {/* ── Fondo dinámico: red neuronal interactiva ──────────────────────── */}
+      <NeuralNetworkBackground />
+
+      {/* Capa de difuminado general sobre el canvas para dar el efecto blur */}
+      <div className="absolute inset-0 pointer-events-none backdrop-blur-[8px] bg-[var(--brand-background)]/10" />
+
+      {/* Capa de degradado sobre el canvas para que el texto sea legible */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 30%, transparent 40%, var(--brand-background) 80%)",
+        }}
+      />
+
+      {/* Contenido principal — relative z-10 para quedar encima del fondo */}
+      <div className="relative z-10 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
           <div className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
             <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
               Nuestro Portafolio
             </h2>
             <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-              Proyectos que Impactan
+              Proyectos que{" "}
+              <em className="not-italic italic text-brand-accent text-5xl md:text-6xl lg:text-7xl font-extrabold">
+                Impactan
+              </em>
             </h3>
-            <p className="text-white/60 text-lg">
+            <p className="text-white/75 text-lg">
               Explora las soluciones innovadoras desarrolladas por nuestros miembros utilizando tecnologías de vanguardia en inteligencia computacional.
             </p>
           </div>
@@ -86,7 +107,7 @@ const Projects = () => {
           </div>
         ) : (
           <>
-            <motion.div 
+            <motion.div
               className="grid grid-cols-2 gap-4 lg:gap-8"
               variants={containerVariants}
               initial="hidden"
@@ -95,7 +116,7 @@ const Projects = () => {
             >
               {projects.map((project) => (
                 <motion.div key={project.id} variants={itemVariants}>
-                  <ProjectCard 
+                  <ProjectCard
                     title={project.titulo}
                     description={project.descripcion_corta}
                     image={project.image_url || ""}

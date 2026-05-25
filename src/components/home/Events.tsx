@@ -63,16 +63,29 @@ const Events = () => {
   };
 
   return (
-    <section className="py-24 px-6 md:px-12 lg:px-24 bg-brand-background/50">
-      <div className="max-w-4xl mx-auto">
+    <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
+      
+      {/*
+       * FONDO ORBE — "respiración" suave via CSS puro.
+       * hero-orb-a: ciclo 8s  |  hero-orb-b: ciclo 11s (desfasado)
+       * Orbe izquierdo: azul IEEE | Orbe derecho: violeta tecnológico
+       */}
+      <div className="hero-orb-a absolute top-1/3 -left-32 w-[500px] h-[500px] bg-brand-accent rounded-full blur-[130px] -z-10" />
+      <div className="hero-orb-b absolute bottom-1/4 right-0 w-96 h-96 rounded-full blur-[120px] -z-10" style={{ backgroundColor: "#7C3AED" }} />
+
+      {/* Contenido principal — relative z-10 para quedar encima de los orbes */}
+      <div className="relative z-10 max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
             Próximos Eventos
           </h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            No te pierdas de nada
+          <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            Eventos que{" "}
+            <em className="not-italic italic text-brand-accent text-5xl md:text-6xl lg:text-7xl font-extrabold">
+              Inspiran
+            </em>
           </h3>
-          <p className="text-white/60 text-lg">
+          <p className="text-[var(--brand-text-muted)] text-lg">
             Únete a nuestras actividades y potencia tus conocimientos con los líderes en tecnología de la UNI.
           </p>
         </div>
@@ -80,7 +93,7 @@ const Events = () => {
         {loading ? (
           <div className="space-y-6">
             {[...Array(2)].map((_, i) => (
-              <div key={i} className="w-full h-40 bg-white/5 rounded-xl animate-pulse" />
+              <div key={i} className="w-full h-40 bg-[var(--brand-card)] rounded-xl animate-pulse" />
             ))}
           </div>
         ) : (
@@ -109,11 +122,11 @@ const Events = () => {
             </motion.div>
 
             {events.length === 0 && (
-              <div className="text-center py-20 border border-dashed border-white/10 rounded-3xl">
-                <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center text-white/20 mx-auto mb-4">
+              <div className="text-center py-20 border border-dashed border-[var(--brand-border)] rounded-3xl">
+                <div className="w-16 h-16 bg-[var(--brand-card)] rounded-2xl flex items-center justify-center text-[var(--brand-text-muted)] mx-auto mb-4">
                   <HiCalendar size={32} />
                 </div>
-                <p className="text-white/40">No hay eventos programados próximamente.</p>
+                <p className="text-[var(--brand-text-muted)]">No hay eventos programados próximamente.</p>
               </div>
             )}
           </>

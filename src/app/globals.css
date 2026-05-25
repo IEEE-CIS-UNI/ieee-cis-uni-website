@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* ============================================================
+   DESIGN TOKENS - Dark Mode (default)
+   ============================================================ */
 @theme {
   --color-brand-background: #000711;
   --color-brand-secondary: #01357B;
@@ -9,17 +12,75 @@
 
 :root {
   --brand-background: #000711;
+  --brand-surface: #050e21;
   --brand-secondary: #01357B;
   --brand-accent: #056cf2;
   --brand-text: #FFFFFF;
+  --brand-text-muted: rgba(255, 255, 255, 0.6);
+  --brand-border: rgba(255, 255, 255, 0.08);
+  --brand-card: rgba(1, 53, 123, 0.12);
+  --brand-card-hover: rgba(1, 53, 123, 0.2);
+  --brand-navbar-bg: rgba(0, 7, 17, 0.9);
+  /* Color used to mask the Spline "Built with Spline" badge */
+  --spline-mask-color: #000711;
+  /* Logo filter: white logos on dark bg need no filter */
+  --logo-filter: none;
+  /* Scroll thumb */
+  --scroll-thumb: rgba(255, 255, 255, 0.1);
 }
 
+/* ============================================================
+   LIGHT MODE OVERRIDES  (activated via .dark removal on <html>)
+   We use :root:not(.dark) to target light mode
+   ============================================================ */
+:root:not(.dark) {
+  --brand-background: #EEF3FF;
+  --brand-surface: #E2EAFF;
+  --brand-secondary: #C5D6FF;
+  --brand-accent: #066BF3;
+  --brand-text: #0A1628;
+  --brand-text-muted: rgba(10, 22, 40, 0.55);
+  --brand-border: rgba(6, 107, 243, 0.15);
+  --brand-card: rgba(198, 218, 255, 0.5);
+  --brand-card-hover: rgba(198, 218, 255, 0.8);
+  --brand-navbar-bg: rgba(238, 243, 255, 0.92);
+  /* Must match --brand-background so the badge block is invisible */
+  --spline-mask-color: #EEF3FF;
+  /* Invert white logos to dark so they're visible on light background */
+  --logo-filter: brightness(0) saturate(100%) invert(8%) sepia(50%) saturate(800%) hue-rotate(195deg) brightness(92%);
+  --scroll-thumb: rgba(6, 107, 243, 0.2);
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
 body {
   background-color: var(--brand-background);
   color: var(--brand-text);
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Custom Scrollbar */
+/* ============================================================
+   LOGO FILTER UTILITY
+   Used on Navbar and Footer logo images
+   ============================================================ */
+.logo-adaptive {
+  filter: var(--logo-filter);
+  transition: filter 0.4s ease;
+}
+
+/* ============================================================
+   SPLINE BADGE MASK
+   The div that hides the "Built with Spline" watermark
+   will automatically use the correct background
+   ============================================================ */
+.spline-mask {
+  background-color: var(--spline-mask-color);
+}
+
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -29,7 +90,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--scroll-thumb);
   border-radius: 20px;
   border: 3px solid var(--brand-background);
   transition: all 0.3s ease;
@@ -42,5 +103,181 @@ body {
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.1) var(--brand-background);
+  scrollbar-color: var(--scroll-thumb) var(--brand-background);
+}
+
+/* ============================================================
+   LIQUID GLASS EFFECT — Inspired by Apple iOS 26 / visionOS
+   Aplica el efecto de "cristal líquido" a los links del navbar.
+   Usa capas de pseudo-elementos para simular:
+     1. Fondo translúcido con desenfoque (backdrop-filter)
+     2. Highlight especular superior (reflejo de luz)
+     3. Borde prismático con gradiente
+     4. Brillo interior al hover
+   ============================================================ */
+
+/* ── Contenedor pill del link de navegación ── */
+.liquid-glass-nav-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;        /* forma pill / cápsula */
+  text-decoration: none;
+  isolation: isolate;          /* crea stacking context propio */
+  cursor: pointer;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.25s ease;
+}
+
+/* ── Capa 1: Cristal con desenfoque ── */
+/* Simula el "fondo de vidrio" que refracta lo que hay detrás */
+.liquid-glass-nav-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  /* Fondo semi-transparente del cristal */
+  background: rgba(255, 255, 255, 0.04);
+  /* El desenfoque es la clave del efecto liquid glass */
+  backdrop-filter: blur(16px) saturate(180%) brightness(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) brightness(1.05);
+  /* Borde prismático: gradiente que simula refracción de luz */
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  /* Sombra de vidrio */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),  /* highlight superior interno */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08),        /* sombra inferior interna */
+    0 4px 16px rgba(0, 0, 0, 0.08);            /* sombra exterior suave */
+  opacity: 0;                                  /* invisible por defecto */
+  transition:
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    backdrop-filter 0.35s ease,
+    box-shadow 0.35s ease;
+  z-index: -2;
+}
+
+/* ── Capa 2: Highlight especular (brillo superior) ── */
+/* El reflejo de luz que hace que parezca vidrio real */
+.liquid-glass-nav-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  /* Gradiente especular: brillo intenso arriba, transparente abajo */
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    rgba(255, 255, 255, 0.00) 60%,
+    rgba(6, 107, 243, 0.06)   100%
+  );
+  /* Borde con gradiente para el efecto prismático */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+  opacity: 0;                                  /* invisible por defecto */
+  transition:
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ── Estado HOVER: activa el cristal líquido ── */
+.liquid-glass-nav-item:hover::before {
+  opacity: 1;
+  /* Al hover, el vidrio se hace más denso y brillante */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+    0 8px 32px rgba(6, 107, 243, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.liquid-glass-nav-item:hover::after {
+  opacity: 1;
+}
+
+/* Escala suave al hover — efecto "líquido" de expansión */
+.liquid-glass-nav-item:hover {
+  transform: scale(1.06);
+}
+
+/* ── Estado ACTIVE (click) ── */
+.liquid-glass-nav-item:active {
+  transform: scale(0.97);
+}
+
+/* ── Texto del link ── */
+/* El span del texto necesita estar sobre las capas de pseudo-elementos */
+.liquid-glass-nav-item .lg-text {
+  position: relative;
+  z-index: 1;
+  /* Quitar underline del Link de Next.js */
+  text-decoration: none;
+}
+
+/* ── Modo claro: ajusta los valores para fondos claros ── */
+:root:not(.dark) .liquid-glass-nav-item::before {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(20px) saturate(200%) brightness(1.1);
+  -webkit-backdrop-filter: blur(20px) saturate(200%) brightness(1.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+    0 4px 16px rgba(6, 107, 243, 0.08);
+}
+
+:root:not(.dark) .liquid-glass-nav-item:hover::before {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+    0 8px 32px rgba(6, 107, 243, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+:root:not(.dark) .liquid-glass-nav-item::after {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.30) 30%,
+    rgba(255, 255, 255, 0.05) 60%,
+    rgba(6, 107, 243, 0.08)   100%
+  );
+  border-color: rgba(6, 107, 243, 0.12);
+  border-bottom-color: rgba(6, 107, 243, 0.05);
+}
+
+/* ============================================================
+   HERO ORB — Animación de "respiración" suave
+   Usa CSS puro (sin JS) para máximo rendimiento.
+   Dos variantes con duraciones distintas para que parezcan
+   independientes y orgánicas.
+   ============================================================ */
+
+/* Orbe principal (izquierda, azul claro) */
+@keyframes orb-breathe-a {
+  0%, 100% { transform: scale(1);    opacity: 0.10; }
+  50%       { transform: scale(1.12); opacity: 0.16; }
+}
+
+/* Orbe secundario (derecha, azul oscuro) */
+@keyframes orb-breathe-b {
+  0%, 100% { transform: scale(1);    opacity: 0.18; }
+  50%       { transform: scale(1.08); opacity: 0.26; }
+}
+
+.hero-orb-a {
+  /* 8s de ciclo — casi imperceptible, muy orgánico */
+  animation: orb-breathe-a 8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.hero-orb-b {
+  /* 11s desfasado para que no sincronicen con el primer orbe */
+  animation: orb-breathe-b 11s ease-in-out infinite;
+  animation-delay: -4s;   /* empieza en mitad del ciclo para variedad */
+  will-change: transform, opacity;
 }

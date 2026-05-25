@@ -35,6 +35,7 @@ logs
 .env.test.local
 .env.production.local
 *.env*
+!.env.example
 
 # OS Files
 .DS_Store

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import BlogCard from "@/components/ui/BlogCard";
 import Button from "@/components/ui/Button";
+import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import { HiArrowRight, HiBookOpen } from "react-icons/hi";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
@@ -72,17 +73,37 @@ const Blog = () => {
   };
 
   return (
-    <section className="py-24 px-6 md:px-12 lg:px-24">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-24 px-6 md:px-12 lg:px-24 bg-[var(--brand-surface)] overflow-hidden">
+      
+      {/* ── Fondo dinámico: red neuronal interactiva ──────────────────────── */}
+      <NeuralNetworkBackground />
+
+      {/* Capa de difuminado general sobre el canvas para dar el efecto blur */}
+      <div className="absolute inset-0 pointer-events-none backdrop-blur-[8px] bg-[var(--brand-surface)]/10" />
+
+      {/* Capa de degradado sobre el canvas para que el texto sea legible */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 30% 50%, transparent 40%, var(--brand-surface) 80%)",
+        }}
+      />
+
+      {/* Contenido principal — relative z-10 para quedar encima del fondo */}
+      <div className="relative z-10 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
           <div className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
             <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
               Blog & Noticias
             </h2>
             <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-              Artículos Recientes
+              Artículos{" "}
+              <em className="not-italic italic text-brand-accent text-5xl md:text-6xl lg:text-7xl font-extrabold">
+                Recientes
+              </em>
             </h3>
-            <p className="text-white/60 text-lg">
+            <p className="text-white/75 text-lg">
               Mantente al día con las últimas tendencias y descubrimientos en el mundo de la Inteligencia Computacional.
             </p>
           </div>

@@ -19,9 +19,9 @@ const BlogCard = ({ title, excerpt, date, readTime, image, category, author, lev
 
   return (
     <Link href={destination}>
-      <div className="group flex flex-col lg:flex-row bg-brand-secondary/10 rounded-3xl overflow-hidden border border-white/5 hover:border-brand-accent/30 transition-all duration-500 cursor-pointer">
+      <div className="group flex flex-col lg:flex-row bg-[var(--brand-card)] rounded-3xl overflow-hidden border border-[var(--brand-border)] hover:border-brand-accent/30 transition-all duration-500 cursor-pointer">
         {/* Image Section */}
-        <div className="lg:w-2/5 relative aspect-video lg:aspect-auto overflow-hidden bg-brand-secondary/5">
+        <div className="lg:w-2/5 relative aspect-video lg:aspect-auto overflow-hidden bg-[var(--brand-surface)]">
           {image ? (
             <Image
               src={image}
@@ -30,7 +30,7 @@ const BlogCard = ({ title, excerpt, date, readTime, image, category, author, lev
               className="object-cover group-hover:scale-110 transition-transform duration-700"
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-secondary/20 to-brand-background group-hover:scale-110 transition-transform duration-700">
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--brand-card)] to-[var(--brand-surface)] group-hover:scale-110 transition-transform duration-700">
               <HiBookOpen className="text-6xl text-brand-accent/30" />
             </div>
           )}
@@ -43,7 +43,7 @@ const BlogCard = ({ title, excerpt, date, readTime, image, category, author, lev
 
         {/* Content Section */}
         <div className="lg:w-3/5 p-8 lg:p-12 flex flex-col justify-center relative">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-white/40 text-[10px] font-bold uppercase tracking-widest mb-6">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[var(--brand-text-muted)] text-[10px] font-bold uppercase tracking-widest mb-6">
             <span className="flex items-center gap-2">
               <HiCalendar className="text-brand-accent" size={16} />
               {date}
@@ -64,18 +64,18 @@ const BlogCard = ({ title, excerpt, date, readTime, image, category, author, lev
             )}
           </div>
           
-          <h4 className="text-3xl lg:text-4xl font-black text-white mb-6 group-hover:text-brand-accent transition-colors leading-[1.1] tracking-tighter uppercase">
+          <h4 className="text-3xl lg:text-4xl font-black text-[var(--brand-text)] mb-6 group-hover:text-brand-accent transition-colors leading-[1.1] tracking-tighter uppercase">
             {title}
           </h4>
           
-          <p className="text-white/60 text-base leading-relaxed mb-10 line-clamp-2 font-medium">
+          <p className="text-[var(--brand-text-muted)] text-base leading-relaxed mb-10 line-clamp-2 font-medium">
             {excerpt}
           </p>
           
           <div className="mt-auto">
-            <div className="inline-flex items-center font-black text-xs uppercase tracking-[0.3em] text-white group-hover:text-brand-accent transition-colors">
+            <div className="inline-flex items-center font-black text-xs uppercase tracking-[0.3em] text-[var(--brand-text)] group-hover:text-brand-accent transition-colors">
               Explorar artículo
-              <div className="ml-4 w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-brand-accent group-hover:bg-brand-accent/10 transition-all">
+              <div className="ml-4 w-10 h-10 rounded-full border border-[var(--brand-border)] flex items-center justify-center group-hover:border-brand-accent group-hover:bg-brand-accent/10 transition-all">
                 <HiArrowRight className="group-hover:translate-x-1 transition-transform" />
               </div>
             </div>

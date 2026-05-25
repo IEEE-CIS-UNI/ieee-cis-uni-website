@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const poppins = Poppins({ 
   subsets: ["latin"],
@@ -49,13 +50,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="scroll-smooth">
-      <body className={`${poppins.className} bg-brand-background text-brand-text min-h-screen flex flex-col`} suppressHydrationWarning>
-        <Navbar />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+    <html lang="es" className="scroll-smooth dark" suppressHydrationWarning>
+      <body className={`${poppins.className} bg-[var(--brand-background)] text-[var(--brand-text)] min-h-screen flex flex-col transition-colors duration-400`} suppressHydrationWarning>
+        <ThemeProvider>
+          <Navbar />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
