@@ -91,9 +91,15 @@ const Blog = () => {
       />
 
       {/* Contenido principal — relative z-10 para quedar encima del fondo */}
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <motion.div 
+        className="relative z-10 max-w-7xl mx-auto"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
-          <div className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
+          <motion.div variants={itemVariants} className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
             <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
               Blog & Noticias
             </h2>
@@ -106,12 +112,12 @@ const Blog = () => {
             <p className="text-white/75 text-lg">
               Mantente al día con las últimas tendencias y descubrimientos en el mundo de la Inteligencia Computacional.
             </p>
-          </div>
-          <div className="flex justify-center lg:justify-start">
+          </motion.div>
+          <motion.div variants={itemVariants} className="flex justify-center lg:justify-start">
             <Button href="/blog" variant="outline" icon={<HiArrowRight />}>
-              Ir al blog completo
+              Ir al blog
             </Button>
-          </div>
+          </motion.div>
         </div>
 
         {loading ? (
@@ -122,12 +128,9 @@ const Blog = () => {
           </div>
         ) : (
           <>
-            <motion.div 
-              className="flex flex-col gap-8"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              variants={itemVariants}
             >
               {posts.map((post) => (
                 <motion.div key={post.id} variants={itemVariants}>
@@ -156,7 +159,7 @@ const Blog = () => {
             )}
           </>
         )}
-      </div>
+      </motion.div>
     </section>
   );
 };

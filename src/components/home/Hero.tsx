@@ -56,9 +56,9 @@ const Hero = () => {
        * Ver globals.css → sección "HERO ORB"
        * Orbe izquierdo: azul IEEE | Orbe derecho: violeta tecnológico
        */}
-      <div className="hero-orb-a absolute top-1/3 -left-32 w-[500px] h-[500px] bg-brand-accent rounded-full blur-[130px] -z-10" />
+      <div className="hero-orb-a absolute top-1/3 -left-40 w-[600px] h-[600px] bg-brand-accent rounded-full blur-[160px] opacity-100 -z-10" />
       {/* Destello derecho: violeta (#7C3AED) — tono tech/AI */}
-      <div className="hero-orb-b absolute bottom-1/4 right-0 w-96 h-96 rounded-full blur-[120px] -z-10" style={{ backgroundColor: "#7C3AED" }} />
+      <div className="hero-orb-b absolute bottom-1/4 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-100 -z-10" style={{ backgroundColor: "#7C3AED" }} />
 
       {/* Contenido principal — relative z-10 para quedar encima del canvas de red neuronal */}
       <div className="relative z-10 max-w-7xl mx-auto w-full">

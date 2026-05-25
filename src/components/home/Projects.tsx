@@ -76,9 +76,15 @@ const Projects = () => {
       />
 
       {/* Contenido principal — relative z-10 para quedar encima del fondo */}
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <motion.div 
+        className="relative z-10 max-w-7xl mx-auto"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
-          <div className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
+          <motion.div variants={itemVariants} className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
             <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
               Nuestro Portafolio
             </h2>
@@ -91,12 +97,12 @@ const Projects = () => {
             <p className="text-white/75 text-lg">
               Explora las soluciones innovadoras desarrolladas por nuestros miembros utilizando tecnologías de vanguardia en inteligencia computacional.
             </p>
-          </div>
-          <div className="flex justify-center lg:justify-start">
+          </motion.div>
+          <motion.div variants={itemVariants} className="flex justify-center lg:justify-start">
             <Button href="/proyectos" variant="outline" icon={<HiArrowRight />}>
               Ver todos los proyectos
             </Button>
-          </div>
+          </motion.div>
         </div>
 
         {loading ? (
@@ -137,7 +143,7 @@ const Projects = () => {
             )}
           </>
         )}
-      </div>
+      </motion.div>
     </section>
   );
 };

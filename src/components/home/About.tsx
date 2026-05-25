@@ -27,6 +27,7 @@ import Button from "@/components/ui/Button";
 import ValueItem from "@/components/ui/ValueItem";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import { HiUsers, HiBookOpen, HiLightBulb, HiGlobeAlt, HiChevronRight } from "react-icons/hi";
+import { motion } from "framer-motion";
 
 const About = () => {
   const values = [
@@ -51,6 +52,19 @@ const About = () => {
       icon: HiGlobeAlt,
     },
   ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 40, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
+  };
 
   return (
     /*
@@ -79,11 +93,17 @@ const About = () => {
       />
 
       {/* ── Contenido principal ── */}
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <motion.div 
+        className="relative z-10 max-w-7xl mx-auto"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
           {/* ── Columna izquierda: texto fijo (sticky) ── */}
-          <div className="lg:sticky lg:top-32 text-center lg:text-left">
+          <motion.div variants={itemVariants} className="lg:sticky lg:top-32 text-center lg:text-left">
 
             {/* Eyebrow label */}
             <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
@@ -127,22 +147,24 @@ const About = () => {
                 Saber más
               </Button>
             </div>
-          </div>
+          </motion.div>
 
           {/* ── Columna derecha: pilares de valor ── */}
           <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
             {values.map((value, index) => (
+              <motion.div key={index} variants={itemVariants}>
               <ValueItem
                 key={index}
                 title={value.title}
                 description={value.description}
                 icon={value.icon}
               />
+              </motion.div>
             ))}
           </div>
 
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

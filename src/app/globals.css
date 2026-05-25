@@ -259,14 +259,14 @@ body {
 
 /* Orbe principal (izquierda, azul claro) */
 @keyframes orb-breathe-a {
-  0%, 100% { transform: scale(1);    opacity: 0.10; }
-  50%       { transform: scale(1.12); opacity: 0.16; }
+  0%, 100% { transform: scale(1);    opacity: 0.70; }
+  50%       { transform: scale(1.12); opacity: 0.95; }
 }
 
 /* Orbe secundario (derecha, azul oscuro) */
 @keyframes orb-breathe-b {
-  0%, 100% { transform: scale(1);    opacity: 0.18; }
-  50%       { transform: scale(1.08); opacity: 0.26; }
+  0%, 100% { transform: scale(1);    opacity: 0.60; }
+  50%       { transform: scale(1.08); opacity: 0.90; }
 }
 
 .hero-orb-a {

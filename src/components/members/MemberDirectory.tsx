@@ -74,10 +74,10 @@ const MemberDirectory = () => {
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-4 sm:px-8 py-2.5 rounded-full text-[10px] sm:text-xs font-bold transition-all border tracking-widest ${
+                className={`px-4 sm:px-8 py-2.5 rounded-full text-[10px] sm:text-xs font-bold transition-all border tracking-widest backdrop-blur-md ${
                   filter === cat 
-                  ? "bg-brand-accent border-brand-accent text-white" 
-                  : "bg-transparent border-white/10 text-white/50 hover:border-white/30 hover:text-white"
+                  ? "bg-brand-accent/80 border-brand-accent/50 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
+                  : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:border-white/30 hover:text-white hover:shadow-[0_0_10px_rgba(255,255,255,0.1)]"
                 }`}
               >
                 {cat}

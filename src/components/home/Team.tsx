@@ -64,12 +64,18 @@ const Team = () => {
        * hero-orb-a: ciclo 8s  |  hero-orb-b: ciclo 11s (desfasado)
        * Orbe izquierdo: azul IEEE | Orbe derecho: violeta tecnológico
        */}
-      <div className="hero-orb-a absolute top-1/3 -left-32 w-[500px] h-[500px] bg-brand-accent rounded-full blur-[130px] -z-10" />
-      <div className="hero-orb-b absolute bottom-1/4 right-0 w-96 h-96 rounded-full blur-[120px] -z-10" style={{ backgroundColor: "#7C3AED" }} />
+      <div className="hero-orb-a absolute top-1/3 -left-40 w-[600px] h-[600px] bg-brand-accent rounded-full blur-[160px] opacity-100 -z-10" />
+      <div className="hero-orb-b absolute bottom-1/4 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-100 -z-10" style={{ backgroundColor: "#7C3AED" }} />
 
       {/* Contenido principal — relative z-10 para quedar encima de los orbes */}
-      <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+      <motion.div 
+        className="relative z-10 max-w-7xl mx-auto"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <motion.div variants={itemVariants} className="text-center mb-16">
           <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
             Nuestro Equipo
           </h2>
@@ -79,7 +85,7 @@ const Team = () => {
           <p className="text-white/60 text-lg max-w-2xl mx-auto">
             El corazón de IEEE CIS UNI está compuesto por estudiantes talentosos y apasionados que lideran el camino hacia la excelencia.
           </p>
-        </div>
+        </motion.div>
 
         {loading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-16">
@@ -91,10 +97,7 @@ const Team = () => {
           <>
             <motion.div
               className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-16"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              variants={itemVariants}
             >
               {boardMembers.map((member) => (
                 <motion.div key={member.id} variants={itemVariants}>
@@ -121,7 +124,7 @@ const Team = () => {
           </>
         )}
 
-        <div className="text-center">
+        <motion.div variants={itemVariants} className="text-center">
           <p className="text-white/50 mb-6 italic px-4">
             ¿Quieres conocer al resto de nuestra increíble comunidad o ser el próximo miembro?
           </p>
@@ -136,8 +139,8 @@ const Team = () => {
               Quiero ser parte
             </Button>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 };
