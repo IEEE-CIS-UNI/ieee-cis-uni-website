@@ -6,29 +6,24 @@ import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 
 export default function AboutPage() {
   return (
-    /*
-     * Wrapper con position:relative + overflow:hidden para contener
-     * el canvas de NeuralNetworkBackground en toda la sección /nosotros.
-     */
-    <div className="relative overflow-hidden bg-[var(--brand-surface)]">
-
+    <div className="relative overflow-hidden bg-[#00102a]">
       {/* ── Fondo dinámico: red neuronal interactiva ────────────────────────
-           El canvas ocupa todo el wrapper (absolute inset-0).
-           pointer-events:none garantiza que no bloquee ningún click.
+           El contenedor está fijo para que permanezca en la pantalla
+           mientras se hace scroll por el contenido.
       ─────────────────────────────────────────────────────────────────── */}
-      <NeuralNetworkBackground />
-
-      {/* Capa de difuminado suave sobre el canvas */}
-      <div className="absolute inset-0 pointer-events-none backdrop-blur-[6px] bg-[var(--brand-surface)]/10" />
-
-      {/* Gradiente radial para legibilidad del contenido */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 60% 20%, transparent 35%, var(--brand-surface) 75%)",
-        }}
-      />
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <NeuralNetworkBackground />
+        {/* Capa de difuminado muy suave para no ocultar la red */}
+        <div className="absolute inset-0 backdrop-blur-[2px] bg-[var(--brand-accent)]/5" />
+        {/* Gradiente radial para legibilidad, usando un azul profundo */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at 60% 20%, transparent 20%, #00102a 85%)",
+          }}
+        />
+      </div>
 
       {/* ── Contenido principal ── */}
       <main className="relative z-10">

@@ -4,7 +4,7 @@ import { FaInstagram, FaLinkedin, FaFacebook } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-[var(--brand-surface)] pt-20 pb-10 px-6 md:px-12 lg:px-24 border-t border-[var(--brand-border)] transition-colors duration-400">
+    <footer className="relative z-20 bg-[var(--brand-surface)] pt-20 pb-10 px-6 md:px-12 lg:px-24 border-t border-[var(--brand-border)] transition-colors duration-400">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-8 mb-16">
           {/* Chapter Logo */}

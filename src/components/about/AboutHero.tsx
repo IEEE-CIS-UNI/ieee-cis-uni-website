@@ -1,9 +1,56 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { HiUserGroup } from "react-icons/hi";
+import Image from "next/image";
+import { supabase } from "@/lib/supabase";
 
 const AboutHero = () => {
+  const [images, setImages] = useState<string[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      // NOTA: Ajusta 'aboutus' y 'about' si tu bucket o carpeta tienen otros nombres
+      const bucketName = 'aboutus';
+      const folderPath = 'about';
+
+      const { data, error } = await supabase.storage.from(bucketName).list(folderPath, {
+        limit: 10,
+        sortBy: { column: 'name', order: 'asc' }
+      });
+
+      if (error) {
+        console.error("Error fetching images from Supabase:", error);
+        return;
+      }
+
+      if (data) {
+        // Filtrar placeholders ocultos u otras carpetas
+        const validFiles = data.filter((file) => file.name !== '.emptyFolderPlaceholder' && file.name !== folderPath);
+        
+        const urls = validFiles.map((file) => {
+          const { data: publicUrlData } = supabase.storage.from(bucketName).getPublicUrl(`${folderPath}/${file.name}`);
+          return publicUrlData.publicUrl;
+        });
+
+        setImages(urls);
+      }
+    };
+
+    fetchImages();
+  }, []);
+
+  // Cambiar imagen automáticamente cada 4 segundos
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
   return (
     <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center overflow-hidden">
       {/* Background Glows */}
@@ -45,18 +92,46 @@ const AboutHero = () => {
               {/* Outer Glow - Softer and more atmospheric */}
               <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-700" />
               
-              {/* Tech Placeholder instead of AI Image */}
+              {/* Carrusel de Imágenes */}
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-white/5 flex items-center justify-center group">
-                {/* Decorative Pattern Background */}
-                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, #066bf3 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-                
-                {/* Large Central Icon */}
-                <div className="relative z-10 flex flex-col items-center">
-                  <div className="w-24 h-24 bg-brand-accent/10 rounded-2xl flex items-center justify-center mb-4 border border-brand-accent/20 group-hover:scale-110 transition-transform duration-500">
-                    <HiUserGroup className="text-brand-accent text-5xl" />
-                  </div>
-                  <span className="text-white/30 text-xs font-bold uppercase tracking-widest">Sección Nosotros</span>
-                </div>
+                {images.length > 0 ? (
+                  <AnimatePresence>
+                    <motion.div
+                      key={currentIndex}
+                      initial={{ opacity: 0, x: 100, scale: 0.95 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
+                      exit={{ opacity: 0, x: -100, scale: 1.05 }}
+                      transition={{ 
+                        duration: 0.8, 
+                        ease: [0.25, 1, 0.5, 1] // Curva de animación premium (suave al final)
+                      }}
+                      className="absolute inset-0 w-full h-full"
+                    >
+                      <Image
+                        src={images[currentIndex]}
+                        alt={`Carrusel nosotros ${currentIndex + 1}`}
+                        fill
+                        className="object-cover"
+                        priority={currentIndex === 0}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                ) : (
+                  <>
+                    {/* Decorative Pattern Background (fallback) */}
+                    <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, #066bf3 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+                    
+                    {/* Large Central Icon (fallback) */}
+                    <div className="relative z-10 flex flex-col items-center">
+                      <div className="w-24 h-24 bg-brand-accent/10 rounded-2xl flex items-center justify-center mb-4 border border-brand-accent/20 group-hover:scale-110 transition-transform duration-500">
+                        <HiUserGroup className="text-brand-accent text-5xl" />
+                      </div>
+                      <span className="text-white/30 text-xs font-bold uppercase tracking-widest">
+                        Cargando fotos...
+                      </span>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Decorative Tech Elements */}
