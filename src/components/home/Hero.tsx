@@ -50,15 +50,7 @@ const Hero = () => {
   return (
     <section className="relative pt-28 pb-16 px-6 md:px-12 lg:px-24 min-h-[90vh] flex items-center overflow-hidden">
 
-      {/*
-       * ORBES de fondo — "respiración" suave via CSS puro.
-       * hero-orb-a: ciclo 8s  |  hero-orb-b: ciclo 11s (desfasado)
-       * Ver globals.css → sección "HERO ORB"
-       * Orbe izquierdo: azul IEEE | Orbe derecho: violeta tecnológico
-       */}
-      <div className="hero-orb-a absolute top-1/3 -left-40 w-[600px] h-[600px] bg-brand-accent rounded-full blur-[160px] opacity-100 -z-10" />
-      {/* Destello derecho: violeta (#7C3AED) — tono tech/AI */}
-      <div className="hero-orb-b absolute bottom-1/4 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-100 -z-10" style={{ backgroundColor: "#7C3AED" }} />
+      {/* Fondo manejado globalmente en page.tsx */}
 
       {/* Contenido principal — relative z-10 para quedar encima del canvas de red neuronal */}
       <div className="relative z-10 max-w-7xl mx-auto w-full">

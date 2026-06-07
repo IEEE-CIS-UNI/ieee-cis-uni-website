@@ -47,41 +47,41 @@ const Events = () => {
     return new Date(dateStr).toLocaleDateString('es-ES', options);
   };
 
-  const containerVariants = {
+  const headerVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const listVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
+      transition: { staggerChildren: 0.2, delayChildren: 0.2 }
     }
   };
 
-  const itemVariants = {
-    hidden: { x: -20, opacity: 0 },
-    visible: { x: 0, opacity: 1 }
+  const ticketVariants = {
+    hidden: { opacity: 0, x: 100 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, type: "spring", bounce: 0.3 } }
+  };
+
+  const ctaVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.5 } }
   };
 
   return (
     <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
-      
-      {/*
-       * FONDO ORBE — "respiración" suave via CSS puro.
-       * hero-orb-a: ciclo 8s  |  hero-orb-b: ciclo 11s (desfasado)
-       * Orbe izquierdo: azul IEEE | Orbe derecho: violeta tecnológico
-       */}
-      <div className="hero-orb-a absolute top-1/3 -left-40 w-[600px] h-[600px] bg-brand-accent rounded-full blur-[160px] opacity-100 -z-10" />
-      <div className="hero-orb-b absolute bottom-1/4 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-100 -z-10" style={{ backgroundColor: "#7C3AED" }} />
 
       {/* Contenido principal — relative z-10 para quedar encima de los orbes */}
-      <motion.div 
-        className="relative z-10 max-w-4xl mx-auto"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <motion.div variants={itemVariants} className="text-center mb-16">
+      <div className="relative z-10 max-w-4xl mx-auto">
+        <motion.div 
+          variants={headerVariants} 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="text-center mb-16"
+        >
           <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
             Próximos Eventos
           </h2>
@@ -106,10 +106,13 @@ const Events = () => {
           <>
             <motion.div 
               className="space-y-6"
-              variants={itemVariants}
+              variants={listVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
             >
               {events.map((event) => (
-                <motion.div key={event.id} variants={itemVariants}>
+                <motion.div key={event.id} variants={ticketVariants}>
                   <EventTicket 
                     title={event.titulo}
                     date={formatDate(event.fecha)}
@@ -135,12 +138,18 @@ const Events = () => {
           </>
         )}
 
-        <motion.div variants={itemVariants} className="text-center mt-16">
+        <motion.div 
+          variants={ctaVariants} 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="text-center mt-16"
+        >
           <Button href="/eventos" variant="outline" icon={<HiArrowRight />}>
             Ver calendario completo
           </Button>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };

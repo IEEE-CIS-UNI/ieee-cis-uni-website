@@ -27,14 +27,17 @@ const Institutional = () => {
   ];
 
   return (
-    <section className="py-12 md:py-24 px-6 md:px-12 lg:px-24 bg-brand-secondary/5 relative overflow-hidden">
+    <section className="py-12 md:py-24 px-6 md:px-12 lg:px-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
             Respaldo Institucional
           </h2>
           <h3 className="text-4xl md:text-5xl font-bold text-white mb-8">
-            Nuestra Red
+            Nuestra{" "}
+            <em className="not-italic italic text-brand-accent text-5xl md:text-6xl font-extrabold">
+              Red
+            </em>
           </h3>
         </div>
 

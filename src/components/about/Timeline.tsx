@@ -34,7 +34,10 @@ const Timeline = () => {
             Trayectoria
           </h2>
           <h3 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-            Nuestros Hitos
+            Nuestros{" "}
+            <em className="not-italic italic text-brand-accent text-5xl md:text-6xl font-extrabold">
+              Hitos
+            </em>
           </h3>
         </div>
 

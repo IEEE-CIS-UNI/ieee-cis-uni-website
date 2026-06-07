@@ -7,7 +7,7 @@ const AboutHero = () => {
   return (
     <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center overflow-hidden">
       {/* Background Glows */}
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-[120px] -z-10" />
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-[120px] z-0 pointer-events-none" />
       
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -22,7 +22,11 @@ const AboutHero = () => {
                 Nuestra Identidad
               </span>
               <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-                Impulsando la <span className="text-brand-accent">Excelencia</span> e Innovación
+                Impulsando la{" "}
+                <em className="not-italic italic text-brand-accent text-6xl md:text-8xl font-extrabold">
+                  Excelencia
+                </em>{" "}
+                e Innovación
               </h1>
               <p className="text-xl text-white/70 leading-relaxed mb-8">
                 Somos una comunidad de investigadores y apasionados por la inteligencia computacional que buscan dejar una huella en el mundo tecnológico desde la UNI.

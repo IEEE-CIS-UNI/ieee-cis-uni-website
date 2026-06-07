@@ -25,7 +25,6 @@
 
 import Button from "@/components/ui/Button";
 import ValueItem from "@/components/ui/ValueItem";
-import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import { HiUsers, HiBookOpen, HiLightBulb, HiGlobeAlt, HiChevronRight } from "react-icons/hi";
 import { motion } from "framer-motion";
 
@@ -53,17 +52,25 @@ const About = () => {
     },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2 }
+  const leftColVariants = {
+    hidden: { x: -100, opacity: 0 },
+    visible: { 
+      x: 0, opacity: 1, 
+      transition: { duration: 0.8, ease: "easeOut" } 
     }
   };
 
-  const itemVariants = {
-    hidden: { y: 40, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
+  const rightColVariants = {
+    hidden: { x: 100, opacity: 0 },
+    visible: { 
+      x: 0, opacity: 1, 
+      transition: { duration: 0.8, ease: "easeOut", staggerChildren: 0.15 } 
+    }
+  };
+
+  const rightItemVariants = {
+    hidden: { x: 50, opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.5 } }
   };
 
   return (
@@ -71,39 +78,20 @@ const About = () => {
      * position:relative + overflow:hidden → necesarios para contener
      * el canvas de NeuralNetworkBackground dentro de la sección.
      */
-    <section className="relative py-24 px-6 md:px-12 lg:px-24 bg-[var(--brand-surface)] overflow-hidden">
-
-      {/* ── Fondo dinámico: red neuronal interactiva ────────────────────────
-           El canvas ocupa toda la sección (absolute inset-0).
-           pointer-events:none en el propio canvas garantiza que no
-           bloquee ningún click ni interacción del usuario.
-      ─────────────────────────────────────────────────────────────────── */}
-      <NeuralNetworkBackground />
-
-      {/* Capa de difuminado general sobre el canvas para dar el efecto blur */}
-      <div className="absolute inset-0 pointer-events-none backdrop-blur-[8px] bg-[var(--brand-surface)]/10" />
-
-      {/* Capa de degradado sobre el canvas para que el texto sea legible */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 30% 50%, transparent 40%, var(--brand-surface) 80%)",
-        }}
-      />
+    <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
 
       {/* ── Contenido principal ── */}
-      <motion.div 
-        className="relative z-10 max-w-7xl mx-auto"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
+      <div className="relative z-10 max-w-7xl mx-auto overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
-          {/* ── Columna izquierda: texto fijo (sticky) ── */}
-          <motion.div variants={itemVariants} className="lg:sticky lg:top-32 text-center lg:text-left">
+          {/* ── Columna izquierda: texto fijo (sale de la izquierda) ── */}
+          <motion.div 
+            variants={leftColVariants} 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="lg:sticky lg:top-32 text-center lg:text-left"
+          >
 
             {/* Eyebrow label */}
             <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
@@ -112,9 +100,6 @@ const About = () => {
 
             {/*
              * Título principal con jerarquía visual
-             * ─ "Innovación" → italic text-brand-accent text-5xl md:text-6xl
-             *   Mismo estilo que "el futuro." en Hero.tsx:
-             *   Poppins italic (no serif) + azul + más grande que el resto
              */}
             <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-6 leading-tight">
               Compromiso con la Excelencia e{" "}
@@ -125,9 +110,6 @@ const About = () => {
 
             {/*
              * Párrafo descriptivo
-             * ─ text-white/75 en lugar de text-[var(--brand-text-muted)]
-             *   para mejor legibilidad y contraste con el fondo oscuro.
-             * ─ Ortografía corregida: "capítulo" e "Ingeniería"
              */}
             <p className="text-white/75 text-lg leading-relaxed mb-8 mx-auto lg:mx-0 max-w-xl">
               El capítulo IEEE Computational Intelligence Society de la
@@ -139,8 +121,6 @@ const About = () => {
 
             {/*
              * Botón CTA "Saber más"
-             * ─ Variant outline con el borde reforzado (ver Button.tsx)
-             * ─ Flecha animada al hover gracias al grupo del Button
              */}
             <div className="flex justify-center lg:justify-start">
               <Button href="/nosotros" variant="outline" icon={<HiChevronRight />}>
@@ -149,22 +129,27 @@ const About = () => {
             </div>
           </motion.div>
 
-          {/* ── Columna derecha: pilares de valor ── */}
-          <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
+          {/* ── Columna derecha: pilares de valor (sale de la derecha) ── */}
+          <motion.div 
+            variants={rightColVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-2 lg:grid-cols-1 gap-4"
+          >
             {values.map((value, index) => (
-              <motion.div key={index} variants={itemVariants}>
-              <ValueItem
-                key={index}
-                title={value.title}
-                description={value.description}
-                icon={value.icon}
-              />
+              <motion.div key={index} variants={rightItemVariants}>
+                <ValueItem
+                  title={value.title}
+                  description={value.description}
+                  icon={value.icon}
+                />
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

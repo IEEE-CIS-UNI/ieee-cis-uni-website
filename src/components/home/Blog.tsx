@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import BlogCard from "@/components/ui/BlogCard";
 import Button from "@/components/ui/Button";
-import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import { HiArrowRight, HiBookOpen } from "react-icons/hi";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
@@ -57,49 +56,42 @@ const Blog = () => {
     return new Date(dateStr).toLocaleDateString('es-ES', options);
   };
 
-  const containerVariants = {
+  const headerLeftVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const headerRightVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const gridVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.3
-      }
+      transition: { staggerChildren: 0.3, delayChildren: 0.2 }
     }
   };
 
-  const itemVariants = {
-    hidden: { scale: 0.95, opacity: 0 },
-    visible: { scale: 1, opacity: 1 }
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50, rotate: -2 },
+    visible: { opacity: 1, y: 0, rotate: 0, transition: { duration: 0.7, type: "spring", bounce: 0.4 } }
   };
 
   return (
-    <section className="relative py-24 px-6 md:px-12 lg:px-24 bg-[var(--brand-surface)] overflow-hidden">
-      
-      {/* ── Fondo dinámico: red neuronal interactiva ──────────────────────── */}
-      <NeuralNetworkBackground />
-
-      {/* Capa de difuminado general sobre el canvas para dar el efecto blur */}
-      <div className="absolute inset-0 pointer-events-none backdrop-blur-[8px] bg-[var(--brand-surface)]/10" />
-
-      {/* Capa de degradado sobre el canvas para que el texto sea legible */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 30% 50%, transparent 40%, var(--brand-surface) 80%)",
-        }}
-      />
+    <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
 
       {/* Contenido principal — relative z-10 para quedar encima del fondo */}
-      <motion.div 
-        className="relative z-10 max-w-7xl mx-auto"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
-          <motion.div variants={itemVariants} className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
+      <div className="relative z-10 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8 overflow-hidden">
+          <motion.div 
+            variants={headerLeftVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0"
+          >
             <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
               Blog & Noticias
             </h2>
@@ -113,7 +105,13 @@ const Blog = () => {
               Mantente al día con las últimas tendencias y descubrimientos en el mundo de la Inteligencia Computacional.
             </p>
           </motion.div>
-          <motion.div variants={itemVariants} className="flex justify-center lg:justify-start">
+          <motion.div 
+            variants={headerRightVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="flex justify-center lg:justify-start"
+          >
             <Button href="/blog" variant="outline" icon={<HiArrowRight />}>
               Ir al blog
             </Button>
@@ -130,10 +128,13 @@ const Blog = () => {
           <>
             <motion.div
               className="grid grid-cols-1 md:grid-cols-2 gap-8"
-              variants={itemVariants}
+              variants={gridVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
             >
               {posts.map((post) => (
-                <motion.div key={post.id} variants={itemVariants}>
+                <motion.div key={post.id} variants={cardVariants}>
                   <BlogCard 
                     title={post.titulo}
                     excerpt={post.excerpt}
@@ -159,7 +160,7 @@ const Blog = () => {
             )}
           </>
         )}
-      </motion.div>
+      </div>
     </section>
   );
 };

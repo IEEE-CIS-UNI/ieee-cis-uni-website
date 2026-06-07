@@ -25,7 +25,16 @@ const ProjectGrid = () => {
 
         if (!ignore) {
           if (error) throw error;
-          if (data) setProjects(data);
+          const hardcodedRuleta = {
+            id: 'ruleta-cis-hardcoded',
+            titulo: 'Ruleta CIS',
+            descripcion_corta: 'Descubre qué área hosteará el próximo evento con nuestra ruleta interactiva.',
+            image_url: '/images/pinguinocis.png',
+            tags: ['INTERACTIVO', 'EVENTOS'],
+            slug: 'ruleta'
+          } as Project;
+
+          if (data) setProjects([hardcodedRuleta, ...data]);
         }
       } catch (error) {
         console.error('Error fetching projects:', error);

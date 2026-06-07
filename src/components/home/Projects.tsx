@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import ProjectCard from "@/components/ui/ProjectCard";
 import Button from "@/components/ui/Button";
-import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import { HiArrowRight, HiCode } from "react-icons/hi";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
@@ -22,11 +21,20 @@ const Projects = () => {
           .from('proyectos')
           .select('*')
           .eq('highlighted', true)
-          .limit(4);
+          .limit(3);
 
         if (!ignore) {
           if (error) throw error;
-          if (data) setProjects(data);
+          const hardcodedRuleta = {
+            id: 'ruleta-cis-hardcoded',
+            titulo: 'Ruleta CIS',
+            descripcion_corta: 'Descubre qué área hosteará el próximo evento con nuestra ruleta interactiva.',
+            image_url: '/images/pinguinocis.png',
+            tags: ['INTERACTIVO', 'EVENTOS'],
+            slug: 'ruleta'
+          } as Project;
+
+          if (data) setProjects([hardcodedRuleta, ...data]);
         }
       } catch (error) {
         console.error('Error fetching featured projects:', error);
@@ -42,49 +50,42 @@ const Projects = () => {
     };
   }, []);
 
-  const containerVariants = {
+  const headerLeftVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const headerRightVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const cardContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
+      transition: { staggerChildren: 0.2, delayChildren: 0.3 }
     }
   };
 
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: "easeOut" } }
   };
 
   return (
-    <section className="relative py-24 px-6 md:px-12 lg:px-24 bg-[var(--brand-background)] overflow-hidden min-h-[60vh]">
-
-      {/* ── Fondo dinámico: red neuronal interactiva ──────────────────────── */}
-      <NeuralNetworkBackground />
-
-      {/* Capa de difuminado general sobre el canvas para dar el efecto blur */}
-      <div className="absolute inset-0 pointer-events-none backdrop-blur-[8px] bg-[var(--brand-background)]/10" />
-
-      {/* Capa de degradado sobre el canvas para que el texto sea legible */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 30%, transparent 40%, var(--brand-background) 80%)",
-        }}
-      />
+    <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden min-h-[60vh]">
 
       {/* Contenido principal — relative z-10 para quedar encima del fondo */}
-      <motion.div 
-        className="relative z-10 max-w-7xl mx-auto"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
-          <motion.div variants={itemVariants} className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
+      <div className="relative z-10 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8 overflow-hidden">
+          <motion.div 
+            variants={headerLeftVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0"
+          >
             <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
               Nuestro Portafolio
             </h2>
@@ -98,7 +99,13 @@ const Projects = () => {
               Explora las soluciones innovadoras desarrolladas por nuestros miembros utilizando tecnologías de vanguardia en inteligencia computacional.
             </p>
           </motion.div>
-          <motion.div variants={itemVariants} className="flex justify-center lg:justify-start">
+          <motion.div 
+            variants={headerRightVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="flex justify-center lg:justify-start"
+          >
             <Button href="/proyectos" variant="outline" icon={<HiArrowRight />}>
               Ver todos los proyectos
             </Button>
@@ -115,13 +122,13 @@ const Projects = () => {
           <>
             <motion.div
               className="grid grid-cols-2 gap-4 lg:gap-8"
-              variants={containerVariants}
+              variants={cardContainerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.1 }}
             >
               {projects.map((project) => (
-                <motion.div key={project.id} variants={itemVariants}>
+                <motion.div key={project.id} variants={cardVariants}>
                   <ProjectCard
                     title={project.titulo}
                     description={project.descripcion_corta}
@@ -143,7 +150,7 @@ const Projects = () => {
             )}
           </>
         )}
-      </motion.div>
+      </div>
     </section>
   );
 };
