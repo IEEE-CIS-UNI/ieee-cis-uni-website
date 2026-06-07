@@ -26,7 +26,7 @@
 import Button from "@/components/ui/Button";
 import ValueItem from "@/components/ui/ValueItem";
 import { HiUsers, HiBookOpen, HiLightBulb, HiGlobeAlt, HiChevronRight } from "react-icons/hi";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const About = () => {
   const values = [
@@ -52,7 +52,7 @@ const About = () => {
     },
   ];
 
-  const leftColVariants = {
+  const leftColVariants: Variants = {
     hidden: { x: -100, opacity: 0 },
     visible: { 
       x: 0, opacity: 1, 
@@ -60,17 +60,17 @@ const About = () => {
     }
   };
 
-  const rightColVariants = {
+  const rightColVariants: Variants = {
     hidden: { x: 100, opacity: 0 },
     visible: { 
       x: 0, opacity: 1, 
-      transition: { duration: 0.8, ease: "easeOut", staggerChildren: 0.15 } 
+      transition: { duration: 0.8, ease: "easeOut", staggerChildren: 0.2 } 
     }
   };
 
-  const rightItemVariants = {
-    hidden: { x: 50, opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 0.5 } }
+  const rightItemVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
   };
 
   return (

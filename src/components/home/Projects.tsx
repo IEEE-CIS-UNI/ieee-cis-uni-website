@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import ProjectCard from "@/components/ui/ProjectCard";
 import Button from "@/components/ui/Button";
 import { HiArrowRight, HiCode } from "react-icons/hi";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { Project } from "@/types/database";
 
@@ -50,17 +50,17 @@ const Projects = () => {
     };
   }, []);
 
-  const headerLeftVariants = {
+  const headerLeftVariants: Variants = {
     hidden: { opacity: 0, x: -50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
-  const headerRightVariants = {
+  const headerRightVariants: Variants = {
     hidden: { opacity: 0, x: 50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
-  const cardContainerVariants = {
+  const cardContainerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -68,7 +68,7 @@ const Projects = () => {
     }
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50, scale: 0.95 },
     visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: "easeOut" } }
   };

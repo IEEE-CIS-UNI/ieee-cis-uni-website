@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import BlogCard from "@/components/ui/BlogCard";
 import Button from "@/components/ui/Button";
 import { HiArrowRight, HiBookOpen } from "react-icons/hi";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { BlogPost } from "@/types/database";
 
@@ -56,17 +56,17 @@ const Blog = () => {
     return new Date(dateStr).toLocaleDateString('es-ES', options);
   };
 
-  const headerLeftVariants = {
+  const headerLeftVariants: Variants = {
     hidden: { opacity: 0, x: -50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
-  const headerRightVariants = {
+  const headerRightVariants: Variants = {
     hidden: { opacity: 0, x: 50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
-  const gridVariants = {
+  const gridVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -74,7 +74,7 @@ const Blog = () => {
     }
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50, rotate: -2 },
     visible: { opacity: 1, y: 0, rotate: 0, transition: { duration: 0.7, type: "spring", bounce: 0.4 } }
   };

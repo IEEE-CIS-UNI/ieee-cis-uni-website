@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import MemberCard from "@/components/ui/MemberCard";
 import Button from "@/components/ui/Button";
 import { HiArrowRight, HiChevronRight, HiUsers } from "react-icons/hi";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { Member } from "@/types/database";
 
@@ -41,12 +41,12 @@ const Team = () => {
     };
   }, []);
 
-  const headerVariants = {
+  const headerVariants: Variants = {
     hidden: { opacity: 0, y: -40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
-  const gridVariants = {
+  const gridVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -54,12 +54,12 @@ const Team = () => {
     }
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50, scale: 0.9 },
     visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
-  const ctaVariants = {
+  const ctaVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.4 } }
   };

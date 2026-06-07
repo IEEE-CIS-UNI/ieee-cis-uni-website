@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import EventTicket from "@/components/ui/EventTicket";
 import Button from "@/components/ui/Button";
 import { HiArrowRight, HiCalendar } from "react-icons/hi";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { Event } from "@/types/database";
 
@@ -47,12 +47,12 @@ const Events = () => {
     return new Date(dateStr).toLocaleDateString('es-ES', options);
   };
 
-  const headerVariants = {
+  const headerVariants: Variants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
-  const listVariants = {
+  const listVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -60,12 +60,12 @@ const Events = () => {
     }
   };
 
-  const ticketVariants = {
+  const ticketVariants: Variants = {
     hidden: { opacity: 0, x: 100 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.6, type: "spring", bounce: 0.3 } }
   };
 
-  const ctaVariants = {
+  const ctaVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.5 } }
   };
