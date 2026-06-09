@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { HiMail, HiLocationMarker, HiPaperAirplane, HiCheckCircle, HiExclamationCircle } from "react-icons/hi";
 import { FaLinkedin, FaInstagram, FaFacebook } from "react-icons/fa";
 import { sendContactEmail } from "@/app/actions/contact";
@@ -34,7 +34,7 @@ const ContactSection = () => {
   };
 
   // Variantes para la columna izquierda (viene de la izquierda)
-  const leftContainerVariants = {
+  const leftContainerVariants: Variants = {
     hidden: { opacity: 0, x: -100 },
     show: {
       opacity: 1,
@@ -44,7 +44,7 @@ const ContactSection = () => {
   };
 
   // Variantes para la columna derecha (viene de la derecha)
-  const rightContainerVariants = {
+  const rightContainerVariants: Variants = {
     hidden: { opacity: 0, x: 100 },
     show: {
       opacity: 1,
@@ -54,7 +54,7 @@ const ContactSection = () => {
   };
 
   // Variantes para los elementos internos (aparecen sutilmente hacia arriba)
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { duration: 0.5, type: "spring", stiffness: 100 } }
   };
