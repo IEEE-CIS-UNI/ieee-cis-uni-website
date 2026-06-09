@@ -69,8 +69,8 @@ const BlogGrid = () => {
   });
 
   return (
-    <section className="py-20 px-6 md:px-12 lg:px-24 bg-brand-background min-h-[60vh]">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-20 px-6 md:px-12 lg:px-24 relative min-h-[60vh]">
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Standardized Toolbar: Search and Filters Stacked */}
         <div className="flex flex-col items-center mb-16 gap-8">
           <div className="relative w-full max-w-xl group">

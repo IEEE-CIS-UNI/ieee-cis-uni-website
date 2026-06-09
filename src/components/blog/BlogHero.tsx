@@ -5,9 +5,9 @@ import { HiBookOpen } from "react-icons/hi";
 
 const BlogHero = () => {
   return (
-    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center overflow-hidden">
+    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center">
       {/* Background Glows */}
-      <div className="absolute top-1/4 -right-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-[120px] -z-10" />
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-[120px] z-0 pointer-events-none" />
       
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -22,7 +22,11 @@ const BlogHero = () => {
                 Conocimiento e Innovación
               </span>
               <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-                Explora la <span className="text-brand-accent">Frontera</span> de la Inteligencia
+                Explora la{" "}
+                <em className="not-italic italic text-brand-accent text-6xl md:text-8xl font-extrabold">
+                  Frontera
+                </em>{" "}
+                de la Inteligencia
               </h1>
               <p className="text-xl text-white/70 leading-relaxed mb-8">
                 Artículos técnicos, tutoriales paso a paso y reflexiones sobre el impacto de la IA en el mundo real, escritos por nuestra comunidad.

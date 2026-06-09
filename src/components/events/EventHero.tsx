@@ -6,9 +6,8 @@ import { HiCalendar } from "react-icons/hi";
 
 const EventHero = () => {
   return (
-    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center overflow-hidden">
-      {/* Background Glows */}
-      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-[120px] -z-10" />
+    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center">
+      {/* Fondo manejado globalmente en page.tsx */}
       
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -22,8 +21,12 @@ const EventHero = () => {
               <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Comunidad en Acción
               </span>
-              <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-                Eventos que <span className="text-brand-accent">Inspiran</span> el Futuro
+              <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-5xl md:text-6xl lg:text-7xl">
+                <span className="block text-white">Eventos que</span>
+                <span className="block text-white">Inspiran</span>
+                <span className="block italic text-brand-accent lg:text-[130px]">
+                  el Futuro.
+                </span>
               </h1>
               <p className="text-xl text-white/70 leading-relaxed mb-8">
                 Desde workshops intensivos hasta conferencias magistrales. Únete a nuestros próximos encuentros y sé parte de la revolución tecnológica.
