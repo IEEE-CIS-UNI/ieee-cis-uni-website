@@ -10,18 +10,32 @@ interface EventTicketProps {
   category: string;
   link: string;
   status?: string;
+  imageUrl?: string | null;
+  variant?: 'full' | 'compact';
 }
 
-const EventTicket = ({ date, title, time, location, speaker, category, link, status }: EventTicketProps) => {
+const EventTicket = ({ date, title, time, location, speaker, category, link, status, imageUrl, variant = 'full' }: EventTicketProps) => {
   const dateParts = date.split(' ');
   const day = dateParts[0] || "00";
   const month = (dateParts[2] || "MES").substring(0, 3).toUpperCase();
 
   return (
-    <div className="group relative flex flex-col md:flex-row bg-[var(--brand-card)] backdrop-blur-md rounded-xl overflow-hidden hover:bg-[var(--brand-card-hover)] transition-all duration-500 border border-[var(--brand-border)]">
+    <div className="group relative flex flex-col md:flex-row bg-[var(--brand-card)] backdrop-blur-xl shadow-xl rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-[var(--brand-border)]">
       
+      {/* Background Image for Compact Variant */}
+      {imageUrl && variant === 'compact' && (
+        <>
+          <div 
+            className="absolute inset-0 z-0 group-hover:scale-105 transition-transform duration-1000 bg-cover bg-center"
+            style={{ backgroundImage: `url('${imageUrl}')` }}
+          />
+          {/* Capa de contraste tipo liquid glass: Fuerte a la izquierda para el texto, más transparente a la derecha para ver la imagen */}
+          <div className="absolute inset-0 z-0 bg-gradient-to-r from-[var(--brand-surface)] via-[var(--brand-surface)]/80 to-[var(--brand-surface)]/30 backdrop-blur-sm" />
+        </>
+      )}
+
       {/* Date Stub */}
-      <div className="bg-brand-accent/20 flex md:flex-col items-center justify-center py-3 md:py-10 md:w-28 relative">
+      <div className="bg-brand-accent/20 flex md:flex-col items-center justify-center py-3 md:py-10 md:w-28 relative z-10 backdrop-blur-md border-b md:border-b-0 md:border-r border-[var(--brand-border)]/50">
         <div className="flex md:flex-col items-center gap-2 md:gap-0">
           <span className="text-brand-accent text-[10px] font-bold uppercase tracking-widest">{month}</span>
           <span className="text-[var(--brand-text)] text-3xl md:text-4xl font-black">{day}</span>
@@ -35,7 +49,7 @@ const EventTicket = ({ date, title, time, location, speaker, category, link, sta
       </div>
 
       {/* Details Section */}
-      <div className="flex-grow p-6 lg:py-8 lg:px-10 relative">
+      <div className="flex-grow p-6 lg:py-8 lg:px-10 relative z-10">
         <div className="flex flex-col items-center md:items-start text-center md:text-left gap-4">
           <div className="flex flex-col items-center md:items-start gap-3 w-full">
             <div className="flex justify-between items-center w-full">
@@ -67,6 +81,18 @@ const EventTicket = ({ date, title, time, location, speaker, category, link, sta
           </div>
         </div>
       </div>
+
+      {/* Right Side Image Thumbnail for Full Variant */}
+      {imageUrl && variant === 'full' && (
+        <div className="hidden md:block relative w-48 lg:w-72 flex-shrink-0 overflow-hidden border-l border-[var(--brand-border)]/50">
+          <div 
+            className="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-1000"
+            style={{ backgroundImage: `url('${imageUrl}')` }}
+          />
+          {/* Suave difuminado en el borde para que se integre bien con la tarjeta */}
+          <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[var(--brand-card)] to-transparent z-10" />
+        </div>
+      )}
     </div>
   );
 };

@@ -29,14 +29,14 @@ const ProjectHero = () => {
               <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Investigación y Desarrollo
               </span>
-              <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6 leading-tight drop-shadow-xl">
+              <h1 className="text-5xl md:text-6xl font-extrabold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
                 Transformando{" "}
                 <em className="not-italic italic text-brand-accent text-6xl md:text-8xl font-extrabold">
                   Ideas
                 </em>{" "}
                 en Soluciones Realidad
               </h1>
-              <p className="text-xl text-white/90 leading-relaxed mb-8 drop-shadow-lg font-medium">
+              <p className="text-xl text-[var(--brand-text-muted)] leading-relaxed mb-8 drop-shadow-sm font-medium">
                 Nuestros proyectos abarcan desde la investigación teórica en redes neuronales hasta la implementación de sistemas autónomos y soluciones de IA con impacto social.
               </p>
             </motion.div>
@@ -54,7 +54,7 @@ const ProjectHero = () => {
               <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-700 pointer-events-none" />
 
               {/* 3D Model Box */}
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-black/20 flex items-center justify-center group w-full h-full pointer-events-auto">
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] backdrop-blur-md flex items-center justify-center group w-full h-full pointer-events-auto">
                 <Spline scene="https://prod.spline.design/HE4AYvwMqlguAv2S/scene.splinecode" />
               </div>
 

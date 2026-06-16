@@ -41,7 +41,7 @@ const ValueItem = ({ title, description, icon: Icon }: ValueItemProps) => {
            * ─ Cambiado de text-[var(--brand-text-muted)] a text-white/65
            *   para mejor contraste en fondo oscuro
            */}
-          <p className="text-white/65 text-sm leading-relaxed transition-colors duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]">
+          <p className="text-[var(--brand-text)] opacity-70 text-sm leading-relaxed transition-colors duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]">
             {description}
           </p>
         </div>

@@ -71,25 +71,25 @@ const ContactSection = () => {
             whileInView="show"
             viewport={{ once: true, margin: "-100px" }}
           >
-            <motion.h2 variants={itemVariants} className="text-3xl font-black text-white mb-8 tracking-tighter uppercase">
+            <motion.h2 variants={itemVariants} className="text-3xl font-black text-[var(--brand-text)] mb-8 tracking-tighter uppercase">
               Envíanos un <span className="text-brand-accent">Mensaje</span>
             </motion.h2>
             
             {status === "success" ? (
               <motion.div 
                 variants={itemVariants}
-                className="bg-white/5 backdrop-blur-xl border border-white/20 p-12 rounded-[3rem] text-center shadow-2xl"
+                className="bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] p-12 rounded-[3rem] text-center shadow-2xl"
               >
                 <div className="w-20 h-20 bg-brand-accent/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <HiCheckCircle className="text-brand-accent text-5xl" />
                 </div>
-                <h3 className="text-white text-3xl font-black mb-4 tracking-tighter">¡MENSAJE ENVIADO!</h3>
-                <p className="text-white/80 mb-10 text-lg leading-relaxed">
+                <h3 className="text-[var(--brand-text)] text-3xl font-black mb-4 tracking-tighter">¡MENSAJE ENVIADO!</h3>
+                <p className="text-[var(--brand-text-muted)] opacity-90 mb-10 text-lg leading-relaxed">
                   Gracias por contactarnos. Tu consulta ha sido procesada y nuestro equipo te responderá pronto.
                 </p>
                 <button 
                   onClick={() => setStatus("idle")}
-                  className="px-8 py-3 bg-white/10 border border-white/20 rounded-xl text-white font-bold uppercase tracking-widest text-xs hover:bg-white/20 transition-all shadow-lg"
+                  className="px-8 py-3 bg-[var(--brand-surface)] border border-[var(--brand-border)] rounded-xl text-[var(--brand-text)] font-bold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-lg"
                 >
                   Enviar otro mensaje
                 </button>
@@ -98,46 +98,46 @@ const ContactSection = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <motion.div variants={itemVariants} className="space-y-2">
-                    <label className="text-[10px] font-mono text-white/70 uppercase tracking-widest ml-4">Nombre Completo</label>
+                    <label className="text-[10px] font-mono text-[var(--brand-text-muted)] opacity-80 uppercase tracking-widest ml-4">Nombre Completo</label>
                     <input 
                       name="nombre"
                       type="text" 
                       required
                       placeholder="Tu nombre"
-                      className="w-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_4px_20px_rgba(0,0,0,0.1)] rounded-2xl py-4 px-6 text-white placeholder:text-white/50 focus:outline-none focus:border-white/30 focus:bg-white/10 focus:-translate-y-1 focus:shadow-2xl transition-all duration-300"
+                      className="w-full bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm rounded-2xl py-4 px-6 text-[var(--brand-text)] placeholder:text-[var(--brand-text-muted)] focus:outline-none focus:border-brand-accent/30 focus:bg-[var(--brand-surface)] focus:-translate-y-1 focus:shadow-md transition-all duration-300"
                     />
                   </motion.div>
                   <motion.div variants={itemVariants} className="space-y-2">
-                    <label className="text-[10px] font-mono text-white/70 uppercase tracking-widest ml-4">Correo Electrónico</label>
+                    <label className="text-[10px] font-mono text-[var(--brand-text-muted)] opacity-80 uppercase tracking-widest ml-4">Correo Electrónico</label>
                     <input 
                       name="email"
                       type="email" 
                       required
                       placeholder="correo@ejemplo.com"
-                      className="w-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_4px_20px_rgba(0,0,0,0.1)] rounded-2xl py-4 px-6 text-white placeholder:text-white/50 focus:outline-none focus:border-white/30 focus:bg-white/10 focus:-translate-y-1 focus:shadow-2xl transition-all duration-300"
+                      className="w-full bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm rounded-2xl py-4 px-6 text-[var(--brand-text)] placeholder:text-[var(--brand-text-muted)] focus:outline-none focus:border-brand-accent/30 focus:bg-[var(--brand-surface)] focus:-translate-y-1 focus:shadow-md transition-all duration-300"
                     />
                   </motion.div>
                 </div>
                 
                 <motion.div variants={itemVariants} className="space-y-2">
-                  <label className="text-[10px] font-mono text-white/70 uppercase tracking-widest ml-4">Asunto</label>
+                  <label className="text-[10px] font-mono text-[var(--brand-text-muted)] opacity-80 uppercase tracking-widest ml-4">Asunto</label>
                   <input 
                     name="asunto"
                     type="text" 
                     required
                     placeholder="¿En qué podemos ayudarte?"
-                    className="w-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_4px_20px_rgba(0,0,0,0.1)] rounded-2xl py-4 px-6 text-white placeholder:text-white/50 focus:outline-none focus:border-white/30 focus:bg-white/10 focus:-translate-y-1 focus:shadow-2xl transition-all duration-300"
+                    className="w-full bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm rounded-2xl py-4 px-6 text-[var(--brand-text)] placeholder:text-[var(--brand-text-muted)] focus:outline-none focus:border-brand-accent/30 focus:bg-[var(--brand-surface)] focus:-translate-y-1 focus:shadow-md transition-all duration-300"
                   />
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="space-y-2">
-                  <label className="text-[10px] font-mono text-white/70 uppercase tracking-widest ml-4">Tu Mensaje</label>
+                  <label className="text-[10px] font-mono text-[var(--brand-text-muted)] opacity-80 uppercase tracking-widest ml-4">Tu Mensaje</label>
                   <textarea 
                     name="mensaje"
                     rows={5}
                     required
                     placeholder="Escribe tu mensaje aquí..."
-                    className="w-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_4px_20px_rgba(0,0,0,0.1)] rounded-2xl py-4 px-6 text-white placeholder:text-white/50 focus:outline-none focus:border-white/30 focus:bg-white/10 focus:-translate-y-1 focus:shadow-2xl transition-all duration-300 resize-none"
+                    className="w-full bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm rounded-2xl py-4 px-6 text-[var(--brand-text)] placeholder:text-[var(--brand-text-muted)] focus:outline-none focus:border-brand-accent/30 focus:bg-[var(--brand-surface)] focus:-translate-y-1 focus:shadow-md transition-all duration-300 resize-none"
                   />
                 </motion.div>
 
@@ -176,29 +176,29 @@ const ContactSection = () => {
             className="flex flex-col justify-center space-y-12"
           >
             <motion.div variants={itemVariants}>
-              <h2 className="text-3xl font-black text-white mb-8 tracking-tighter uppercase">
+              <h2 className="text-3xl font-black text-[var(--brand-text)] mb-8 tracking-tighter uppercase">
                 Información de <span className="text-brand-accent">Contacto</span>
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
                 {/* Email Card */}
-                <div className="flex items-center gap-6 p-6 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_4px_20px_rgba(0,0,0,0.1)] hover:bg-white/10 hover:border-white/30 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 group">
-                  <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white group-hover:bg-brand-accent group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(6,107,243,0.5)] transition-all duration-300">
+                <div className="flex items-center gap-6 p-6 rounded-3xl bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm hover:bg-[var(--brand-surface)] hover:border-brand-accent/30 hover:-translate-y-1 hover:shadow-md transition-all duration-300 group">
+                  <div className="w-12 h-12 rounded-2xl bg-[var(--brand-surface)] flex items-center justify-center text-[var(--brand-text)] group-hover:bg-brand-accent group-hover:text-white group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(6,107,243,0.5)] transition-all duration-300">
                     <HiMail size={24} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-mono text-white/60 uppercase tracking-[0.2em]">Email Principal</p>
-                    <p className="text-white font-bold text-lg">ieee.cis@uni.edu.pe</p>
+                    <p className="text-[10px] font-mono text-[var(--brand-text-muted)] opacity-80 uppercase tracking-[0.2em]">Email Principal</p>
+                    <p className="text-[var(--brand-text)] font-bold text-lg">ieee.cis@uni.edu.pe</p>
                   </div>
                 </div>
 
                 {/* Location Card */}
-                <div className="flex items-center gap-6 p-6 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_4px_20px_rgba(0,0,0,0.1)] hover:bg-white/10 hover:border-white/30 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 group">
-                  <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white group-hover:bg-brand-accent group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(6,107,243,0.5)] transition-all duration-300">
+                <div className="flex items-center gap-6 p-6 rounded-3xl bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm hover:bg-[var(--brand-surface)] hover:border-brand-accent/30 hover:-translate-y-1 hover:shadow-md transition-all duration-300 group">
+                  <div className="w-12 h-12 rounded-2xl bg-[var(--brand-surface)] flex items-center justify-center text-[var(--brand-text)] group-hover:bg-brand-accent group-hover:text-white group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(6,107,243,0.5)] transition-all duration-300">
                     <HiLocationMarker size={24} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-mono text-white/60 uppercase tracking-[0.2em]">Ubicación</p>
-                    <p className="text-white font-bold text-lg">Universidad Nacional de Ingeniería</p>
+                    <p className="text-[10px] font-mono text-[var(--brand-text-muted)] opacity-80 uppercase tracking-[0.2em]">Ubicación</p>
+                    <p className="text-[var(--brand-text)] font-bold text-lg">Universidad Nacional de Ingeniería</p>
                   </div>
                 </div>
               </div>
@@ -206,7 +206,7 @@ const ContactSection = () => {
 
             {/* Social Channels */}
             <motion.div variants={itemVariants}>
-              <h3 className="text-sm font-black text-white/50 mb-6 uppercase tracking-[0.3em]">Síguenos en</h3>
+              <h3 className="text-sm font-black text-[var(--brand-text-muted)] opacity-70 mb-6 uppercase tracking-[0.3em]">Síguenos en</h3>
               <div className="flex gap-4">
                 {[
                   { icon: <FaLinkedin />, name: "LinkedIn", link: process.env.NEXT_PUBLIC_LINKEDIN_URL },
@@ -216,7 +216,7 @@ const ContactSection = () => {
                   <a 
                     key={idx}
                     href={social.link || "#"}
-                    className="w-14 h-14 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] flex items-center justify-center text-white/70 hover:text-white hover:border-white/30 hover:bg-white/10 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 text-2xl"
+                    className="w-14 h-14 rounded-2xl bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm flex items-center justify-center text-[var(--brand-text-muted)] hover:text-brand-accent hover:border-brand-accent/30 hover:bg-[var(--brand-surface)] hover:-translate-y-1 hover:shadow-md transition-all duration-300 text-2xl"
                     title={social.name}
                     target="_blank"
                     rel="noopener noreferrer"

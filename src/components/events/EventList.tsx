@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import EventTicket from "@/components/ui/EventTicket";
+import EventCard from "@/components/ui/EventCard";
 import { HiSearch, HiCalendar } from "react-icons/hi";
 import { supabase } from "@/lib/supabase";
 import { Event } from "@/types/database";
@@ -21,7 +21,7 @@ const EventList = () => {
         const { data, error } = await supabase
           .from('eventos')
           .select('*')
-          .order('fecha', { ascending: true });
+          .order('fecha', { ascending: false });
 
         if (!ignore) {
           if (error) throw error;
@@ -51,8 +51,9 @@ const EventList = () => {
   }, [events]);
 
   const formatDate = (dateStr: string) => {
-    const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-    return new Date(dateStr).toLocaleDateString('es-ES', options);
+    const utcDate = dateStr.includes('T') ? dateStr : `${dateStr}T00:00:00Z`;
+    const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' };
+    return new Date(utcDate).toLocaleDateString('es-ES', options);
   };
 
   const filteredEvents = events.filter(event => {
@@ -69,11 +70,11 @@ const EventList = () => {
         {/* Toolbar: Search and Filters Stacked */}
         <div className="flex flex-col items-center mb-16 gap-8">
           <div className="relative w-full max-w-xl group">
-            <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-focus-within:text-brand-accent transition-colors" size={20} />
+            <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--brand-text-muted)] opacity-50 group-focus-within:text-brand-accent transition-colors" size={20} />
             <input 
               type="text" 
               placeholder="Buscar por evento, ponente o lugar..."
-              className="w-full bg-brand-secondary/10 border border-white/5 rounded-full py-4 pl-12 pr-6 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-accent/50 focus:bg-brand-secondary/20 transition-all text-center"
+              className="w-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-full py-4 pl-12 pr-6 text-[var(--brand-text)] placeholder:text-[var(--brand-text-muted)] focus:outline-none focus:border-brand-accent/50 focus:bg-[var(--brand-surface)] transition-all text-center"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -87,7 +88,7 @@ const EventList = () => {
                 className={`px-4 sm:px-8 py-2.5 rounded-full text-[10px] sm:text-xs font-bold transition-all border tracking-widest ${
                   filter === cat 
                   ? "bg-brand-accent border-brand-accent text-white" 
-                  : "bg-transparent border-white/10 text-white/50 hover:border-white/30 hover:text-white"
+                  : "bg-transparent border-[var(--brand-border)] text-[var(--brand-text-muted)] opacity-70 hover:opacity-100 hover:border-brand-accent/30 hover:text-[var(--brand-text)]"
                 }`}
               >
                 {cat}
@@ -100,23 +101,23 @@ const EventList = () => {
         {loading ? (
           <div className="flex flex-col gap-10">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="w-full h-48 bg-white/5 rounded-3xl animate-pulse" />
+              <div key={i} className="w-full h-48 bg-[var(--brand-card)] backdrop-blur-md rounded-3xl animate-pulse" />
             ))}
           </div>
         ) : (
           <>
-            <div className="flex flex-col gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <AnimatePresence mode="popLayout">
-                {filteredEvents.map((event) => (
+                {filteredEvents.map((event, index) => (
                   <motion.div
                     key={event.id}
-                    layout
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="h-full"
                   >
-                    <EventTicket 
+                    <EventCard 
                       title={event.titulo}
                       date={formatDate(event.fecha)}
                       time={event.hora || "TBD"}
@@ -125,6 +126,7 @@ const EventList = () => {
                       category={event.categoria || "EVENTO"}
                       status={event.is_past ? "Past" : "Upcoming"}
                       link={event.link_registro || "#"}
+                      imageUrl={event.image_url}
                     />
                   </motion.div>
                 ))}
@@ -132,12 +134,12 @@ const EventList = () => {
             </div>
 
             {filteredEvents.length === 0 && (
-              <div className="text-center py-32 border border-dashed border-white/10 rounded-[3rem]">
-                <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center text-white/20 mx-auto mb-6">
+              <div className="text-center py-32 border border-dashed border-[var(--brand-border)] backdrop-blur-md rounded-[3rem]">
+                <div className="w-20 h-20 bg-[var(--brand-card)] rounded-3xl flex items-center justify-center text-[var(--brand-text-muted)] opacity-50 mx-auto mb-6 shadow-sm">
                   <HiCalendar size={40} />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2 uppercase tracking-widest">Sin eventos</h3>
-                <p className="text-white/40 max-w-xs mx-auto">No hay eventos programados en esta categoría por el momento.</p>
+                <h3 className="text-xl font-bold text-[var(--brand-text)] mb-2 uppercase tracking-widest">Sin eventos</h3>
+                <p className="text-[var(--brand-text-muted)] opacity-70 max-w-xs mx-auto">No hay eventos programados en esta categoría por el momento.</p>
               </div>
             )}
           </>

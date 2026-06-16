@@ -1,12 +1,12 @@
 import AboutHero from "@/components/about/AboutHero";
 import Stats from "@/components/about/Stats";
-import Timeline from "@/components/about/Timeline";
+import GlobalCIS from "@/components/about/GlobalCIS";
 import Institutional from "@/components/about/Institutional";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 
 export default function AboutPage() {
   return (
-    <div className="relative overflow-hidden bg-[#00102a]">
+    <div className="relative overflow-hidden about-page-bg">
       {/* ── Fondo dinámico: red neuronal interactiva ────────────────────────
            El contenedor está fijo para que permanezca en la pantalla
            mientras se hace scroll por el contenido.
@@ -15,21 +15,15 @@ export default function AboutPage() {
         <NeuralNetworkBackground />
         {/* Capa de difuminado muy suave para no ocultar la red */}
         <div className="absolute inset-0 backdrop-blur-[2px] bg-[var(--brand-accent)]/5" />
-        {/* Gradiente radial para legibilidad, usando un azul profundo */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at 60% 20%, transparent 20%, #00102a 85%)",
-          }}
-        />
+        {/* Gradiente radial para legibilidad, adaptativo */}
+        <div className="absolute inset-0 about-radial-gradient" />
       </div>
 
       {/* ── Contenido principal ── */}
       <main className="relative z-10">
         <AboutHero />
         <Stats />
-        <Timeline />
+        <GlobalCIS />
         <Institutional />
       </main>
     </div>

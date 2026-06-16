@@ -59,11 +59,11 @@ const MemberDirectory = () => {
         {/* Standardized Toolbar: Search and Filters Stacked */}
         <div className="flex flex-col items-center mb-16 gap-8">
           <div className="relative w-full max-w-xl group">
-            <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-focus-within:text-brand-accent transition-colors" size={20} />
+            <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--brand-text-muted)] group-focus-within:text-brand-accent transition-colors" size={20} />
             <input 
               type="text" 
               placeholder="Buscar por nombre o cargo..."
-              className="w-full bg-brand-secondary/10 border border-white/5 rounded-full py-4 pl-12 pr-6 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-accent/50 focus:bg-brand-secondary/20 transition-all text-center"
+              className="w-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-full py-4 pl-12 pr-6 text-[var(--brand-text)] placeholder:text-[var(--brand-text-muted)] focus:outline-none focus:border-brand-accent/50 focus:bg-[var(--brand-card-hover)] transition-all text-center shadow-sm"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -76,8 +76,8 @@ const MemberDirectory = () => {
                 onClick={() => setFilter(cat)}
                 className={`px-4 sm:px-8 py-2.5 rounded-full text-[10px] sm:text-xs font-bold transition-all border tracking-widest backdrop-blur-md ${
                   filter === cat 
-                  ? "bg-brand-accent/80 border-brand-accent/50 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
-                  : "bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:border-white/30 hover:text-white hover:shadow-[0_0_10px_rgba(255,255,255,0.1)]"
+                  ? "bg-brand-accent border-brand-accent/50 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
+                  : "bg-[var(--brand-surface)] border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:bg-[var(--brand-card-hover)] hover:text-[var(--brand-text)] hover:shadow-sm"
                 }`}
               >
                 {cat}
@@ -90,7 +90,7 @@ const MemberDirectory = () => {
         {loading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="aspect-[3/4] bg-white/5 rounded-3xl animate-pulse" />
+              <div key={i} className="aspect-[3/4] bg-[var(--brand-card)] backdrop-blur-md rounded-3xl animate-pulse" />
             ))}
           </div>
         ) : (
@@ -123,12 +123,12 @@ const MemberDirectory = () => {
             </motion.div>
 
             {filteredMembers.length === 0 && (
-              <div className="text-center py-32 border border-dashed border-white/10 rounded-[3rem]">
-                <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center text-white/20 mx-auto mb-6">
+              <div className="text-center py-32 border border-dashed border-[var(--brand-border)] rounded-[3rem] backdrop-blur-md">
+                <div className="w-20 h-20 bg-[var(--brand-card)] rounded-3xl flex items-center justify-center text-[var(--brand-text-muted)] mx-auto mb-6 shadow-sm">
                   <HiUserGroup size={40} />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2 uppercase tracking-widest">Sin miembros</h3>
-                <p className="text-white/40 max-w-xs mx-auto">No hay miembros registrados en esta categoría por el momento.</p>
+                <h3 className="text-xl font-bold text-[var(--brand-text)] mb-2 uppercase tracking-widest">Sin miembros</h3>
+                <p className="text-[var(--brand-text-muted)] max-w-xs mx-auto">No hay miembros registrados en esta categoría por el momento.</p>
               </div>
             )}
           </>

@@ -68,14 +68,14 @@ const AboutHero = () => {
               <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Nuestra Identidad
               </span>
-              <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
+              <h1 className="text-5xl md:text-7xl font-extrabold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
                 Impulsando la{" "}
                 <em className="not-italic italic text-brand-accent text-6xl md:text-8xl font-extrabold">
                   Excelencia
                 </em>{" "}
                 e Innovación
               </h1>
-              <p className="text-xl text-white/70 leading-relaxed mb-8">
+              <p className="text-xl text-[var(--brand-text-muted)] opacity-90 leading-relaxed mb-8">
                 Somos una comunidad de investigadores y apasionados por la inteligencia computacional que buscan dejar una huella en el mundo tecnológico desde la UNI.
               </p>
             </motion.div>
@@ -93,7 +93,7 @@ const AboutHero = () => {
               <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-700" />
               
               {/* Carrusel de Imágenes */}
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-white/5 flex items-center justify-center group">
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] backdrop-blur-md flex items-center justify-center group">
                 {images.length > 0 ? (
                   <AnimatePresence>
                     <motion.div
@@ -126,7 +126,7 @@ const AboutHero = () => {
                       <div className="w-24 h-24 bg-brand-accent/10 rounded-2xl flex items-center justify-center mb-4 border border-brand-accent/20 group-hover:scale-110 transition-transform duration-500">
                         <HiUserGroup className="text-brand-accent text-5xl" />
                       </div>
-                      <span className="text-white/30 text-xs font-bold uppercase tracking-widest">
+                      <span className="text-[var(--brand-text-muted)] opacity-70 text-xs font-bold uppercase tracking-widest">
                         Cargando fotos...
                       </span>
                     </div>

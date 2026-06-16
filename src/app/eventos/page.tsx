@@ -1,5 +1,7 @@
 import EventHero from "@/components/events/EventHero";
+import EventCalendar from "@/components/events/EventCalendar";
 import EventList from "@/components/events/EventList";
+import InstagramShowcase from "@/components/events/InstagramShowcase";
 
 export const metadata = {
   title: "Eventos | IEEE CIS UNI",
@@ -15,7 +17,9 @@ export default function EventosPage() {
 
       <main className="relative z-10">
         <EventHero />
+        <EventCalendar />
         <EventList />
+        <InstagramShowcase />
       </main>
     </div>
   );

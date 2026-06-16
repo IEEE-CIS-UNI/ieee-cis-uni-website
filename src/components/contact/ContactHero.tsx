@@ -21,12 +21,12 @@ const ContactHero = () => {
                 Contáctanos
               </span>
               <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-5xl md:text-6xl lg:text-7xl">
-                <span className="block text-white lg:text-[60px]">Establezcamos la</span>
+                <span className="block text-[var(--brand-text)] lg:text-[60px]">Establezcamos la</span>
                 <span className="block italic text-brand-accent lg:text-[120px]">
                   Conexión.
                 </span>
               </h1>
-              <p className="text-xl text-white/70 leading-relaxed mb-8">
+              <p className="text-xl text-[var(--brand-text-muted)] leading-relaxed mb-8">
                 ¿Tienes una idea, quieres colaborar o simplemente saludar? Envíanos un mensaje y nuestro equipo se pondrá en contacto contigo a la brevedad.
               </p>
             </motion.div>
@@ -44,12 +44,12 @@ const ContactHero = () => {
               <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-700" />
 
               {/* Frame Container - Color Map */}
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-brand-secondary/5">
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-surface)] backdrop-blur-md">
                 <iframe
                   src="https://maps.google.com/maps?q=FIEE%20UNI&t=&z=17&ie=UTF8&iwloc=&output=embed"
                   width="100%"
                   height="100%"
-                  style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)' }}
+                  className="contact-map border-0 w-full h-full"
                   allowFullScreen={true}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"

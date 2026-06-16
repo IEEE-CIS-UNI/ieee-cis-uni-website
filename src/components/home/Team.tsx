@@ -79,10 +79,10 @@ const Team = () => {
           <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
             Nuestro Equipo
           </h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+          <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
             Conoce a la Junta Directiva
           </h3>
-          <p className="text-white/60 text-lg max-w-2xl mx-auto">
+          <p className="text-[var(--brand-text-muted)] text-lg max-w-2xl mx-auto">
             El corazón de IEEE CIS UNI está compuesto por estudiantes talentosos y apasionados que lideran el camino hacia la excelencia.
           </p>
         </motion.div>
@@ -90,7 +90,7 @@ const Team = () => {
         {loading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-16">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="aspect-[3/4] bg-white/5 rounded-3xl animate-pulse" />
+              <div key={i} className="aspect-[3/4] bg-[var(--brand-card)] rounded-3xl animate-pulse backdrop-blur-md" />
             ))}
           </div>
         ) : (
@@ -117,11 +117,11 @@ const Team = () => {
             </motion.div>
 
             {boardMembers.length === 0 && (
-              <div className="text-center py-20 border border-dashed border-white/10 rounded-[3rem] mb-16">
-                <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center text-white/20 mx-auto mb-4">
+              <div className="text-center py-20 border border-dashed border-[var(--brand-border)] rounded-[3rem] mb-16 backdrop-blur-md">
+                <div className="w-16 h-16 bg-[var(--brand-card)] rounded-2xl flex items-center justify-center text-[var(--brand-text-muted)] mx-auto mb-4 shadow-sm">
                   <HiUsers size={32} />
                 </div>
-                <p className="text-white/40">Sin miembros de la directiva registrados actualmente.</p>
+                <p className="text-[var(--brand-text-muted)] opacity-70">Sin miembros de la directiva registrados actualmente.</p>
               </div>
             )}
           </>
@@ -134,7 +134,7 @@ const Team = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <p className="text-white/50 mb-6 italic px-4">
+          <p className="text-[var(--brand-text-muted)] mb-6 italic px-4">
             ¿Quieres conocer al resto de nuestra increíble comunidad o ser el próximo miembro?
           </p>
           <div className="flex flex-wrap justify-center gap-4">

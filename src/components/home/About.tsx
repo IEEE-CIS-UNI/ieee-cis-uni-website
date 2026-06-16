@@ -111,7 +111,7 @@ const About = () => {
             {/*
              * Párrafo descriptivo
              */}
-            <p className="text-white/75 text-lg leading-relaxed mb-8 mx-auto lg:mx-0 max-w-xl">
+            <p className="text-[var(--brand-text)] opacity-75 text-lg leading-relaxed mb-8 mx-auto lg:mx-0 max-w-xl">
               El capítulo IEEE Computational Intelligence Society de la
               Universidad Nacional de Ingeniería (IEEE CIS UNI) tiene como
               misión fomentar el conocimiento, la investigación y la innovación

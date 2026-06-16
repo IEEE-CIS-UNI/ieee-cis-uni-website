@@ -20,11 +20,11 @@ const MemberHero = () => {
                 Nuestra Comunidad
               </span>
               <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-5xl md:text-6xl lg:text-7xl">
-                <span className="block text-white">El Talento</span>
-                <span className="block text-white">Detrás de la</span>
+                <span className="block text-[var(--brand-text)]">El Talento</span>
+                <span className="block text-[var(--brand-text)]">Detrás de la</span>
                 <span className="block italic text-brand-accent lg:text-[90px]">Innovación.</span>
               </h1>
-              <p className="text-xl text-white/70 leading-relaxed mb-8">
+              <p className="text-xl text-[var(--brand-text-muted)] leading-relaxed mb-8">
                 Conoce a los estudiantes e investigadores que conforman el capítulo CIS UNI. Un equipo multidisciplinario dedicado al avance de la inteligencia computacional.
               </p>
             </motion.div>
@@ -40,7 +40,7 @@ const MemberHero = () => {
             >
 
               {/* Photo — object-contain para ver la imagen completa sin recortes */}
-              <div className="relative w-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl group bg-[var(--brand-background)]/10" style={{ minHeight: "280px" }}>
+              <div className="relative w-full rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl group bg-[var(--brand-surface)]/20 backdrop-blur-md" style={{ minHeight: "280px" }}>
                 {/* Glow overlay sutil, ahora con colores más fuertes y mix-blend */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-brand-accent/50 via-transparent to-[#7C3AED]/50 z-10 pointer-events-none rounded-3xl mix-blend-color" />
 

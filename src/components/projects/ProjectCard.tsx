@@ -32,7 +32,7 @@ const ProjectCard = ({
     <Link href={link}>
       <motion.div 
         whileHover={{ y: -10 }}
-        className="group relative flex flex-col h-full bg-brand-secondary/10 border border-white/5 rounded-3xl overflow-hidden transition-all duration-500 hover:border-brand-accent/30 hover:shadow-[0_0_40px_rgba(6,107,243,0.15)] cursor-pointer"
+        className="group relative flex flex-col h-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-3xl overflow-hidden transition-all duration-500 hover:border-brand-accent/30 hover:shadow-[0_0_40px_rgba(6,107,243,0.15)] cursor-pointer"
       >
         {/* Image Section */}
         <div className="relative aspect-video overflow-hidden bg-brand-secondary/5">
@@ -50,7 +50,7 @@ const ProjectCard = ({
           )}
           
           {/* Tech Blueprint Overlay */}
-          <div className="absolute inset-0 bg-brand-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px] flex items-center justify-center">
+          <div className="absolute inset-0 bg-[var(--brand-surface)]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px] flex items-center justify-center">
             <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #066bf3 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
             <motion.div 
               initial={{ scale: 0.8, opacity: 0 }}
@@ -73,16 +73,16 @@ const ProjectCard = ({
             <span className="text-brand-accent">
               <HiLightningBolt size={18} />
             </span>
-            <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">
+            <span className="text-[10px] font-bold text-[var(--brand-text-muted)] opacity-70 uppercase tracking-[0.2em]">
               {category}
             </span>
           </div>
 
-          <h3 className="text-2xl font-black text-white mb-3 tracking-tight group-hover:text-brand-accent transition-colors">
+          <h3 className="text-2xl font-black text-[var(--brand-text)] mb-3 tracking-tight group-hover:text-brand-accent transition-colors drop-shadow-sm">
             {title}
           </h3>
           
-          <p className="text-white/50 text-sm leading-relaxed mb-6 line-clamp-3">
+          <p className="text-[var(--brand-text-muted)] opacity-80 text-sm leading-relaxed mb-6 line-clamp-3">
             {description}
           </p>
 
@@ -90,13 +90,13 @@ const ProjectCard = ({
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-6">
               {tags.map((tag, idx) => (
-                <span key={idx} className="text-[9px] font-bold text-white/60 bg-white/5 px-2 py-1 rounded-md border border-white/5 uppercase">
+                <span key={idx} className="text-[9px] font-bold text-[var(--brand-text-muted)] bg-[var(--brand-surface)] px-2 py-1 rounded-md border border-[var(--brand-border)] uppercase shadow-sm">
                   {tag}
                 </span>
               ))}
             </div>
 
-            <div className="inline-flex items-center gap-2 text-xs font-black text-white uppercase tracking-widest group-hover:text-brand-accent transition-colors">
+            <div className="inline-flex items-center gap-2 text-xs font-black text-[var(--brand-text)] uppercase tracking-widest group-hover:text-brand-accent transition-colors">
               Explorar Proyecto 
               <HiArrowRight className="transition-transform duration-300 group-hover:translate-x-2" />
             </div>

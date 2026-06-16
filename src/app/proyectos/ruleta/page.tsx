@@ -60,9 +60,10 @@ export default function RuletaPage() {
     ctx.clearRect(0, 0, 300, 300);
 
     if (activeAreas.length === 0) {
-      ctx.fillStyle = '#1a2840';
+      // Draw empty wheel
+      ctx.fillStyle = 'rgba(128, 128, 128, 0.1)';
       ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.fillStyle = 'gray';
       ctx.font = '14px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('Vacío', cx, cy);
       return;
@@ -106,7 +107,7 @@ export default function RuletaPage() {
     ctx.strokeStyle = 'rgba(0,119,204,0.5)'; ctx.lineWidth = 4; ctx.stroke();
 
     ctx.beginPath(); ctx.arc(cx, cy, 28, 0, Math.PI * 2);
-    ctx.fillStyle = '#0a1628'; ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.fill();
     ctx.strokeStyle = 'rgba(0,119,204,0.6)'; ctx.lineWidth = 2; ctx.stroke();
   };
 
@@ -265,7 +266,7 @@ export default function RuletaPage() {
             <textarea 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full text-2xl md:text-3xl font-bold text-[#FFD700] text-center bg-transparent border border-transparent hover:border-white/10 focus:border-brand-accent/50 rounded-lg outline-none resize-none overflow-hidden transition-all placeholder-white/30"
+              className="w-full text-2xl md:text-3xl font-black text-[var(--brand-text)] text-center bg-transparent border border-transparent hover:border-[var(--brand-border)] focus:border-brand-accent/50 rounded-lg outline-none resize-none overflow-hidden transition-all placeholder-[var(--brand-text-muted)] placeholder-opacity-40"
               rows={2}
               placeholder="Escribe el título aquí..."
             />
@@ -273,7 +274,7 @@ export default function RuletaPage() {
 
           <div className="relative w-[300px] h-[300px] mb-8">
             <div className="absolute top-[-14px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[24px] border-t-[#FFD700] drop-shadow-[0_2px_6px_rgba(255,215,0,0.6)] z-20" />
-            <canvas ref={canvasRef} width={300} height={300} className="rounded-full shadow-[0_0_40px_rgba(0,119,204,0.4),0_0_0_3px_rgba(0,119,204,0.3)] bg-[#0a1628]" />
+            <canvas ref={canvasRef} width={300} height={300} className="rounded-full shadow-[0_0_40px_rgba(0,119,204,0.2),0_0_0_3px_rgba(0,119,204,0.2)] bg-[var(--brand-card)] backdrop-blur-sm" />
             <button
               onClick={spinWheel}
               disabled={spinning}
@@ -290,8 +291,8 @@ export default function RuletaPage() {
           >
             <span className="text-[11px] text-[var(--brand-text-muted)] uppercase tracking-widest">el turno es de...</span>
             <span
-              className="text-2xl font-bold transition-all"
-              style={{ color: result ? result.color : 'white' }}
+              className="text-2xl font-black transition-all"
+              style={{ color: result ? result.color : 'var(--brand-text)' }}
             >
               {result ? result.label : '— — —'}
             </span>
@@ -320,7 +321,7 @@ export default function RuletaPage() {
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}
               placeholder="Ejemplo: Azul, Amarillo, Negro&#10;o sepáralos por Enter"
-              className="w-full bg-[var(--brand-background)]/80 border border-[var(--brand-border)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent text-[var(--brand-text)] resize-y min-h-[120px] custom-scrollbar placeholder-white/20"
+              className="w-full bg-[var(--brand-background)]/80 border border-[var(--brand-border)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent text-[var(--brand-text)] resize-y min-h-[120px] custom-scrollbar placeholder:text-[var(--brand-text-muted)] placeholder:opacity-50"
             />
 
             <div className="text-center mt-4">

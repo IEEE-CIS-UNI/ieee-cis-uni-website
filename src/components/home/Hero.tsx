@@ -92,7 +92,7 @@ const Hero = () => {
               │  👉 Color de fondo → `bg-white/5` (opacidad)   │
               └─────────────────────────────────────────────────┘
             */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 mb-8 rounded-full bg-white/5 border border-white/10 text-[var(--brand-text-muted)] text-sm font-normal">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 mb-8 rounded-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] text-[var(--brand-text-muted)] text-sm font-medium shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse flex-shrink-0" />
               Capítulo Estudiantil IEEE CIS UNI
             </div>
@@ -181,8 +181,8 @@ const Hero = () => {
               </Button>
 
               {/* Botón secundario — semi-transparente con icono play */}
-              <button className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white/8 border border-white/10 text-[var(--brand-text)] text-lg font-semibold hover:bg-white/15 hover:border-white/20 transition-all duration-300 hover:scale-105 active:scale-95">
-                <span className="w-6 h-6 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
+              <button className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] text-[var(--brand-text)] text-lg font-semibold hover:bg-[var(--brand-card-hover)] hover:border-[var(--brand-primary)] transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm">
+                <span className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-500">
                   <HiPlay size={10} className="ml-0.5" />
                 </span>
                 Conócenos

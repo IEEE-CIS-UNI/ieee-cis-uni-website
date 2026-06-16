@@ -33,7 +33,7 @@ const Institutional = () => {
           <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
             Respaldo Institucional
           </h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-white mb-8">
+          <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-8 drop-shadow-sm">
             Nuestra{" "}
             <em className="not-italic italic text-brand-accent text-5xl md:text-6xl font-extrabold">
               Red
@@ -52,7 +52,7 @@ const Institutional = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
-              className={`p-6 md:p-10 rounded-2xl md:rounded-3xl bg-brand-background border border-white/5 flex flex-col items-center text-center group hover:border-brand-accent/30 transition-all ${
+              className={`p-6 md:p-10 rounded-2xl md:rounded-3xl bg-[var(--brand-card)] border border-[var(--brand-border)] backdrop-blur-md flex flex-col items-center text-center group hover:border-brand-accent/30 shadow-sm transition-all ${
                 index === 2 ? "col-span-2 lg:col-span-1" : ""
               }`}
             >
@@ -62,21 +62,21 @@ const Institutional = () => {
                   alt={body.name}
                   width={150}
                   height={50}
-                  className="w-auto h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity"
+                  className="w-auto h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity logo-adaptive"
                 />
               </div>
-              <h4 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-4">{body.name}</h4>
-              <p className="text-white/60 text-[10px] md:text-sm leading-relaxed mb-6 md:mb-8 line-clamp-3 md:line-clamp-none">
+              <h4 className="text-lg md:text-xl font-bold text-[var(--brand-text)] mb-2 md:mb-4">{body.name}</h4>
+              <p className="text-[var(--brand-text-muted)] opacity-80 text-[10px] md:text-sm leading-relaxed mb-6 md:mb-8 line-clamp-3 md:line-clamp-none">
                 {body.description}
               </p>
-              <div className="mt-auto pt-4 md:pt-6 border-t border-white/5 w-full flex justify-center gap-4 md:gap-6">
-                <a href={body.links.web} className="text-white/30 hover:text-brand-accent transition-colors">
+              <div className="mt-auto pt-4 md:pt-6 border-t border-[var(--brand-border)] w-full flex justify-center gap-4 md:gap-6">
+                <a href={body.links.web} className="text-[var(--brand-text-muted)] opacity-60 hover:opacity-100 hover:text-brand-accent transition-colors">
                   <FaChrome size={18} />
                 </a>
-                <a href={body.links.instagram} className="text-white/30 hover:text-brand-accent transition-colors">
+                <a href={body.links.instagram} className="text-[var(--brand-text-muted)] opacity-60 hover:opacity-100 hover:text-brand-accent transition-colors">
                   <FaInstagram size={18} />
                 </a>
-                <a href={body.links.facebook} className="text-white/30 hover:text-brand-accent transition-colors">
+                <a href={body.links.facebook} className="text-[var(--brand-text-muted)] opacity-60 hover:opacity-100 hover:text-brand-accent transition-colors">
                   <FaFacebook size={18} />
                 </a>
               </div>

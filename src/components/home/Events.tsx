@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import EventTicket from "@/components/ui/EventTicket";
+import EventCard from "@/components/ui/EventCard";
 import Button from "@/components/ui/Button";
 import { HiArrowRight, HiCalendar } from "react-icons/hi";
 import { motion, Variants } from "framer-motion";
@@ -43,8 +43,9 @@ const Events = () => {
   }, []);
 
   const formatDate = (dateStr: string) => {
-    const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-    return new Date(dateStr).toLocaleDateString('es-ES', options);
+    const utcDate = dateStr.includes('T') ? dateStr : `${dateStr}T00:00:00Z`;
+    const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' };
+    return new Date(utcDate).toLocaleDateString('es-ES', options);
   };
 
   const headerVariants: Variants = {
@@ -74,7 +75,7 @@ const Events = () => {
     <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
 
       {/* Contenido principal — relative z-10 para quedar encima de los orbes */}
-      <div className="relative z-10 max-w-4xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto">
         <motion.div 
           variants={headerVariants} 
           initial="hidden"
@@ -85,35 +86,35 @@ const Events = () => {
           <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
             Próximos Eventos
           </h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+          <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
             Eventos que{" "}
             <em className="not-italic italic text-brand-accent text-5xl md:text-6xl lg:text-7xl font-extrabold">
               Inspiran
             </em>
           </h3>
-          <p className="text-white/60 text-lg">
+          <p className="text-[var(--brand-text-muted)] text-lg">
             Participa en nuestros seminarios, talleres y conferencias. Conecta con expertos y expande tu conocimiento.
           </p>
         </motion.div>
 
         {loading ? (
-          <div className="space-y-6">
-            {[...Array(2)].map((_, i) => (
-              <div key={i} className="w-full h-40 bg-[var(--brand-card)] rounded-xl animate-pulse" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="w-full h-[400px] bg-[var(--brand-card)] rounded-3xl animate-pulse" />
             ))}
           </div>
         ) : (
           <>
             <motion.div 
-              className="space-y-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               variants={listVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
             >
               {events.map((event) => (
-                <motion.div key={event.id} variants={ticketVariants}>
-                  <EventTicket 
+                <motion.div key={event.id} variants={ticketVariants} className="h-full">
+                  <EventCard 
                     title={event.titulo}
                     date={formatDate(event.fecha)}
                     time={event.hora || "TBD"}
@@ -122,6 +123,7 @@ const Events = () => {
                     category={event.categoria || "EVENTO"}
                     status="Upcoming"
                     link={event.link_registro || "#"}
+                    imageUrl={event.image_url}
                   />
                 </motion.div>
               ))}

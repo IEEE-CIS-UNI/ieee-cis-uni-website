@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { HiBookOpen } from "react-icons/hi";
+import Image from "next/image";
 
 const BlogHero = () => {
   return (
@@ -21,14 +22,14 @@ const BlogHero = () => {
               <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Conocimiento e Innovación
               </span>
-              <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
+              <h1 className="text-5xl md:text-7xl font-extrabold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
                 Explora la{" "}
                 <em className="not-italic italic text-brand-accent text-6xl md:text-8xl font-extrabold">
                   Frontera
                 </em>{" "}
                 de la Inteligencia
               </h1>
-              <p className="text-xl text-white/70 leading-relaxed mb-8">
+              <p className="text-xl text-[var(--brand-text-muted)] leading-relaxed mb-8">
                 Artículos técnicos, tutoriales paso a paso y reflexiones sobre el impacto de la IA en el mundo real, escritos por nuestra comunidad.
               </p>
             </motion.div>
@@ -45,18 +46,14 @@ const BlogHero = () => {
               {/* Outer Glow */}
               <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-700" />
               
-              {/* Tech Placeholder */}
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-white/5 flex items-center justify-center group">
-                {/* Decorative Pattern Background */}
-                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, #066bf3 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-                
-                {/* Large Central Icon */}
-                <div className="relative z-10 flex flex-col items-center">
-                  <div className="w-24 h-24 bg-brand-accent/10 rounded-2xl flex items-center justify-center mb-4 border border-brand-accent/20 group-hover:scale-110 transition-transform duration-500">
-                    <HiBookOpen className="text-brand-accent text-5xl" />
-                  </div>
-                  <span className="text-white/30 text-xs font-bold uppercase tracking-widest">Sección Blog</span>
-                </div>
+              {/* Image Container */}
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] flex items-center justify-center group">
+                <Image 
+                  src="/images/invest.png" 
+                  alt="Explora la Frontera de la Inteligencia"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
               </div>
 
               {/* Decorative Tech Elements */}

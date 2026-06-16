@@ -18,7 +18,7 @@ const MemberCard = ({ name, role, image, linkedin, github, interests }: MemberCa
   return (
     <div className="group relative flex flex-col md:block md:rounded-2xl md:overflow-hidden w-full transition-all duration-500">
       {/* Image Container */}
-      <div className="relative aspect-square md:aspect-[4/5] overflow-hidden rounded-xl md:rounded-2xl border border-white/5 bg-[var(--brand-surface)] shadow-xl transition-all duration-700 group-hover:border-brand-accent/50 group-hover:shadow-[0_0_40px_rgba(37,99,235,0.2)]">
+      <div className="relative aspect-square md:aspect-[4/5] overflow-hidden rounded-xl md:rounded-2xl border border-[var(--brand-border)] bg-[var(--brand-surface)] shadow-xl transition-all duration-700 group-hover:border-brand-accent/50 group-hover:shadow-[0_0_40px_rgba(37,99,235,0.2)]">
         <Image
           src={image}
           alt={name}
@@ -26,15 +26,15 @@ const MemberCard = ({ name, role, image, linkedin, github, interests }: MemberCa
           className="object-cover grayscale-[0.3] md:group-hover:grayscale-0 md:group-hover:scale-110 transition-all duration-1000 ease-out"
         />
         {/* Desktop Overlay Gradient */}
-        <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/50 to-transparent opacity-90 group-hover:opacity-50 transition-opacity duration-700" />
+        <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[var(--brand-background)]/80 via-transparent to-transparent opacity-75 group-hover:opacity-30 transition-opacity duration-700" />
       </div>
 
       <div className="
         mt-2 md:mt-0 
         md:absolute md:bottom-0 md:left-0 md:right-0 
         p-2 md:p-5 
-        md:backdrop-blur-sm md:bg-transparent md:bg-gradient-to-b md:from-white/30 md:to-transparent
-        md:border-t md:border-white/70 md:shadow-[0_-5px_20px_rgba(255,255,255,0.15)]
+        md:backdrop-blur-[4px] md:bg-transparent md:bg-gradient-to-t md:from-[var(--brand-surface)]/90 md:via-[var(--brand-surface)]/50 md:to-transparent
+        md:border-t md:border-[var(--brand-border)] md:shadow-sm
         md:translate-y-[calc(100%-90px)] md:group-hover:translate-y-0 
         transition-all duration-700 ease-out z-10
       ">
@@ -55,7 +55,7 @@ const MemberCard = ({ name, role, image, linkedin, github, interests }: MemberCa
             {interests && (
               <div className="flex flex-wrap gap-1 md:gap-1.5 max-h-[40px] md:max-h-none overflow-hidden">
                 {displayInterests.map((interest, idx) => (
-                  <span key={idx} className="text-[8px] md:text-[9px] bg-white/10 backdrop-blur-md text-white/80 px-1.5 md:px-2 py-0.5 rounded-full border border-white/10 whitespace-nowrap shadow-sm">
+                  <span key={idx} className="text-[8px] md:text-[9px] bg-[var(--brand-surface)] backdrop-blur-md text-[var(--brand-text-muted)] px-1.5 md:px-2 py-0.5 rounded-full border border-[var(--brand-border)] whitespace-nowrap shadow-sm">
                     {interest}
                   </span>
                 ))}

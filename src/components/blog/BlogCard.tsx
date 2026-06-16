@@ -28,57 +28,59 @@ const BlogCard = ({ title, excerpt, image, author, date, readTime, category, lev
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="group cursor-pointer"
+        className="group relative flex flex-col h-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-3xl overflow-hidden transition-all duration-500 hover:border-brand-accent/30 hover:shadow-[0_0_40px_rgba(6,107,243,0.15)] cursor-pointer"
       >
-        <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/5 bg-brand-secondary/5 mb-6">
+        {/* Image Section */}
+        <div className="relative aspect-video overflow-hidden border-b border-[var(--brand-border)] bg-[var(--brand-surface)]">
           {image ? (
             <Image 
               src={image}
               alt={title}
               fill
-              className="object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+              className="object-cover group-hover:scale-105 transition-all duration-700"
             />
           ) : (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-brand-secondary/10 to-brand-background group-hover:scale-110 transition-transform duration-700">
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[var(--brand-surface)] to-[var(--brand-background)] group-hover:scale-110 transition-transform duration-700">
               <HiBookOpen className="text-6xl text-brand-accent/40" />
             </div>
           )}
           
           <div className="absolute top-4 left-4 flex gap-2">
-            <span className="px-3 py-1 rounded-full bg-brand-background/80 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-widest border border-white/10">
+            <span className="px-3 py-1 rounded-full bg-[var(--brand-background)]/80 backdrop-blur-md text-[var(--brand-text)] text-[9px] font-black uppercase tracking-widest border border-[var(--brand-border)]">
               {category}
             </span>
-            <span className={`px-3 py-1 rounded-full backdrop-blur-md text-[9px] font-black uppercase tracking-widest border border-white/5 ${levelColors[level]}`}>
+            <span className={`px-3 py-1 rounded-full backdrop-blur-md text-[9px] font-black uppercase tracking-widest border border-[var(--brand-border)] ${levelColors[level]}`}>
               {level}
             </span>
           </div>
         </div>
 
-        <div className="flex flex-col">
-          <div className="flex items-center gap-4 mb-3">
-            <div className="flex items-center gap-1.5 text-white/30 text-[10px] font-bold uppercase tracking-widest">
+        {/* Content Section */}
+        <div className="p-6 md:p-8 flex flex-col flex-grow">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-center gap-1.5 text-[var(--brand-text-muted)] opacity-80 text-[10px] font-bold uppercase tracking-widest">
               <HiOutlineClock size={14} />
               {readTime}
             </div>
-            <div className="w-1 h-1 rounded-full bg-white/10" />
-            <div className="text-white/30 text-[10px] font-bold uppercase tracking-widest">
+            <div className="w-1 h-1 rounded-full bg-[var(--brand-border)]" />
+            <div className="text-[var(--brand-text-muted)] opacity-80 text-[10px] font-bold uppercase tracking-widest">
               {date}
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-brand-accent transition-colors duration-300 leading-tight">
+          <h3 className="text-2xl font-black text-[var(--brand-text)] mb-3 group-hover:text-brand-accent transition-colors duration-300 leading-tight tracking-tight drop-shadow-sm">
             {title}
           </h3>
           
-          <p className="text-white/50 text-sm leading-relaxed mb-6 line-clamp-2">
+          <p className="text-[var(--brand-text-muted)] text-sm leading-relaxed mb-6 line-clamp-2">
             {excerpt}
           </p>
 
-          <div className="flex items-center gap-3 pt-4 border-t border-white/5">
-            <div className="w-6 h-6 rounded-full bg-brand-accent/20 border border-brand-accent/30 flex items-center justify-center text-[10px] font-bold text-brand-accent">
+          <div className="flex items-center gap-3 pt-6 mt-auto border-t border-[var(--brand-border)]">
+            <div className="w-8 h-8 rounded-full bg-brand-accent/10 border border-brand-accent/30 flex items-center justify-center text-[12px] font-black text-brand-accent">
               {author.charAt(0)}
             </div>
-            <span className="text-[11px] font-bold text-white/60 uppercase tracking-widest">
+            <span className="text-[11px] font-black text-[var(--brand-text)] opacity-80 uppercase tracking-widest">
               {author}
             </span>
           </div>

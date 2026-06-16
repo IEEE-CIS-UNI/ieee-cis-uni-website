@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function ProyectosPage() {
   return (
-    <div className="relative overflow-hidden bg-[#00102a] min-h-screen">
+    <div className="relative overflow-hidden about-page-bg min-h-screen">
       {/* ── Fondo dinámico: red neuronal interactiva ────────────────────────
            El contenedor está fijo para que permanezca en la pantalla
            mientras se hace scroll por el contenido.
@@ -18,14 +18,8 @@ export default function ProyectosPage() {
         <NeuralNetworkBackground />
         {/* Capa de difuminado muy suave para no ocultar la red */}
         <div className="absolute inset-0 backdrop-blur-[2px] bg-[var(--brand-accent)]/5" />
-        {/* Gradiente radial para legibilidad, usando un azul profundo */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at 60% 20%, transparent 20%, #00102a 85%)",
-          }}
-        />
+        {/* Gradiente radial para legibilidad, adaptativo */}
+        <div className="absolute inset-0 about-radial-gradient" />
       </div>
 
       {/* ── Contenido principal ── */}

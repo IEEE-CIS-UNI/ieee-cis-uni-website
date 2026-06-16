@@ -89,13 +89,13 @@ const Projects = () => {
             <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
               Nuestro Portafolio
             </h2>
-            <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
               Proyectos que{" "}
               <em className="not-italic italic text-brand-accent text-5xl md:text-6xl lg:text-7xl font-extrabold">
                 Impactan
               </em>
             </h3>
-            <p className="text-white/75 text-lg">
+            <p className="text-[var(--brand-text)] opacity-75 text-lg">
               Explora las soluciones innovadoras desarrolladas por nuestros miembros utilizando tecnologías de vanguardia en inteligencia computacional.
             </p>
           </motion.div>
@@ -115,7 +115,7 @@ const Projects = () => {
         {loading ? (
           <div className="grid grid-cols-2 gap-4 lg:gap-8">
             {[...Array(2)].map((_, i) => (
-              <div key={i} className="aspect-video bg-white/5 rounded-3xl animate-pulse" />
+              <div key={i} className="aspect-video bg-[var(--brand-card)] backdrop-blur-md rounded-3xl animate-pulse" />
             ))}
           </div>
         ) : (
@@ -141,11 +141,11 @@ const Projects = () => {
             </motion.div>
 
             {projects.length === 0 && (
-              <div className="text-center py-20 border border-dashed border-white/10 rounded-[3rem]">
-                <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center text-white/20 mx-auto mb-4">
+              <div className="text-center py-20 border border-dashed border-[var(--brand-border)] rounded-[3rem] backdrop-blur-md">
+                <div className="w-16 h-16 bg-[var(--brand-card)] rounded-2xl flex items-center justify-center text-[var(--brand-text-muted)] mx-auto mb-4 shadow-sm">
                   <HiCode size={32} />
                 </div>
-                <p className="text-white/40">No hay proyectos destacados por el momento.</p>
+                <p className="text-[var(--brand-text-muted)] opacity-70">No hay proyectos destacados por el momento.</p>
               </div>
             )}
           </>

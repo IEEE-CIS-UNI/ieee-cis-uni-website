@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 import { HiArrowLeft, HiOutlineExternalLink, HiCode, HiLightningBolt } from "react-icons/hi";
 import Image from "next/image";
+import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -53,7 +54,7 @@ export default function ProjectDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-brand-background flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--brand-background)] flex items-center justify-center">
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -65,13 +66,13 @@ export default function ProjectDetailPage() {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-brand-background flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen bg-[var(--brand-background)] flex flex-col items-center justify-center p-6 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
         >
-          <h1 className="text-4xl font-black text-white mb-4 uppercase tracking-tighter">Proyecto no encontrado</h1>
-          <p className="text-white/40 mb-8 max-w-md">El proyecto que buscas no existe o ha sido movido. Verifica la URL e inténtalo de nuevo.</p>
+          <h1 className="text-4xl font-black text-[var(--brand-text)] mb-4 uppercase tracking-tighter">Proyecto no encontrado</h1>
+          <p className="text-[var(--brand-text-muted)] mb-8 max-w-md">El proyecto que buscas no existe o ha sido movido. Verifica la URL e inténtalo de nuevo.</p>
           <Button href="/proyectos" variant="outline">Volver a Proyectos</Button>
         </motion.div>
       </div>
@@ -79,8 +80,15 @@ export default function ProjectDetailPage() {
   }
 
   return (
-    <main className="min-h-screen bg-brand-background pt-32 pb-20 px-6 md:px-12 lg:px-24">
-      <div className="max-w-6xl mx-auto">
+    <div className="relative overflow-hidden about-page-bg min-h-screen">
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <NeuralNetworkBackground />
+        <div className="absolute inset-0 backdrop-blur-[2px] bg-[var(--brand-accent)]/5" />
+        <div className="absolute inset-0 about-radial-gradient" />
+      </div>
+
+      <main className="relative z-10 min-h-screen pt-32 pb-20 px-6 md:px-12 lg:px-24">
+        <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -105,24 +113,24 @@ export default function ProjectDetailPage() {
               ))}
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-black text-white mb-8 tracking-tighter uppercase leading-none">
+            <h1 className="text-5xl md:text-7xl font-black text-[var(--brand-text)] mb-8 tracking-tighter uppercase leading-none">
               {project.titulo}
             </h1>
 
             <div className="h-1 w-20 bg-brand-accent mb-10" />
 
-            <p className="text-white/60 text-lg leading-relaxed mb-12 whitespace-pre-wrap font-medium">
+            <p className="text-[var(--brand-text-muted)] text-lg leading-relaxed mb-12 whitespace-pre-wrap font-medium">
               {project.descripcion_larga || project.descripcion_corta}
             </p>
 
-            <div className="flex flex-wrap gap-6 p-8 rounded-[2rem] bg-brand-secondary/5 border border-white/5">
+            <div className="flex flex-wrap gap-6 p-8 rounded-[2rem] bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)]">
               {project.github_link && (
-                <Button href={project.github_link} variant="outline" icon={<HiCode />} className="flex-1 min-w-[200px]">
+                <Button href={project.github_link} variant="outline" icon={<HiCode />} className="flex-1 min-w-[200px] justify-center bg-[var(--brand-surface)]">
                   Ver Repositorio
                 </Button>
               )}
               {project.demo_link && (
-                <Button href={project.demo_link} icon={<HiOutlineExternalLink />} className="flex-1 min-w-[200px]">
+                <Button href={project.demo_link} icon={<HiOutlineExternalLink />} className="flex-1 min-w-[200px] justify-center">
                   Ver Demo Live
                 </Button>
               )}
@@ -138,7 +146,7 @@ export default function ProjectDetailPage() {
           >
             <div className="absolute -inset-10 bg-brand-accent/20 blur-[100px] rounded-full -z-10 group-hover:bg-brand-accent/30 transition-all duration-700" />
             
-            <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl bg-brand-secondary/5">
+            <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)]">
               {project.image_url ? (
                 <Image 
                   src={project.image_url} 
@@ -147,17 +155,17 @@ export default function ProjectDetailPage() {
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-brand-secondary/20 to-brand-background">
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[var(--brand-surface)] to-[var(--brand-background)]">
                   <div className="relative">
                     <div className="absolute inset-0 bg-brand-accent rounded-full blur-3xl opacity-20 animate-pulse" />
                     <HiLightningBolt className="text-[10rem] text-brand-accent relative z-10" />
                   </div>
-                  <p className="text-white/20 font-black uppercase tracking-[0.3em] text-xs mt-8">Proyecto Tech</p>
+                  <p className="text-[var(--brand-text-muted)] font-black uppercase tracking-[0.3em] text-xs mt-8">Proyecto Tech</p>
                 </div>
               )}
               
               {/* Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-background/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-background)]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
 
             {/* Decorative Tech Elements */}
@@ -166,6 +174,7 @@ export default function ProjectDetailPage() {
           </motion.div>
         </div>
       </div>
-    </main>
+      </main>
+    </div>
   );
 }

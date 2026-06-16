@@ -281,3 +281,35 @@ body {
   animation-delay: -4s;   /* empieza en mitad del ciclo para variedad */
   will-change: transform, opacity;
 }
+
+/* ============================================================
+   CONTACT MAP FILTER
+   ============================================================ */
+.contact-map {
+  filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+:root:not(.dark) .contact-map {
+  filter: grayscale(10%) sepia(5%) brightness(105%) contrast(95%);
+}
+
+/* ============================================================
+   ABOUT PAGE RADIAL GRADIENT
+   ============================================================ */
+.about-radial-gradient {
+  background: radial-gradient(ellipse at 60% 20%, transparent 20%, #00102a 85%);
+}
+
+.about-page-bg {
+  background-color: var(--brand-background);
+}
+
+:root:not(.dark) .about-radial-gradient {
+  /* En modo claro, difuminado radial con bordes en cian/celeste para dar ese toque tecnológico iluminado */
+  background: radial-gradient(ellipse at 60% 20%, transparent 20%, #7dd3fc 95%);
+}
+
+:root:not(.dark) .about-page-bg {
+  /* Gradiente lineal vibrante para el fondo base en modo claro */
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #38bdf8 100%);
+}
