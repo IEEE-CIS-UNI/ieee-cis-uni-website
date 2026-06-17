@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import ProjectCard from "./ProjectCard";
 import { HiSearch, HiCode } from "react-icons/hi";
 import { supabase } from "@/lib/supabase";
@@ -108,31 +107,23 @@ const ProjectGrid = () => {
           </div>
         ) : (
           <>
-            <motion.div 
-              layout
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              <AnimatePresence mode="popLayout">
-                {filteredProjects.map((project) => (
-                  <motion.div
-                    key={project.id}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <ProjectCard 
-                      title={project.titulo}
-                      description={project.descripcion_corta}
-                      image={project.image_url || ""}
-                      tags={project.tags}
-                      link={`/proyectos/${project.slug}`}
-                    />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProjects.map((project, index) => (
+                <div
+                  key={project.id}
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <ProjectCard
+                    title={project.titulo}
+                    description={project.descripcion_corta}
+                    image={project.image_url || ""}
+                    tags={project.tags}
+                    link={`/proyectos/${project.slug}`}
+                  />
+                </div>
+              ))}
+            </div>
 
             {filteredProjects.length === 0 && (
               <div className="text-center py-32 border border-dashed border-[var(--brand-border)] backdrop-blur-md rounded-[3rem]">

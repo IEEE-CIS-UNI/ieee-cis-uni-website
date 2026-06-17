@@ -1,12 +1,27 @@
 "use client";
 
 import Button from "@/components/ui/Button";
-/*
- * Usamos la importación cliente de Spline porque Hero es "use client".
- * La importación /next es SOLO para React Server Components.
- */
-import Spline from "@splinetool/react-spline";
+import dynamic from "next/dynamic";
 import { HiArrowRight, HiPlay } from "react-icons/hi";
+
+// Silenciar el warning interno inofensivo de Spline "Missing property"
+if (typeof window !== "undefined") {
+  const originalError = console.error;
+  console.error = (...args: any[]) => {
+    const msg = args[0];
+    if (typeof msg === "string" && (msg.includes("Missing property") || msg.includes("buildTimeline"))) return;
+    originalError(...args);
+  };
+}
+
+const Spline = dynamic(() => import("@splinetool/react-spline"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="w-10 h-10 border-4 border-brand-accent border-t-transparent rounded-full animate-spin" />
+    </div>
+  ),
+});
 
 // ============================================================
 //  HERO COMPONENT — GUÍA RÁPIDA DE EDICIÓN

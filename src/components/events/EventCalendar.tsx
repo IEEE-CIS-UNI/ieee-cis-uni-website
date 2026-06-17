@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { HiChevronLeft, HiChevronRight, HiCalendar } from "react-icons/hi";
-import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { Event } from "@/types/database";
 import EventTicket from "@/components/ui/EventTicket";
@@ -150,14 +149,12 @@ const EventCalendar = () => {
                 const isToday = new Date().getDate() === day && new Date().getMonth() === currentMonth && new Date().getFullYear() === currentYear;
 
                 return (
-                  <motion.button
+                  <button
                     key={`day-${day}`}
                     onClick={() => handleDayClick(day)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`relative h-12 md:h-16 rounded-2xl flex flex-col items-center justify-center transition-all ${
-                      isSelected 
-                        ? 'bg-brand-accent text-white shadow-[0_0_20px_rgba(6,107,243,0.4)]' 
+                    className={`relative h-12 md:h-16 rounded-2xl flex flex-col items-center justify-center transition-all hover:scale-105 active:scale-95 ${
+                      isSelected
+                        ? 'bg-brand-accent text-white shadow-[0_0_20px_rgba(6,107,243,0.4)]'
                         : hasEvents
                           ? 'bg-[var(--brand-surface)] text-[var(--brand-text)] border border-brand-accent/30 hover:border-brand-accent'
                           : 'text-[var(--brand-text)] hover:bg-[var(--brand-surface)]'
@@ -166,7 +163,7 @@ const EventCalendar = () => {
                     <span className={`text-sm md:text-lg font-bold ${isToday && !isSelected ? 'text-brand-accent' : ''}`}>
                       {day}
                     </span>
-                    
+
                     {hasEvents && (
                       <div className="absolute bottom-2 flex gap-1">
                         {dayEvents.map((_, i) => (
@@ -174,23 +171,18 @@ const EventCalendar = () => {
                         ))}
                       </div>
                     )}
-                  </motion.button>
+                  </button>
                 );
               })}
             </div>
           </div>
 
           {/* Right: Selected Day Events */}
-          <div className="lg:col-span-1">
-            <AnimatePresence mode="wait">
-              {selectedDate ? (
-                <motion.div
-                  key="has-selection"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="h-full"
-                >
+          <div className="lg:col-span-1 relative">
+            {/* Panel: date selected */}
+            <div className={`transition-all duration-300 ${selectedDate ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-5 pointer-events-none absolute inset-0'} h-full`}>
+              {selectedDate && (
+                <>
                   <h4 className="text-xl font-bold text-[var(--brand-text)] mb-6 flex items-center gap-2">
                     <HiCalendar className="text-brand-accent" />
                     {selectedDate.getDate()} de {monthNames[selectedDate.getMonth()]}
@@ -200,7 +192,7 @@ const EventCalendar = () => {
                     <div className="flex flex-col gap-6">
                       {selectedDateEvents.map((event) => (
                         <div key={event.id} className="scale-90 origin-top">
-                          <EventTicket 
+                          <EventTicket
                             title={event.titulo}
                             date={formatDate(event.fecha)}
                             time={event.hora || "TBD"}
@@ -222,25 +214,20 @@ const EventCalendar = () => {
                       </p>
                     </div>
                   )}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="no-selection"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="h-full flex flex-col items-center justify-center bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-sm rounded-[3rem] p-12 text-center"
-                >
-                  <div className="w-20 h-20 bg-[var(--brand-surface)] rounded-full flex items-center justify-center mb-6 text-[var(--brand-text-muted)] opacity-50">
-                    <HiCalendar size={32} />
-                  </div>
-                  <h4 className="text-[var(--brand-text)] font-bold text-lg mb-2">Selecciona un día</h4>
-                  <p className="text-[var(--brand-text-muted)] opacity-70 text-sm">
-                    Haz clic en cualquier día del calendario para ver los eventos programados.
-                  </p>
-                </motion.div>
+                </>
               )}
-            </AnimatePresence>
+            </div>
+
+            {/* Panel: no date selected */}
+            <div className={`transition-all duration-300 ${!selectedDate ? 'opacity-100' : 'opacity-0 pointer-events-none absolute inset-0'} h-full flex flex-col items-center justify-center bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-sm rounded-[3rem] p-12 text-center`}>
+              <div className="w-20 h-20 bg-[var(--brand-surface)] rounded-full flex items-center justify-center mb-6 text-[var(--brand-text-muted)] opacity-50">
+                <HiCalendar size={32} />
+              </div>
+              <h4 className="text-[var(--brand-text)] font-bold text-lg mb-2">Selecciona un día</h4>
+              <p className="text-[var(--brand-text-muted)] opacity-70 text-sm">
+                Haz clic en cualquier día del calendario para ver los eventos programados.
+              </p>
+            </div>
           </div>
           
         </div>

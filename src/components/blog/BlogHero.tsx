@@ -48,10 +48,11 @@ const BlogHero = () => {
               
               {/* Image Container */}
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] flex items-center justify-center group">
-                <Image 
-                  src="/images/invest.png" 
+                <Image
+                  src="/images/invest.png"
                   alt="Explora la Frontera de la Inteligencia"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>

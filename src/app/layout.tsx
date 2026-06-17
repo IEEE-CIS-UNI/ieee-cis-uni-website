@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeProvider from "@/components/ThemeProvider";
+import SplineErrorSuppressor from "@/components/SplineErrorSuppressor";
 
 const poppins = Poppins({ 
   subsets: ["latin"],
@@ -50,9 +51,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="scroll-smooth dark" suppressHydrationWarning>
+    <html lang="es" className="scroll-smooth dark" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${poppins.className} bg-[var(--brand-background)] text-[var(--brand-text)] min-h-screen flex flex-col transition-colors duration-400`} suppressHydrationWarning>
         <ThemeProvider>
+          <SplineErrorSuppressor />
           <Navbar />
           <main className="flex-grow">
             {children}

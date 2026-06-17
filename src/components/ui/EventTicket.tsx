@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { HiClock, HiLocationMarker, HiUser } from "react-icons/hi";
 import Button from "@/components/ui/Button";
 
@@ -25,11 +26,13 @@ const EventTicket = ({ date, title, time, location, speaker, category, link, sta
       {/* Background Image for Compact Variant */}
       {imageUrl && variant === 'compact' && (
         <>
-          <div 
-            className="absolute inset-0 z-0 group-hover:scale-105 transition-transform duration-1000 bg-cover bg-center"
-            style={{ backgroundImage: `url('${imageUrl}')` }}
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            sizes="100vw"
+            className="z-0 object-cover group-hover:scale-105 transition-transform duration-1000"
           />
-          {/* Capa de contraste tipo liquid glass: Fuerte a la izquierda para el texto, más transparente a la derecha para ver la imagen */}
           <div className="absolute inset-0 z-0 bg-gradient-to-r from-[var(--brand-surface)] via-[var(--brand-surface)]/80 to-[var(--brand-surface)]/30 backdrop-blur-sm" />
         </>
       )}
@@ -84,12 +87,19 @@ const EventTicket = ({ date, title, time, location, speaker, category, link, sta
 
       {/* Right Side Image Thumbnail for Full Variant */}
       {imageUrl && variant === 'full' && (
-        <div className="hidden md:block relative w-48 lg:w-72 flex-shrink-0 overflow-hidden border-l border-[var(--brand-border)]/50">
-          <div 
-            className="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-1000"
+        <div className="hidden md:flex relative w-48 lg:w-64 flex-shrink-0 overflow-hidden border-l border-[var(--brand-border)]/50 bg-[var(--brand-surface)] items-center justify-center">
+          {/* Blurred bg fill for portrait images */}
+          <div
+            className="absolute inset-0 bg-cover bg-center scale-110 blur-lg opacity-25"
             style={{ backgroundImage: `url('${imageUrl}')` }}
           />
-          {/* Suave difuminado en el borde para que se integre bien con la tarjeta */}
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            sizes="(max-width: 1024px) 0px, 256px"
+            className="object-contain group-hover:scale-105 transition-transform duration-1000"
+          />
           <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[var(--brand-card)] to-transparent z-10" />
         </div>
       )}

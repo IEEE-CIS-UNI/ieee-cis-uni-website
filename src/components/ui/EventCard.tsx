@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { HiClock, HiLocationMarker, HiUser } from "react-icons/hi";
 import Button from "@/components/ui/Button";
 
@@ -22,12 +23,22 @@ const EventCard = ({ date, title, time, location, speaker, category, link, statu
     <div className="group flex flex-col bg-[var(--brand-card)] backdrop-blur-xl shadow-lg rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-[var(--brand-border)] h-full">
       
       {/* Image Header */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-brand-accent/5">
+      <div className="relative aspect-[3/4] w-full overflow-hidden bg-[var(--brand-surface)]">
         {imageUrl ? (
-          <div 
-            className="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-700"
-            style={{ backgroundImage: `url('${imageUrl}')` }}
-          />
+          <>
+            {/* Fondo borroso para rellenar espacio en imágenes landscape */}
+            <div
+              className="absolute inset-0 bg-cover bg-center scale-110 blur-xl opacity-30"
+              style={{ backgroundImage: `url('${imageUrl}')` }}
+            />
+            <Image
+              src={imageUrl}
+              alt={title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-contain group-hover:scale-105 transition-transform duration-700"
+            />
+          </>
         ) : (
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle,_#066bf3_1px,_transparent_1px)] bg-[size:20px_20px]" />
         )}

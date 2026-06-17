@@ -32,7 +32,8 @@ const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps
                 src={image}
                 alt={title}
                 fill
-                className="object-cover pt-4 lg:pt-6 group-hover:scale-105 transition-transform duration-700"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-contain pt-4 lg:pt-6 group-hover:scale-105 transition-transform duration-700"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--brand-card)] to-[var(--brand-surface)] pt-4 lg:pt-6 group-hover:scale-105 transition-transform duration-700">

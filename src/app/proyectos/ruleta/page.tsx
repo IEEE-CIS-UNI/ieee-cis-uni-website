@@ -251,6 +251,7 @@ export default function RuletaPage() {
               src="/images/pinguinocis.png"
               alt="Pingüino CIS en hielo"
               fill
+              sizes="(max-width: 768px) 256px, (max-width: 1024px) 320px, 450px"
               className="object-contain"
               priority
             />

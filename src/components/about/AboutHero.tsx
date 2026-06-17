@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { HiUserGroup } from "react-icons/hi";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
@@ -60,11 +59,7 @@ const AboutHero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text Content */}
           <div className="text-center lg:text-left order-2 lg:order-1">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+            <div className="animate-fade-in-up">
               <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Nuestra Identidad
               </span>
@@ -78,49 +73,42 @@ const AboutHero = () => {
               <p className="text-xl text-[var(--brand-text-muted)] opacity-90 leading-relaxed mb-8">
                 Somos una comunidad de investigadores y apasionados por la inteligencia computacional que buscan dejar una huella en el mundo tecnológico desde la UNI.
               </p>
-            </motion.div>
+            </div>
           </div>
 
           {/* Image Content with Tech Frame */}
           <div className="order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
-              className="relative group"
-            >
+            <div className="animate-fade-in-scale relative group">
               {/* Outer Glow - Softer and more atmospheric */}
               <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-700" />
-              
+
               {/* Carrusel de Imágenes */}
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] backdrop-blur-md flex items-center justify-center group">
                 {images.length > 0 ? (
-                  <AnimatePresence>
-                    <motion.div
-                      key={currentIndex}
-                      initial={{ opacity: 0, x: 100, scale: 0.95 }}
-                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                      exit={{ opacity: 0, x: -100, scale: 1.05 }}
-                      transition={{ 
-                        duration: 0.8, 
-                        ease: [0.25, 1, 0.5, 1] // Curva de animación premium (suave al final)
-                      }}
-                      className="absolute inset-0 w-full h-full"
-                    >
-                      <Image
-                        src={images[currentIndex]}
-                        alt={`Carrusel nosotros ${currentIndex + 1}`}
-                        fill
-                        className="object-cover"
-                        priority={currentIndex === 0}
-                      />
-                    </motion.div>
-                  </AnimatePresence>
+                  /* CSS crossfade: all images mounted, only current is visible */
+                  <>
+                    {images.map((url, i) => (
+                      <div
+                        key={url}
+                        className="absolute inset-0 w-full h-full transition-opacity duration-700"
+                        style={{ opacity: i === currentIndex ? 1 : 0 }}
+                      >
+                        <Image
+                          src={url}
+                          alt={`Carrusel nosotros ${i + 1}`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="object-cover"
+                          priority={i === 0}
+                        />
+                      </div>
+                    ))}
+                  </>
                 ) : (
                   <>
                     {/* Decorative Pattern Background (fallback) */}
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, #066bf3 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-                    
+
                     {/* Large Central Icon (fallback) */}
                     <div className="relative z-10 flex flex-col items-center">
                       <div className="w-24 h-24 bg-brand-accent/10 rounded-2xl flex items-center justify-center mb-4 border border-brand-accent/20 group-hover:scale-110 transition-transform duration-500">
@@ -137,7 +125,7 @@ const AboutHero = () => {
               {/* Decorative Tech Elements */}
               <div className="absolute -top-4 -right-4 w-12 h-12 border-t-2 border-r-2 border-brand-accent rounded-tr-xl" />
               <div className="absolute -bottom-4 -left-4 w-12 h-12 border-b-2 border-l-2 border-brand-accent rounded-bl-xl" />
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

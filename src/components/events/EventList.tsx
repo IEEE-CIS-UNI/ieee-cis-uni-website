@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import EventCard from "@/components/ui/EventCard";
 import { HiSearch, HiCalendar } from "react-icons/hi";
 import { supabase } from "@/lib/supabase";
@@ -107,30 +106,25 @@ const EventList = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <AnimatePresence mode="popLayout">
-                {filteredEvents.map((event, index) => (
-                  <motion.div
-                    key={event.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="h-full"
-                  >
-                    <EventCard 
-                      title={event.titulo}
-                      date={formatDate(event.fecha)}
-                      time={event.hora || "TBD"}
-                      location={event.ubicacion}
-                      speaker={event.ponente || "Por confirmar"}
-                      category={event.categoria || "EVENTO"}
-                      status={event.is_past ? "Past" : "Upcoming"}
-                      link={event.link_registro || "#"}
-                      imageUrl={event.image_url}
-                    />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+              {filteredEvents.map((event, index) => (
+                <div
+                  key={event.id}
+                  className="animate-fade-in-up h-full"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <EventCard
+                    title={event.titulo}
+                    date={formatDate(event.fecha)}
+                    time={event.hora || "TBD"}
+                    location={event.ubicacion}
+                    speaker={event.ponente || "Por confirmar"}
+                    category={event.categoria || "EVENTO"}
+                    status={event.is_past ? "Past" : "Upcoming"}
+                    link={event.link_registro || "#"}
+                    imageUrl={event.image_url}
+                  />
+                </div>
+              ))}
             </div>
 
             {filteredEvents.length === 0 && (

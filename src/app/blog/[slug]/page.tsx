@@ -163,10 +163,11 @@ export default function BlogDetailPage() {
           className="relative aspect-video rounded-[2.5rem] overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] backdrop-blur-md mb-16"
         >
           {post.image_url ? (
-            <Image 
-              src={post.image_url} 
+            <Image
+              src={post.image_url}
               alt={post.titulo}
               fill
+              sizes="100vw"
               className="object-cover"
               priority
             />

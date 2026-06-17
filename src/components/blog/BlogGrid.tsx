@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import BlogCard from "./BlogCard";
 import { HiSearch, HiBookOpen } from "react-icons/hi";
 import { supabase } from "@/lib/supabase";
@@ -111,30 +110,25 @@ const BlogGrid = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-12 lg:gap-16">
-              <AnimatePresence mode="popLayout">
-                {filteredPosts.map((post) => (
-                  <motion.div
-                    key={post.id}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <BlogCard 
-                      title={post.titulo}
-                      excerpt={post.excerpt}
-                      image={post.image_url || ""}
-                      author={post.author?.nombre || "IEEE CIS UNI"}
-                      date={formatDate(post.created_at)}
-                      readTime={post.read_time || "5 min read"}
-                      category={post.category || "GENERAL"}
-                      level={post.level}
-                      slug={post.slug}
-                    />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+              {filteredPosts.map((post, index) => (
+                <div
+                  key={post.id}
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <BlogCard
+                    title={post.titulo}
+                    excerpt={post.excerpt}
+                    image={post.image_url || ""}
+                    author={post.author?.nombre || "IEEE CIS UNI"}
+                    date={formatDate(post.created_at)}
+                    readTime={post.read_time || "5 min read"}
+                    category={post.category || "GENERAL"}
+                    level={post.level}
+                    slug={post.slug}
+                  />
+                </div>
+              ))}
             </div>
 
             {filteredPosts.length === 0 && (

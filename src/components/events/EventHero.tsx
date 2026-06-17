@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { HiCalendar } from "react-icons/hi";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
@@ -77,11 +76,7 @@ const EventHero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text Content */}
           <div className="text-center lg:text-left order-2 lg:order-1">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+            <div className="animate-fade-in-up">
               <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Comunidad en Acción
               </span>
@@ -95,48 +90,43 @@ const EventHero = () => {
               <p className="text-xl text-[var(--brand-text-muted)] opacity-90 leading-relaxed mb-8">
                 Desde workshops intensivos hasta conferencias magistrales. Únete a nuestros próximos encuentros y sé parte de la revolución tecnológica.
               </p>
-            </motion.div>
+            </div>
           </div>
 
           {/* Carousel / Placeholder Content */}
           <div className="order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
-              className="relative group"
-            >
+            <div className="animate-fade-in-scale relative group">
               {/* Outer Glow */}
               <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-700" />
-              
+
               {/* Tech Placeholder or Carousel */}
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] backdrop-blur-md flex items-center justify-center group">
-                
+
                 {images.length > 0 ? (
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={currentIndex}
-                      initial={{ opacity: 0, scale: 1.05 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.8 }}
-                      className="absolute inset-0"
-                    >
-                      <Image
-                        src={images[currentIndex]}
-                        alt={`Hero image ${currentIndex + 1}`}
-                        fill
-                        className="object-cover"
-                      />
-                      {/* Overlay to ensure text readability if needed, or just a nice tech tint */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-background)]/80 to-transparent mix-blend-multiply opacity-50" />
-                    </motion.div>
-                  </AnimatePresence>
+                  /* CSS crossfade: all images mounted, only current is visible */
+                  <>
+                    {images.map((url, i) => (
+                      <div
+                        key={url}
+                        className="absolute inset-0 transition-opacity duration-700"
+                        style={{ opacity: i === currentIndex ? 1 : 0 }}
+                      >
+                        <Image
+                          src={url}
+                          alt={`Hero image ${i + 1}`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-background)]/80 to-transparent mix-blend-multiply opacity-50" />
+                      </div>
+                    ))}
+                  </>
                 ) : (
                   <>
                     {/* Decorative Pattern Background */}
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, #066bf3 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-                    
+
                     {/* Large Central Icon for when no images are in the bucket */}
                     <div className="relative z-10 flex flex-col items-center">
                       <div className="w-24 h-24 bg-brand-accent/10 rounded-2xl flex items-center justify-center mb-4 border border-brand-accent/20 group-hover:scale-110 transition-transform duration-500">
@@ -148,13 +138,13 @@ const EventHero = () => {
                     </div>
                   </>
                 )}
-                
+
               </div>
 
               {/* Decorative Tech Elements */}
               <div className="absolute -top-4 -right-4 w-12 h-12 border-t-2 border-r-2 border-brand-accent rounded-tr-xl" />
               <div className="absolute -bottom-4 -left-4 w-12 h-12 border-b-2 border-l-2 border-brand-accent rounded-bl-xl" />
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

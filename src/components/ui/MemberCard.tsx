@@ -23,6 +23,7 @@ const MemberCard = ({ name, role, image, linkedin, github, interests }: MemberCa
           src={image}
           alt={name}
           fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           className="object-cover grayscale-[0.3] md:group-hover:grayscale-0 md:group-hover:scale-110 transition-all duration-1000 ease-out"
         />
         {/* Desktop Overlay Gradient */}

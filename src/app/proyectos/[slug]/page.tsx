@@ -148,10 +148,11 @@ export default function ProjectDetailPage() {
             
             <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)]">
               {project.image_url ? (
-                <Image 
-                  src={project.image_url} 
+                <Image
+                  src={project.image_url}
                   alt={project.titulo}
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               ) : (

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { HiArrowRight, HiLightningBolt } from "react-icons/hi";
 
 interface ProjectCardProps {
@@ -30,19 +29,24 @@ const ProjectCard = ({
 
   return (
     <Link href={link}>
-      <motion.div 
-        whileHover={{ y: -10 }}
-        className="group relative flex flex-col h-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-3xl overflow-hidden transition-all duration-500 hover:border-brand-accent/30 hover:shadow-[0_0_40px_rgba(6,107,243,0.15)] cursor-pointer"
-      >
+      <div className="group relative flex flex-col h-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-3xl overflow-hidden transition-all duration-300 hover:border-brand-accent/30 hover:shadow-[0_0_40px_rgba(6,107,243,0.15)] cursor-pointer hover:-translate-y-2.5">
         {/* Image Section */}
-        <div className="relative aspect-video overflow-hidden bg-brand-secondary/5">
+        <div className="relative aspect-[3/4] overflow-hidden bg-[var(--brand-surface)]">
           {image ? (
-            <Image 
-              src={image}
-              alt={title}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
-            />
+            <>
+              {/* Blurred background for non-portrait images */}
+              <div
+                className="absolute inset-0 bg-cover bg-center scale-110 blur-xl opacity-25"
+                style={{ backgroundImage: `url('${image}')` }}
+              />
+              <Image
+                src={image}
+                alt={title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-contain transition-transform duration-700 group-hover:scale-105"
+              />
+            </>
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-secondary/20 to-brand-background group-hover:scale-110 transition-transform duration-700">
               <HiLightningBolt className="text-6xl text-brand-accent/40" />
@@ -52,13 +56,9 @@ const ProjectCard = ({
           {/* Tech Blueprint Overlay */}
           <div className="absolute inset-0 bg-[var(--brand-surface)]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px] flex items-center justify-center">
             <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #066bf3 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
-            <motion.div 
-              initial={{ scale: 0.8, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              className="z-10 p-4 rounded-full bg-brand-accent text-white shadow-xl"
-            >
+            <div className="z-10 p-4 rounded-full bg-brand-accent text-white shadow-xl scale-90 group-hover:scale-100 transition-transform duration-300">
               <HiArrowRight size={24} />
-            </motion.div>
+            </div>
           </div>
           
           {/* Status Badge */}
@@ -102,7 +102,7 @@ const ProjectCard = ({
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </Link>
   );
 };

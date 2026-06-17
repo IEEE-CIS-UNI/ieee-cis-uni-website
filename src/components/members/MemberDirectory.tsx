@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import MemberCard from "@/components/ui/MemberCard";
 import { HiSearch, HiUserGroup } from "react-icons/hi";
 import { supabase } from "@/lib/supabase";
@@ -95,32 +94,24 @@ const MemberDirectory = () => {
           </div>
         ) : (
           <>
-            <motion.div 
-              layout
-              className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8"
-            >
-              <AnimatePresence mode="popLayout">
-                {filteredMembers.map((member) => (
-                  <motion.div
-                    key={member.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <MemberCard 
-                      name={member.nombre}
-                      role={member.rol}
-                      image={member.image_url || "/images/placeholder-member.png"}
-                      linkedin={member.linkedin || "#"}
-                      github={member.github || "#"}
-                      interests={member.interests || []}
-                    />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+              {filteredMembers.map((member, index) => (
+                <div
+                  key={member.id}
+                  className="animate-fade-in-scale"
+                  style={{ animationDelay: `${index * 0.04}s` }}
+                >
+                  <MemberCard
+                    name={member.nombre}
+                    role={member.rol}
+                    image={member.image_url || "/images/placeholder-member.png"}
+                    linkedin={member.linkedin || "#"}
+                    github={member.github || "#"}
+                    interests={member.interests || []}
+                  />
+                </div>
+              ))}
+            </div>
 
             {filteredMembers.length === 0 && (
               <div className="text-center py-32 border border-dashed border-[var(--brand-border)] rounded-[3rem] backdrop-blur-md">

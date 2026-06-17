@@ -33,10 +33,11 @@ const BlogCard = ({ title, excerpt, image, author, date, readTime, category, lev
         {/* Image Section */}
         <div className="relative aspect-video overflow-hidden border-b border-[var(--brand-border)] bg-[var(--brand-surface)]">
           {image ? (
-            <Image 
+            <Image
               src={image}
               alt={title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover group-hover:scale-105 transition-all duration-700"
             />
           ) : (

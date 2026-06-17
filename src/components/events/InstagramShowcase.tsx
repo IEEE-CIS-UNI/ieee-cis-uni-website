@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaInstagram } from "react-icons/fa";
 
@@ -30,49 +29,46 @@ const InstagramShowcase = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {posts.map((post, idx) => (
-            <motion.a
+            <a
               key={post.id}
               href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="group relative aspect-square rounded-3xl overflow-hidden shadow-lg border border-[var(--brand-border)] block"
+              className="animate-fade-in-up group relative aspect-square rounded-3xl overflow-hidden shadow-lg border border-[var(--brand-border)] block bg-[var(--brand-surface)]"
+              style={{ animationDelay: `${idx * 0.1}s` }}
             >
+              {/* Blurred bg fill for portrait images */}
+              <div
+                className="absolute inset-0 bg-cover bg-center scale-110 blur-lg opacity-30"
+                style={{ backgroundImage: `url('${post.image}')` }}
+              />
               <Image
                 src={post.image}
                 alt={post.alt}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-contain transition-transform duration-700 group-hover:scale-105"
               />
 
               {/* Hover Overlay */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-brand-accent/80 transition-colors duration-300 flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md"
-                >
+                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md scale-0 group-hover:scale-100 transition-transform duration-300">
                   <FaInstagram className="text-white text-3xl" />
-                </motion.div>
+                </div>
               </div>
-            </motion.a>
+            </a>
           ))}
         </div>
 
         <div className="mt-12 text-center">
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <a
             href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-sm rounded-full text-[var(--brand-text)] font-bold tracking-widest uppercase text-xs hover:bg-[var(--brand-surface)] hover:text-brand-accent transition-all"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-sm rounded-full text-[var(--brand-text)] font-bold tracking-widest uppercase text-xs hover:bg-[var(--brand-surface)] hover:text-brand-accent hover:scale-105 active:scale-95 transition-all duration-200"
           >
             <FaInstagram size={18} /> Ver más en Instagram
-          </motion.a>
+          </a>
         </div>
 
       </div>
