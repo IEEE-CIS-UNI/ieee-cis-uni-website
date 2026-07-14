@@ -100,11 +100,17 @@ const EventCalendar = () => {
           </p>
         </div>
 
+        {loading ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-2 h-[560px] bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-[3rem] animate-pulse" />
+            <div className="lg:col-span-1 h-[560px] bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-[3rem] animate-pulse" />
+          </div>
+        ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
+
           {/* Left: The Calendar */}
           <div className="lg:col-span-2 bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-2xl rounded-[3rem] p-8 md:p-12">
-            
+
             {/* Header controls */}
             <div className="flex items-center justify-between mb-10">
               <button 
@@ -229,8 +235,9 @@ const EventCalendar = () => {
               </p>
             </div>
           </div>
-          
+
         </div>
+        )}
       </div>
     </section>
   );

@@ -1,16 +1,88 @@
 "use server";
 
 import nodemailer from "nodemailer";
+import { headers } from "next/headers";
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Ventana de rate-limit: en memoria del proceso (best-effort — en serverless
+// se reinicia con cada instancia fría, pero frena el abuso casual sin infra nueva).
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX = 3;
+const submissionLog = new Map<string, number[]>();
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+
+  // Evita que el mapa crezca sin límite en una instancia de larga duración.
+  if (submissionLog.size > 1000) {
+    submissionLog.clear();
+  }
+
+  const recent = (submissionLog.get(key) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+  recent.push(now);
+  submissionLog.set(key, recent);
+
+  return recent.length > RATE_LIMIT_MAX;
+}
+
+// Escapa HTML para que el contenido escrito por el usuario nunca se
+// interprete como markup dentro de las plantillas de correo.
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Defensa extra contra inyección de cabeceras SMTP (nodemailer ya sanitiza esto,
+// pero no cuesta nada quitar saltos de línea de los campos que van en headers).
+function stripCrlf(value: string): string {
+  return value.replace(/[\r\n]+/g, " ").trim();
+}
 
 export async function sendContactEmail(formData: FormData) {
-  const nombre = formData.get("nombre") as string;
-  const email = formData.get("email") as string;
-  const asunto = formData.get("asunto") as string;
-  const mensaje = formData.get("mensaje") as string;
+  // Honeypot: campo oculto que ningún humano llena. Si viene con valor,
+  // es un bot — fingimos éxito sin enviar nada ni delatar el filtro.
+  const honeypot = (formData.get("website") as string | null) ?? "";
+  if (honeypot.trim()) {
+    return { success: true };
+  }
 
-  if (!nombre || !email || !asunto || !mensaje) {
+  const rawNombre = ((formData.get("nombre") as string | null) ?? "").trim();
+  const rawEmail = ((formData.get("email") as string | null) ?? "").trim();
+  const rawAsunto = ((formData.get("asunto") as string | null) ?? "").trim();
+  const rawMensaje = ((formData.get("mensaje") as string | null) ?? "").trim();
+
+  if (!rawNombre || !rawEmail || !rawAsunto || !rawMensaje) {
     return { success: false, error: "Todos los campos son obligatorios." };
   }
+
+  if (!EMAIL_REGEX.test(rawEmail)) {
+    return { success: false, error: "Ingresa un correo electrónico válido." };
+  }
+
+  const hdrs = await headers();
+  const ip =
+    hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    hdrs.get("x-real-ip") ||
+    "unknown";
+
+  if (isRateLimited(ip)) {
+    return { success: false, error: "Has enviado demasiados mensajes. Espera unos minutos e intenta de nuevo." };
+  }
+
+  // Versiones seguras para cabeceras (from/replyTo/subject) y para HTML.
+  const nombre = stripCrlf(rawNombre);
+  const email = stripCrlf(rawEmail);
+  const asunto = stripCrlf(rawAsunto);
+
+  const safeNombre = escapeHtml(nombre);
+  const safeEmail = escapeHtml(email);
+  const safeAsunto = escapeHtml(asunto);
+  const safeMensaje = escapeHtml(rawMensaje).replace(/\n/g, '<br>');
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -55,17 +127,17 @@ export async function sendContactEmail(formData: FormData) {
           
           <div style="margin-bottom: 25px;">
             <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #066bf3; font-weight: bold; margin-bottom: 5px;">Remitente</div>
-            <div style="font-size: 16px; color: #ffffff;"><strong>${nombre}</strong></div>
-            <div style="font-size: 14px; color: #8b9bb4;">${email}</div>
+            <div style="font-size: 16px; color: #ffffff;"><strong>${safeNombre}</strong></div>
+            <div style="font-size: 14px; color: #8b9bb4;">${safeEmail}</div>
           </div>
-          
+
           <div style="margin-bottom: 25px;">
             <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #066bf3; font-weight: bold; margin-bottom: 5px;">Asunto</div>
-            <div style="font-size: 16px; color: #ffffff;">${asunto}</div>
+            <div style="font-size: 16px; color: #ffffff;">${safeAsunto}</div>
           </div>
-          
+
           <div style="padding: 25px; background: rgba(6, 107, 243, 0.05); border-radius: 16px; border: 1px solid rgba(6, 107, 243, 0.2); color: #e2e8f0; font-size: 15px; line-height: 1.6;">
-            ${mensaje.replace(/\n/g, '<br>')}
+            ${safeMensaje}
           </div>
         </div>
         <div style="padding: 30px; background: #111625; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.05);">
@@ -85,12 +157,12 @@ export async function sendContactEmail(formData: FormData) {
         </div>
         <div style="height: 4px; background: #066bf3;"></div>
         <div style="padding: 40px; text-align: center;">
-          <h2 style="margin: 0 0 15px 0; font-size: 28px; font-weight: 900; letter-spacing: -1px;">Hola, ${nombre}</h2>
+          <h2 style="margin: 0 0 15px 0; font-size: 28px; font-weight: 900; letter-spacing: -1px;">Hola, ${safeNombre}</h2>
           <p style="color: #e2e8f0; font-size: 18px; line-height: 1.6; margin-bottom: 25px;">
             Confirmamos la recepción de tu mensaje.
           </p>
           <p style="color: #8b9bb4; font-size: 15px; line-height: 1.6; margin-bottom: 35px;">
-            Gracias por contactar con el capítulo <strong>IEEE CIS UNI</strong>. Nuestro equipo revisará tu consulta sobre "<em>${asunto}</em>" y te responderá a la brevedad.
+            Gracias por contactar con el capítulo <strong>IEEE CIS UNI</strong>. Nuestro equipo revisará tu consulta sobre "<em>${safeAsunto}</em>" y te responderá a la brevedad.
           </p>
           
           <div style="display: inline-block; padding: 14px 30px; background: #066bf3; border-radius: 14px; color: #ffffff; text-decoration: none; font-weight: bold; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">

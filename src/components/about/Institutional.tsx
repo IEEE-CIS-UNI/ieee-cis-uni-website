@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { FaInstagram, FaFacebook, FaChrome } from "react-icons/fa";
+import { FaChrome } from "react-icons/fa";
 
 const Institutional = () => {
   const bodies = [
@@ -10,19 +10,19 @@ const Institutional = () => {
       name: "IEEE Global",
       description: "La organización profesional técnica más grande del mundo dedicada al avance de la tecnología para la humanidad.",
       logo: "/images/ieee_white_logo.png",
-      links: { web: "#", instagram: "#", facebook: "#" }
+      web: "https://www.ieee.org"
     },
     {
       name: "CIS Society",
       description: "Computational Intelligence Society, enfocada en redes neuronales, sistemas borrosos y computación evolutiva.",
       logo: "/images/cis_white_logo.png",
-      links: { web: "#", instagram: "#", facebook: "#" }
+      web: "https://cis.ieee.org"
     },
     {
       name: "UNI",
       description: "La Universidad Nacional de Ingeniería, alma mater y cuna de la ingeniería y ciencia en el Perú.",
       logo: "/images/logo_uni_white.png",
-      links: { web: "#", instagram: "#", facebook: "#" }
+      web: "https://www.uni.edu.pe"
     }
   ];
 
@@ -70,14 +70,13 @@ const Institutional = () => {
                 {body.description}
               </p>
               <div className="mt-auto pt-4 md:pt-6 border-t border-[var(--brand-border)] w-full flex justify-center gap-4 md:gap-6">
-                <a href={body.links.web} className="text-[var(--brand-text-muted)] opacity-60 hover:opacity-100 hover:text-brand-accent transition-colors">
+                <a
+                  href={body.web}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[var(--brand-text-muted)] opacity-60 hover:opacity-100 hover:text-brand-accent transition-colors"
+                >
                   <FaChrome size={18} />
-                </a>
-                <a href={body.links.instagram} className="text-[var(--brand-text-muted)] opacity-60 hover:opacity-100 hover:text-brand-accent transition-colors">
-                  <FaInstagram size={18} />
-                </a>
-                <a href={body.links.facebook} className="text-[var(--brand-text-muted)] opacity-60 hover:opacity-100 hover:text-brand-accent transition-colors">
-                  <FaFacebook size={18} />
                 </a>
               </div>
             </motion.div>

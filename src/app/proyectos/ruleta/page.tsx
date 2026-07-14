@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { HiArrowLeft, HiTrash, HiPlus } from "react-icons/hi";
+import { HiArrowLeft } from "react-icons/hi";
 
 // Paleta de colores para nuevos elementos
 const COLORS = [
@@ -17,26 +17,19 @@ export default function RuletaPage() {
   
   // Estado del textarea crudo
   const [rawText, setRawText] = useState("");
-  
-  // Estado dinámico de los elementos (áreas/nombres)
-  const [areas, setAreas] = useState<Array<{ id: string; label: string; color: string }>>([]);
-  const [activeIds, setActiveIds] = useState<string[]>([]);
-  
-  useEffect(() => {
-    if (!rawText.trim()) {
-      setAreas([]);
-      setActiveIds([]);
-      return;
-    }
+
+  // Elementos (áreas/nombres) derivados directamente del textarea crudo
+  const areas = useMemo(() => {
     const parsed = rawText.split(/[\n,]+/).map(s => s.trim()).filter(s => s.length > 0);
-    const newAreas = parsed.map((label, index) => ({
+    return parsed.map((label, index) => ({
       id: index.toString(),
       label,
       color: COLORS[index % COLORS.length]
     }));
-    setAreas(newAreas);
-    setActiveIds(newAreas.map(a => a.id));
   }, [rawText]);
+
+  // Todos los elementos están activos por defecto; se derivan de `areas`
+  const activeIds = useMemo(() => areas.map(a => a.id), [areas]);
 
   const [spinning, setSpinning] = useState(false);
   const [history, setHistory] = useState<typeof areas>([]);
@@ -50,7 +43,7 @@ export default function RuletaPage() {
     return areas.filter(a => activeIds.includes(a.id));
   }, [areas, activeIds]);
 
-  const drawWheel = (angle: number) => {
+  const drawWheel = useCallback((angle: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -109,11 +102,11 @@ export default function RuletaPage() {
     ctx.beginPath(); ctx.arc(cx, cy, 28, 0, Math.PI * 2);
     ctx.fillStyle = '#ffffff'; ctx.fill();
     ctx.strokeStyle = 'rgba(0,119,204,0.6)'; ctx.lineWidth = 2; ctx.stroke();
-  };
+  }, [activeAreas]);
 
   useEffect(() => {
     drawWheel(wheelAngleRef.current);
-  }, [activeAreas]);
+  }, [drawWheel]);
 
   const easeOut = (t: number) => 1 - Math.pow(1 - t, 4);
 
@@ -122,7 +115,7 @@ export default function RuletaPage() {
     if (n === 0) return null;
     const slice = (2 * Math.PI) / n;
     const POINTER = -Math.PI / 2;
-    let rel = ((POINTER - angle) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+    const rel = ((POINTER - angle) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
     const idx = Math.floor(rel / slice) % n;
     return activeAreas[idx];
   };

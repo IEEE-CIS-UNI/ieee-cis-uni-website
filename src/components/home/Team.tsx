@@ -142,7 +142,7 @@ const Team = () => {
               Ver todos los miembros
             </Button>
             <Button
-              onClick={() => window.dispatchEvent(new CustomEvent('open-join-modal'))}
+              href="/contacto"
               icon={<HiArrowRight />}
             >
               Quiero ser parte

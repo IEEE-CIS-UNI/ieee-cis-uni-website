@@ -7,7 +7,7 @@ import { HiArrowRight, HiPlay } from "react-icons/hi";
 // Silenciar el warning interno inofensivo de Spline "Missing property"
 if (typeof window !== "undefined") {
   const originalError = console.error;
-  console.error = (...args: any[]) => {
+  console.error = (...args: Parameters<typeof console.error>) => {
     const msg = args[0];
     if (typeof msg === "string" && (msg.includes("Missing property") || msg.includes("buildTimeline"))) return;
     originalError(...args);

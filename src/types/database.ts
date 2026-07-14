@@ -22,6 +22,7 @@ export type Project = {
   github_link: string | null;
   demo_link: string | null;
   highlighted: boolean;
+  created_at: string;
 };
 
 export type Event = {

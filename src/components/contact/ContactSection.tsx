@@ -96,6 +96,15 @@ const ContactSection = () => {
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Honeypot anti-spam: invisible para personas, los bots que autocompletan lo llenan */}
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute -left-[9999px] w-px h-px overflow-hidden"
+                />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <motion.div variants={itemVariants} className="space-y-2">
                     <label className="text-[10px] font-mono text-[var(--brand-text-muted)] opacity-80 uppercase tracking-widest ml-4">Nombre Completo</label>

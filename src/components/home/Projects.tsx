@@ -7,6 +7,7 @@ import { HiArrowRight, HiCode } from "react-icons/hi";
 import { motion, Variants } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { Project } from "@/types/database";
+import { RULETA_PROJECT } from "@/data/hardcoded-projects";
 
 const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -25,16 +26,7 @@ const Projects = () => {
 
         if (!ignore) {
           if (error) throw error;
-          const hardcodedRuleta = {
-            id: 'ruleta-cis-hardcoded',
-            titulo: 'Ruleta CIS',
-            descripcion_corta: 'Descubre qué área hosteará el próximo evento con nuestra ruleta interactiva.',
-            image_url: '/images/pinguinocis.png',
-            tags: ['INTERACTIVO', 'EVENTOS'],
-            slug: 'ruleta'
-          } as Project;
-
-          if (data) setProjects([hardcodedRuleta, ...data]);
+          if (data) setProjects([RULETA_PROJECT, ...data]);
         }
       } catch (error) {
         console.error('Error fetching featured projects:', error);
