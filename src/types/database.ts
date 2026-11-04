@@ -23,6 +23,12 @@ export type Project = {
   demo_link: string | null;
   highlighted: boolean;
   created_at: string;
+  /**
+   * Equipo del proyecto (columna `text[]` en Supabase). Cada elemento es un
+   * nombre, opcionalmente con el rol entre paréntesis: "Camila Ceferino (Frontend)".
+   * Opcional: si la columna no existe o está vacía, no se muestra la sección.
+   */
+  autores?: string[] | null;
 };
 
 export type Event = {

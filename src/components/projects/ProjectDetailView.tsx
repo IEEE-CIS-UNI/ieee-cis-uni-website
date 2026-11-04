@@ -2,13 +2,21 @@
 
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
-import { HiArrowLeft, HiOutlineExternalLink, HiCode, HiLightningBolt } from "react-icons/hi";
+import { HiArrowLeft, HiOutlineExternalLink, HiCode, HiLightningBolt, HiUserGroup } from "react-icons/hi";
+import { FaLinkedin } from "react-icons/fa";
 import Image from "next/image";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import { Project } from "@/types/database";
 import { normalizeUrl } from "@/lib/url";
+import { ProjectAuthor } from "@/lib/authors";
 
-const ProjectDetailView = ({ project }: { project: Project }) => {
+interface ProjectDetailViewProps {
+  project: Project;
+  /** Equipo del proyecto, ya cruzado con la tabla `miembros` (ver src/lib/authors.ts) */
+  authors?: ProjectAuthor[];
+}
+
+const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) => {
   const githubLink = normalizeUrl(project.github_link);
   const demoLink = normalizeUrl(project.demo_link);
 
@@ -70,6 +78,54 @@ const ProjectDetailView = ({ project }: { project: Project }) => {
                 )}
               </div>
             )}
+
+            {/* Equipo del proyecto — se llena desde la columna `autores` en Supabase */}
+            {authors.length > 0 && (
+              <section className="mt-10 md:mt-12" aria-labelledby="equipo-proyecto">
+                <h2
+                  id="equipo-proyecto"
+                  className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.25em] text-brand-accent mb-5"
+                >
+                  <HiUserGroup className="text-base" />
+                  Equipo del proyecto
+                </h2>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {authors.map((author, i) => (
+                    <li
+                      key={`${author.nombre}-${i}`}
+                      className="flex items-center gap-3 p-3 pr-4 rounded-2xl bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)]"
+                    >
+                      <div className="relative w-11 h-11 shrink-0 rounded-full overflow-hidden border border-brand-accent/30 bg-brand-accent/10 flex items-center justify-center">
+                        {author.image_url ? (
+                          <Image src={author.image_url} alt={author.nombre} fill sizes="44px" className="object-cover" />
+                        ) : (
+                          <span className="text-brand-accent font-black text-base uppercase">
+                            {author.nombre.charAt(0)}
+                          </span>
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-bold text-[var(--brand-text)] leading-tight truncate">{author.nombre}</p>
+                        {author.rol && (
+                          <p className="text-[11px] text-[var(--brand-text-muted)] leading-tight truncate mt-0.5">{author.rol}</p>
+                        )}
+                      </div>
+                      {author.linkedin && (
+                        <a
+                          href={author.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`LinkedIn de ${author.nombre}`}
+                          className="p-1.5 -m-1.5 shrink-0 text-[var(--brand-text-muted)] hover:text-brand-accent transition-colors"
+                        >
+                          <FaLinkedin size={18} />
+                        </a>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
           </motion.div>
 
           {/* Project Image/Frame */}
@@ -81,15 +137,34 @@ const ProjectDetailView = ({ project }: { project: Project }) => {
           >
             <div className="absolute -inset-10 bg-brand-accent/20 blur-[100px] rounded-full -z-10 group-hover:bg-brand-accent/30 transition-all duration-700" />
 
-            <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)]">
+            {/* Con imagen, el recuadro toma la forma de la imagen (vertical u horizontal)
+                con un tope de alto; sin imagen, se mantiene el recuadro 4:3 del placeholder.
+                Antes era siempre 4:3 con object-cover, lo que recortaba las imágenes
+                verticales (p. ej. la cabeza del robot de PractiCIS). */}
+            <div
+              className={`relative rounded-[2.5rem] overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] ${
+                project.image_url ? "flex items-center justify-center min-h-[240px]" : "aspect-[4/3]"
+              }`}
+            >
               {project.image_url ? (
-                <Image
-                  src={project.image_url}
-                  alt={project.titulo}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+                <>
+                  {/* Fondo difuminado de la misma imagen (igual que en las tarjetas) */}
+                  <div
+                    className="absolute inset-0 bg-cover bg-center scale-110 blur-2xl opacity-30"
+                    style={{ backgroundImage: `url('${project.image_url}')` }}
+                  />
+                  {/* width/height solo reservan espacio mientras carga; w-auto h-auto hace
+                      que se use la proporción real de la imagen, limitada por max-h. */}
+                  <Image
+                    src={project.image_url}
+                    alt={project.titulo}
+                    width={1200}
+                    height={900}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="relative w-auto h-auto max-w-full max-h-[60vh] lg:max-h-[620px] object-contain p-4 md:p-6 transition-transform duration-700 group-hover:scale-105"
+                    priority
+                  />
+                </>
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[var(--brand-surface)] to-[var(--brand-background)]">
                   <div className="relative">

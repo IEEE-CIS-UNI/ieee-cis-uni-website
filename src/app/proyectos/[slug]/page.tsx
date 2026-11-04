@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Project } from "@/types/database";
 import ProjectDetailView from "@/components/projects/ProjectDetailView";
+import { resolveAuthors, ProjectAuthor } from "@/lib/authors";
 
 // Revalida cada 5 minutos: los proyectos nuevos en Supabase aparecen sin
 // necesidad de un redeploy completo (ISR).
@@ -21,6 +22,22 @@ async function getProject(slug: string): Promise<Project | null> {
   }
 
   return data;
+}
+
+// Equipo del proyecto: los nombres de `proyectos.autores` que coinciden con la
+// tabla `miembros` se muestran con su foto y LinkedIn.
+async function getAuthors(project: Project): Promise<ProjectAuthor[]> {
+  if (!project.autores?.length) return [];
+
+  const { data, error } = await supabase
+    .from('miembros')
+    .select('nombre, image_url, linkedin');
+
+  if (error) {
+    console.error('Error fetching members for project authors:', error);
+  }
+
+  return resolveAuthors(project.autores, data ?? []);
 }
 
 export async function generateStaticParams() {
@@ -77,5 +94,7 @@ export default async function ProjectDetailPage({
     notFound();
   }
 
-  return <ProjectDetailView project={project} />;
+  const authors = await getAuthors(project);
+
+  return <ProjectDetailView project={project} authors={authors} />;
 }
