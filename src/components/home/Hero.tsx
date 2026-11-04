@@ -2,10 +2,8 @@
 
 import Button from "@/components/ui/Button";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
 import { HiArrowRight, HiPlay } from "react-icons/hi";
-import { useIsDesktop } from "@/lib/useIsDesktop";
 
 // Silenciar el warning interno inofensivo de Spline "Missing property"
 if (typeof window !== "undefined") {
@@ -65,10 +63,6 @@ const Spline = dynamic(() => import("@splinetool/react-spline"), {
 // ============================================================
 
 const Hero = () => {
-  // El robot 3D (Spline) solo se carga en escritorio: en celular pesa varios MB
-  // y además captura el gesto de scroll. En móvil se muestra una imagen ligera.
-  const isDesktop = useIsDesktop();
-
   return (
     <section className="relative pt-28 pb-16 px-6 md:px-12 lg:px-24 min-h-[90vh] flex items-center overflow-hidden">
 
@@ -86,25 +80,13 @@ const Hero = () => {
             👉 Moverlo a la izquierda (recortado) → aumenta el número de -ml-16 (ej: -ml-24)
             👉 Moverlo a la derecha → usa un valor menor de ml negativo o quítalo
           */}
-          <div className="relative w-full h-[240px] sm:h-[320px] lg:h-[620px] lg:-ml-16 overflow-hidden order-last lg:order-first">
-            {isDesktop ? (
-              <>
-                <Spline scene="https://prod.spline.design/bteTxASGaK5f18Hi/scene.splinecode" />
-                {/* Etiqueta que cubre el badge "Built with Spline" */}
-                <div className="absolute bottom-[16px] right-[16px] z-20 w-[150px] h-[42px] flex items-center justify-center rounded-full bg-brand-accent text-white text-xs font-bold tracking-widest select-none shadow-lg">
-                  IEEE CIS UNI
-                </div>
-              </>
-            ) : (
-              <Image
-                src="/images/hero_image.png"
-                alt="Ilustración de una red neuronal con forma de cabeza humana"
-                fill
-                sizes="(max-width: 1024px) 90vw, 50vw"
-                className="object-contain"
-                priority
-              />
-            )}
+          {/* En celular el robot va arriba del texto (order-first) y en escritorio a la izquierda. */}
+          <div className="relative w-full h-[380px] md:h-[480px] lg:h-[620px] lg:-ml-16 overflow-hidden order-first">
+            <Spline scene="https://prod.spline.design/bteTxASGaK5f18Hi/scene.splinecode" />
+            {/* Etiqueta que cubre el badge "Built with Spline" */}
+            <div className="absolute bottom-[16px] right-[16px] z-20 w-[150px] h-[42px] flex items-center justify-center rounded-full bg-brand-accent text-white text-xs font-bold tracking-widest select-none shadow-lg">
+              IEEE CIS UNI
+            </div>
           </div>
 
           {/* ══════════════════════════════════════════════════════
