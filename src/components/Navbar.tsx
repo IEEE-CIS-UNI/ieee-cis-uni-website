@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { HiSun, HiMoon } from "react-icons/hi";
 import Image from "next/image";
@@ -14,6 +15,12 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const pathname = usePathname();
+
+  // Pestaña activa: coincidencia exacta para Inicio ("/"); para el resto
+  // también cuentan las subrutas (p. ej. /proyectos/ruleta marca "Proyectos").
+  const isActive = (path: string) =>
+    path === "/" ? pathname === "/" : pathname === path || pathname.startsWith(`${path}/`);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,7 +71,10 @@ const Navbar = () => {
                   <Link
                     key={item.name}
                     href={item.path}
-                    className="liquid-glass-nav-item text-[var(--brand-text-muted)] hover:text-[var(--brand-text)] text-base font-medium"
+                    aria-current={isActive(item.path) ? "page" : undefined}
+                    className={`liquid-glass-nav-item hover:text-[var(--brand-text)] text-base font-medium ${
+                      isActive(item.path) ? "is-active text-[var(--brand-text)]" : "text-[var(--brand-text-muted)]"
+                    }`}
                   >
                     <span className="lg-text">{item.name}</span>
                   </Link>
@@ -172,7 +182,12 @@ const Navbar = () => {
                 key={item.name}
                 href={item.path}
                 onClick={() => setIsOpen(false)}
-                className="block text-[var(--brand-text)] hover:text-brand-accent text-lg font-medium py-2 border-b border-[var(--brand-border)]"
+                aria-current={isActive(item.path) ? "page" : undefined}
+                className={`block hover:text-brand-accent text-lg font-medium py-2 border-b border-[var(--brand-border)] ${
+                  isActive(item.path)
+                    ? "text-brand-accent border-l-2 border-l-brand-accent pl-3"
+                    : "text-[var(--brand-text)]"
+                }`}
               >
                 {item.name}
               </Link>
