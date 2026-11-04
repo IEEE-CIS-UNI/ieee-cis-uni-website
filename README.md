@@ -23,6 +23,7 @@ This platform serves as the digital hub for the IEEE CIS UNI community. It has b
 - **Institutional Contact System**:
   - Secure Server Actions implementation using **Nodemailer**.
   - Custom HTML email templates (Dark Mode) for both admin notifications and user confirmations.
+- **Content managed from Supabase**: projects, events, members and blog posts are edited in the Supabase Table Editor, no deploy needed. See the team guide: [docs/supabase-contenido.md](docs/supabase-contenido.md).
 - **Performance Optimized**: Built with Next.js 16+ for lightning-fast load times and efficient rendering.
 - **Computational Intelligence Aesthetic**: Custom tech-themed placeholders and high-fidelity favicon.
 
@@ -54,10 +55,17 @@ src/
 ├── components/       # Reusable UI components
 │   ├── home/         # Section-specific components
 │   └── ui/           # Atomic UI elements (Buttons, Cards, etc.)
-├── lib/              # Third-party configurations (Supabase client)
+├── lib/              # Supabase client and helpers (URL normalization, event dates,
+│                     # project authors, desktop media query)
 ├── types/            # TypeScript definitions and Database schemas
 └── ...
+docs/
+└── supabase-contenido.md  # Guía (ES) para editar el contenido en Supabase
 ```
+
+### Deployment
+
+The site is deployed on **Vercel** from the `main` branch: every push to `main` goes live at [ieee.cis.uni.edu.pe](https://ieee.cis.uni.edu.pe) in about a minute. Project and blog detail pages use ISR (`revalidate = 300`), so Supabase edits show up there within 5 minutes.
 
 ---
 
@@ -125,7 +133,7 @@ We welcome contributions! If you're a member of the chapter or an open-source en
 **IEEE CIS UNI Student Chapter**  
 Universidad Nacional de Ingeniería, Lima, Perú  
 [ieee.cis@uni.edu.pe](mailto:ieee.cis@uni.edu.pe)  
-[Official Website](https://ieeecisuni.vercel.app)
+[Official Website](https://ieee.cis.uni.edu.pe)
 
 ---
 
