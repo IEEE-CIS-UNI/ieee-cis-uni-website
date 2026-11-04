@@ -6,8 +6,12 @@ import { HiArrowLeft, HiOutlineExternalLink, HiCode, HiLightningBolt } from "rea
 import Image from "next/image";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import { Project } from "@/types/database";
+import { normalizeUrl } from "@/lib/url";
 
 const ProjectDetailView = ({ project }: { project: Project }) => {
+  const githubLink = normalizeUrl(project.github_link);
+  const demoLink = normalizeUrl(project.demo_link);
+
   return (
     <div className="relative overflow-hidden about-page-bg min-h-screen">
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -42,28 +46,30 @@ const ProjectDetailView = ({ project }: { project: Project }) => {
               ))}
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-black text-[var(--brand-text)] mb-8 tracking-tighter uppercase leading-none">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-[var(--brand-text)] mb-8 tracking-tighter uppercase leading-none break-words">
               {project.titulo}
             </h1>
 
             <div className="h-1 w-20 bg-brand-accent mb-10" />
 
-            <p className="text-[var(--brand-text-muted)] text-lg leading-relaxed mb-12 whitespace-pre-wrap font-medium">
+            <p className="text-[var(--brand-text-muted)] text-base md:text-lg leading-relaxed mb-12 whitespace-pre-wrap font-medium">
               {project.descripcion_larga || project.descripcion_corta}
             </p>
 
-            <div className="flex flex-wrap gap-6 p-8 rounded-[2rem] bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)]">
-              {project.github_link && (
-                <Button href={project.github_link} variant="outline" icon={<HiCode />} className="flex-1 min-w-[200px] justify-center bg-[var(--brand-surface)]">
-                  Ver Repositorio
-                </Button>
-              )}
-              {project.demo_link && (
-                <Button href={project.demo_link} icon={<HiOutlineExternalLink />} className="flex-1 min-w-[200px] justify-center">
-                  Ver Demo Live
-                </Button>
-              )}
-            </div>
+            {(githubLink || demoLink) && (
+              <div className="flex flex-wrap gap-4 md:gap-6 p-5 md:p-8 rounded-3xl md:rounded-[2rem] bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)]">
+                {githubLink && (
+                  <Button href={githubLink} variant="outline" icon={<HiCode />} className="flex-1 min-w-[200px] justify-center bg-[var(--brand-surface)]">
+                    Ver Repositorio
+                  </Button>
+                )}
+                {demoLink && (
+                  <Button href={demoLink} icon={<HiOutlineExternalLink />} className="flex-1 min-w-[200px] justify-center">
+                    Ver Demo Live
+                  </Button>
+                )}
+              </div>
+            )}
           </motion.div>
 
           {/* Project Image/Frame */}

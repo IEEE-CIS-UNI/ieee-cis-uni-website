@@ -190,18 +190,18 @@ const ContactSection = () => {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
                 {/* Email Card */}
-                <div className="flex items-center gap-6 p-6 rounded-3xl bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm hover:bg-[var(--brand-surface)] hover:border-brand-accent/30 hover:-translate-y-1 hover:shadow-md transition-all duration-300 group">
+                <div className="flex items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-3xl bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm hover:bg-[var(--brand-surface)] hover:border-brand-accent/30 hover:-translate-y-1 hover:shadow-md transition-all duration-300 group">
                   <div className="w-12 h-12 rounded-2xl bg-[var(--brand-surface)] flex items-center justify-center text-[var(--brand-text)] group-hover:bg-brand-accent group-hover:text-white group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(6,107,243,0.5)] transition-all duration-300">
                     <HiMail size={24} />
                   </div>
                   <div>
                     <p className="text-[10px] font-mono text-[var(--brand-text-muted)] opacity-80 uppercase tracking-[0.2em]">Email Principal</p>
-                    <p className="text-[var(--brand-text)] font-bold text-lg">ieee.cis@uni.edu.pe</p>
+                    <p className="text-[var(--brand-text)] font-bold text-base sm:text-lg break-all">ieee.cis@uni.edu.pe</p>
                   </div>
                 </div>
 
                 {/* Location Card */}
-                <div className="flex items-center gap-6 p-6 rounded-3xl bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm hover:bg-[var(--brand-surface)] hover:border-brand-accent/30 hover:-translate-y-1 hover:shadow-md transition-all duration-300 group">
+                <div className="flex items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-3xl bg-[var(--brand-card)] backdrop-blur-xl border border-[var(--brand-border)] shadow-sm hover:bg-[var(--brand-surface)] hover:border-brand-accent/30 hover:-translate-y-1 hover:shadow-md transition-all duration-300 group">
                   <div className="w-12 h-12 rounded-2xl bg-[var(--brand-surface)] flex items-center justify-center text-[var(--brand-text)] group-hover:bg-brand-accent group-hover:text-white group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(6,107,243,0.5)] transition-all duration-300">
                     <HiLocationMarker size={24} />
                   </div>

@@ -149,6 +149,9 @@ const Navbar = () => {
 
               <button
                 onClick={() => setIsOpen(!isOpen)}
+                aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+                aria-expanded={isOpen}
+                aria-controls="mobile-menu"
                 className="text-[var(--brand-text)] p-2 focus:outline-none"
               >
                 {isOpen ? <HiX size={28} /> : <HiMenuAlt3 size={28} />}
@@ -157,8 +160,10 @@ const Navbar = () => {
           </div>
         </div>
 
+        {/* max-h con scroll interno: en un celular horizontal el menú ya no se corta */}
         <div
-          className={`md:hidden absolute w-full bg-[var(--brand-navbar-bg)] backdrop-blur-xl transition-all duration-300 ease-in-out ${isOpen ? "max-h-screen opacity-100 py-6" : "max-h-0 opacity-0 overflow-hidden"
+          id="mobile-menu"
+          className={`md:hidden absolute w-full bg-[var(--brand-navbar-bg)] backdrop-blur-xl transition-all duration-300 ease-in-out ${isOpen ? "max-h-[calc(100dvh-4rem)] overflow-y-auto opacity-100 py-6 shadow-lg" : "max-h-0 opacity-0 overflow-hidden pointer-events-none"
             }`}
         >
           <div className="px-4 space-y-4">

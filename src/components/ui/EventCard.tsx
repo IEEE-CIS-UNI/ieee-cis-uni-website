@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { HiClock, HiLocationMarker, HiUser } from "react-icons/hi";
 import Button from "@/components/ui/Button";
+import { normalizeUrl } from "@/lib/url";
 
 interface EventCardProps {
   date: string;
@@ -9,12 +10,15 @@ interface EventCardProps {
   location: string;
   speaker?: string;
   category: string;
-  link: string;
+  /** Enlace de registro/detalle. Si falta, no se muestra el botón
+   *  (aparece solo en cuanto se llene `link_registro` en Supabase). */
+  link?: string | null;
   status?: string;
   imageUrl?: string | null;
 }
 
-const EventCard = ({ date, title, time, location, speaker, category, link, status, imageUrl }: EventCardProps) => {
+const EventCard = ({ date, title, time, location, speaker, category, link: rawLink, status, imageUrl }: EventCardProps) => {
+  const link = normalizeUrl(rawLink);
   const dateParts = date.split(' ');
   const day = dateParts[0] || "00";
   const month = (dateParts[2] || "MES").substring(0, 3).toUpperCase();
@@ -74,11 +78,13 @@ const EventCard = ({ date, title, time, location, speaker, category, link, statu
           {speaker && <span className="flex items-center"><HiUser className="mr-2 text-brand-accent text-lg" />{speaker}</span>}
         </div>
         
-        <div className="mt-auto">
-          <Button href={link} variant={status === 'Past' ? 'outline' : 'primary'} className="w-full justify-center">
-            {status === 'Past' ? 'Ver Detalles' : 'Registrarme'}
-          </Button>
-        </div>
+        {link && (
+          <div className="mt-auto">
+            <Button href={link} variant={status === 'Past' ? 'outline' : 'primary'} className="w-full justify-center">
+              {status === 'Past' ? 'Ver Detalles' : 'Registrarme'}
+            </Button>
+          </div>
+        )}
       </div>
       
     </div>

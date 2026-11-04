@@ -54,10 +54,27 @@
 /* ============================================================
    BASE STYLES
    ============================================================ */
+/* overflow-x: clip evita el scroll horizontal en celular causado por los orbes
+   decorativos (600px, posicionados fuera de pantalla). A diferencia de
+   overflow-x: hidden, `clip` no crea un contenedor de scroll, así que
+   position: sticky sigue funcionando. */
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   background-color: var(--brand-background);
   color: var(--brand-text);
   transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Respetar a quien pide menos movimiento en el sistema operativo */
+@media (prefers-reduced-motion: reduce) {
+  .hero-orb-a,
+  .hero-orb-b {
+    animation: none;
+  }
 }
 
 /* ============================================================

@@ -21,9 +21,9 @@ const BlogHero = () => {
               <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Conocimiento e Innovación
               </span>
-              <h1 className="text-5xl md:text-7xl font-extrabold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
                 Explora la{" "}
-                <em className="not-italic italic text-brand-accent text-6xl md:text-8xl font-extrabold">
+                <em className="not-italic italic text-brand-accent text-5xl sm:text-6xl md:text-8xl font-extrabold">
                   Frontera
                 </em>{" "}
                 de la Inteligencia

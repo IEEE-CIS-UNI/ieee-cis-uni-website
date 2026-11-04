@@ -3,7 +3,7 @@ import BlogGrid from "@/components/blog/BlogGrid";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 
 export const metadata = {
-  title: "Blog & Research | IEEE CIS UNI",
+  title: "Blog",
   description: "Explora los últimos artículos, tutoriales e investigaciones sobre Inteligencia Artificial de la comunidad IEEE CIS UNI.",
 };
 

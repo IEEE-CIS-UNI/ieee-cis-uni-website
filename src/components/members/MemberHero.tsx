@@ -19,7 +19,7 @@ const MemberHero = () => {
               <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Nuestra Comunidad
               </span>
-              <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
                 <span className="block text-[var(--brand-text)]">El Talento</span>
                 <span className="block text-[var(--brand-text)]">Detrás de la</span>
                 <span className="block italic text-brand-accent lg:text-[90px]">Innovación.</span>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { FaLinkedin } from "react-icons/fa";
 import { Member } from "@/types/database";
+import { normalizeUrl } from "@/lib/url";
 
 interface OrgNodeProps {
   member: Member;
@@ -14,7 +15,8 @@ interface OrgNodeProps {
 
 const SIZE_STYLES = {
   lg: {
-    wrapper: "w-40 md:w-48",
+    // w-36 en celular: la junta queda en 2 columnas en pantallas de 360px
+    wrapper: "w-36 sm:w-40 md:w-48",
     image: "w-20 h-20 md:w-24 md:h-24",
     name: "text-sm md:text-base font-bold",
     role: "text-[10px] md:text-[11px]",
@@ -22,7 +24,8 @@ const SIZE_STYLES = {
     ring: "ring-2",
   },
   md: {
-    wrapper: "w-36 md:w-40",
+    // w-32 en celular: director + subdirector caben lado a lado en pantallas de 360px
+    wrapper: "w-32 sm:w-36 md:w-40",
     image: "w-14 h-14 md:w-16 md:h-16",
     name: "text-xs md:text-sm font-bold",
     role: "text-[9px] md:text-[10px]",
@@ -46,6 +49,7 @@ const OrgNode = ({
   delay = 0,
 }: OrgNodeProps) => {
   const s = SIZE_STYLES[size];
+  const linkedin = normalizeUrl(member.linkedin);
 
   return (
     <motion.div
@@ -84,6 +88,7 @@ const OrgNode = ({
             src={member.image_url || "/images/placeholder-member.png"}
             alt={member.nombre}
             fill
+            sizes="96px"
             className="object-cover grayscale-[0.15] group-hover:grayscale-0 transition-all duration-500"
           />
           {/* Subtle glow overlay on hover */}
@@ -108,13 +113,14 @@ const OrgNode = ({
           {member.rol}
         </p>
 
-        {/* LinkedIn — only if exists */}
-        {member.linkedin && member.linkedin !== "#" && (
+        {/* LinkedIn — solo si existe. En celular (sin hover) se muestra siempre. */}
+        {linkedin && (
           <a
-            href={member.linkedin}
+            href={linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 text-[var(--brand-text-muted)] hover:text-brand-accent transition-colors opacity-0 group-hover:opacity-100 duration-300"
+            aria-label={`LinkedIn de ${member.nombre}`}
+            className="mt-2 p-1 text-[var(--brand-text-muted)] hover:text-brand-accent transition-colors md:opacity-0 md:group-hover:opacity-100 duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             <FaLinkedin size={size === "lg" ? 14 : 12} />

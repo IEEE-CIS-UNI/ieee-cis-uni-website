@@ -62,8 +62,11 @@ const BlogGrid = () => {
 
   const filteredPosts = posts.filter(post => {
     const matchesFilter = filter === "TODOS" || post.category?.toUpperCase() === filter;
-    const matchesSearch = post.titulo.toLowerCase().includes(search.toLowerCase()) || 
-                          post.excerpt.toLowerCase().includes(search.toLowerCase());
+    const q = search.toLowerCase();
+    // El placeholder promete "tema o autor": también se busca por nombre del autor.
+    const matchesSearch = (post.titulo ?? "").toLowerCase().includes(q) ||
+                          (post.excerpt ?? "").toLowerCase().includes(q) ||
+                          (post.author?.nombre ?? "").toLowerCase().includes(q);
     return matchesFilter && matchesSearch;
   });
 

@@ -8,19 +8,31 @@ interface ProjectCardProps {
   image: string;
   category?: string;
   tags?: string[];
-  status?: "Desarrollo" | "Completado" | "Beta";
+  /** Valor de `proyectos.estado` en Supabase (texto libre) */
+  status?: string | null;
   link: string;
 }
 
-const ProjectCard = ({ 
-  title, 
-  description, 
-  image, 
-  category = "Investigación", 
-  tags = [], 
-  status = "Desarrollo", 
-  link 
+type Status = "Desarrollo" | "Completado" | "Beta";
+
+// `estado` se escribe a mano en Supabase: se normaliza a uno de los 3 badges.
+function toStatus(estado?: string | null): Status {
+  const e = (estado ?? "").toLowerCase();
+  if (e.includes("complet") || e.includes("finaliz")) return "Completado";
+  if (e.includes("beta")) return "Beta";
+  return "Desarrollo";
+}
+
+const ProjectCard = ({
+  title,
+  description,
+  image,
+  category = "Proyecto",
+  tags = [],
+  status: estado,
+  link
 }: ProjectCardProps) => {
+  const status = toStatus(estado);
   const statusColors = {
     Desarrollo: "text-amber-400 bg-amber-400/10 border-amber-400/20",
     Completado: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",

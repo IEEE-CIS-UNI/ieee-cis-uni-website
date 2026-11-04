@@ -4,7 +4,7 @@ import EventList from "@/components/events/EventList";
 import InstagramShowcase from "@/components/events/InstagramShowcase";
 
 export const metadata = {
-  title: "Eventos | IEEE CIS UNI",
+  title: "Eventos",
   description: "Participa en nuestros próximos workshops, conferencias y competencias. Sé parte de la comunidad de Inteligencia Computacional de la UNI.",
 };
 

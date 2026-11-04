@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { HiChevronLeft, HiChevronRight, HiCalendar } from "react-icons/hi";
 import { supabase } from "@/lib/supabase";
 import { Event } from "@/types/database";
+import { isPastEvent } from "@/lib/events";
 import EventTicket from "@/components/ui/EventTicket";
 
 const EventCalendar = () => {
@@ -11,6 +12,7 @@ const EventCalendar = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [loading, setLoading] = useState(true);
+  const detailRef = useRef<HTMLDivElement>(null);
 
   // Constants
   const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -67,6 +69,12 @@ const EventCalendar = () => {
 
   const handleDayClick = (day: number) => {
     setSelectedDate(new Date(currentYear, currentMonth, day));
+    // En celular el panel de detalle queda debajo del calendario: llevar al usuario ahí.
+    if (window.matchMedia("(max-width: 1023px)").matches) {
+      requestAnimationFrame(() =>
+        detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+      );
+    }
   };
 
   // Helper to get events for a specific day
@@ -109,40 +117,42 @@ const EventCalendar = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
 
           {/* Left: The Calendar */}
-          <div className="lg:col-span-2 bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-2xl rounded-[3rem] p-8 md:p-12">
+          <div className="lg:col-span-2 bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-2xl rounded-3xl md:rounded-[3rem] p-4 sm:p-8 md:p-12">
 
             {/* Header controls */}
-            <div className="flex items-center justify-between mb-10">
-              <button 
+            <div className="flex items-center justify-between mb-6 md:mb-10">
+              <button
                 onClick={prevMonth}
-                className="w-12 h-12 rounded-full flex items-center justify-center bg-[var(--brand-surface)] text-[var(--brand-text)] hover:text-brand-accent hover:-translate-x-1 transition-all"
+                aria-label="Mes anterior"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-[var(--brand-surface)] text-[var(--brand-text)] hover:text-brand-accent hover:-translate-x-1 transition-all"
               >
                 <HiChevronLeft size={24} />
               </button>
-              
-              <h3 className="text-2xl font-black text-[var(--brand-text)] uppercase tracking-widest">
+
+              <h3 className="text-lg sm:text-2xl font-black text-[var(--brand-text)] uppercase tracking-wider sm:tracking-widest">
                 {monthNames[currentMonth]} <span className="text-brand-accent">{currentYear}</span>
               </h3>
-              
-              <button 
+
+              <button
                 onClick={nextMonth}
-                className="w-12 h-12 rounded-full flex items-center justify-center bg-[var(--brand-surface)] text-[var(--brand-text)] hover:text-brand-accent hover:translate-x-1 transition-all"
+                aria-label="Mes siguiente"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-[var(--brand-surface)] text-[var(--brand-text)] hover:text-brand-accent hover:translate-x-1 transition-all"
               >
                 <HiChevronRight size={24} />
               </button>
             </div>
 
             {/* Days of week */}
-            <div className="grid grid-cols-7 gap-2 mb-4">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-4">
               {daysOfWeek.map((day, idx) => (
-                <div key={idx} className="text-center font-bold text-[var(--brand-text-muted)] text-xs tracking-widest uppercase">
+                <div key={idx} className="text-center font-bold text-[var(--brand-text-muted)] text-[10px] sm:text-xs sm:tracking-widest uppercase">
                   {day}
                 </div>
               ))}
             </div>
 
             {/* Calendar Grid */}
-            <div className="grid grid-cols-7 gap-2">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2">
               {Array.from({ length: firstDayOfMonth }).map((_, idx) => (
                 <div key={`empty-${idx}`} className="h-12 md:h-16" />
               ))}
@@ -158,7 +168,7 @@ const EventCalendar = () => {
                   <button
                     key={`day-${day}`}
                     onClick={() => handleDayClick(day)}
-                    className={`relative h-12 md:h-16 rounded-2xl flex flex-col items-center justify-center transition-all hover:scale-105 active:scale-95 ${
+                    className={`relative h-11 sm:h-12 md:h-16 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center transition-all hover:scale-105 active:scale-95 ${
                       isSelected
                         ? 'bg-brand-accent text-white shadow-[0_0_20px_rgba(6,107,243,0.4)]'
                         : hasEvents
@@ -184,7 +194,7 @@ const EventCalendar = () => {
           </div>
 
           {/* Right: Selected Day Events */}
-          <div className="lg:col-span-1 relative">
+          <div ref={detailRef} className="lg:col-span-1 relative scroll-mt-28">
             {/* Panel: date selected */}
             <div className={`transition-all duration-300 ${selectedDate ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-5 pointer-events-none absolute inset-0'} h-full`}>
               {selectedDate && (
@@ -205,8 +215,8 @@ const EventCalendar = () => {
                             location={event.ubicacion}
                             speaker={event.ponente || "Por confirmar"}
                             category={event.categoria || "EVENTO"}
-                            status={event.is_past ? "Past" : "Upcoming"}
-                            link={event.link_registro || "#"}
+                            status={isPastEvent(event) ? "Past" : "Upcoming"}
+                            link={event.link_registro}
                             imageUrl={event.image_url}
                             variant="compact"
                           />

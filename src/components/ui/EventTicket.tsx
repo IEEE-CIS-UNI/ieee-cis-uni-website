@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { HiClock, HiLocationMarker, HiUser } from "react-icons/hi";
 import Button from "@/components/ui/Button";
+import { normalizeUrl } from "@/lib/url";
 
 interface EventTicketProps {
   date: string;
@@ -9,13 +10,16 @@ interface EventTicketProps {
   location: string;
   speaker?: string;
   category: string;
-  link: string;
+  /** Enlace de registro/detalle. Si falta, no se muestra el botón
+   *  (aparece solo en cuanto se llene `link_registro` en Supabase). */
+  link?: string | null;
   status?: string;
   imageUrl?: string | null;
   variant?: 'full' | 'compact';
 }
 
-const EventTicket = ({ date, title, time, location, speaker, category, link, status, imageUrl, variant = 'full' }: EventTicketProps) => {
+const EventTicket = ({ date, title, time, location, speaker, category, link: rawLink, status, imageUrl, variant = 'full' }: EventTicketProps) => {
+  const link = normalizeUrl(rawLink);
   const dateParts = date.split(' ');
   const day = dateParts[0] || "00";
   const month = (dateParts[2] || "MES").substring(0, 3).toUpperCase();
@@ -76,11 +80,13 @@ const EventTicket = ({ date, title, time, location, speaker, category, link, sta
             <h4 className="text-lg lg:text-xl font-bold text-[var(--brand-text)] group-hover:text-brand-accent transition-colors leading-tight max-w-xl">
               {title}
             </h4>
-            <div className="flex-shrink-0">
-              <Button href={link} variant={status === 'Past' ? 'outline' : 'primary'} size="sm" className="w-fit">
-                {status === 'Past' ? 'Ver Detalles' : 'Registrarme'}
-              </Button>
-            </div>
+            {link && (
+              <div className="flex-shrink-0">
+                <Button href={link} variant={status === 'Past' ? 'outline' : 'primary'} size="sm" className="w-fit">
+                  {status === 'Past' ? 'Ver Detalles' : 'Registrarme'}
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

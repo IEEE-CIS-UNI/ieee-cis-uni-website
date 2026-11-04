@@ -1,16 +1,23 @@
 import Image from "next/image";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
+import { normalizeUrl } from "@/lib/url";
 
 interface MemberCardProps {
   name: string;
   role: string;
   image: string;
-  linkedin?: string;
-  github?: string;
+  linkedin?: string | null;
+  github?: string | null;
   interests?: string[];
 }
 
-const MemberCard = ({ name, role, image, linkedin, github, interests }: MemberCardProps) => {
+const MemberCard = ({ name, role, image, linkedin: rawLinkedin, github: rawGithub, interests }: MemberCardProps) => {
+  // Corrige URLs mal escritas en Supabase ("www.…", "htttps://…").
+  // Si el campo está vacío el icono no se muestra; aparece solo en cuanto
+  // se complete el enlace en Supabase.
+  const linkedin = normalizeUrl(rawLinkedin);
+  const github = normalizeUrl(rawGithub);
+
   const displayInterests = interests 
     ? [...interests].slice(0, 3).sort((a, b) => a.length - b.length) 
     : [];
@@ -74,14 +81,15 @@ const MemberCard = ({ name, role, image, linkedin, github, interests }: MemberCa
             {/* Socials */}
             <div className="flex justify-between items-center pt-1.5 md:pt-3 border-t border-[var(--brand-border)]">
               <div className="flex gap-3 md:gap-4">
+                {/* p-1.5 -m-1.5: área táctil más grande en celular sin mover el diseño */}
                 {linkedin && (
-                  <a href={linkedin} target="_blank" rel="noopener noreferrer" className="text-[var(--brand-text-muted)] hover:text-brand-accent transition-colors">
-                    <FaLinkedin className="w-3.5 h-3.5 md:w-5 md:h-5" />
+                  <a href={linkedin} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn de ${name}`} className="p-1.5 -m-1.5 text-[var(--brand-text-muted)] hover:text-brand-accent transition-colors">
+                    <FaLinkedin className="w-4 h-4 md:w-5 md:h-5" />
                   </a>
                 )}
                 {github && (
-                  <a href={github} target="_blank" rel="noopener noreferrer" className="text-[var(--brand-text-muted)] hover:text-brand-accent transition-colors">
-                    <FaGithub className="w-3.5 h-3.5 md:w-5 md:h-5" />
+                  <a href={github} target="_blank" rel="noopener noreferrer" aria-label={`GitHub de ${name}`} className="p-1.5 -m-1.5 text-[var(--brand-text-muted)] hover:text-brand-accent transition-colors">
+                    <FaGithub className="w-4 h-4 md:w-5 md:h-5" />
                   </a>
                 )}
               </div>

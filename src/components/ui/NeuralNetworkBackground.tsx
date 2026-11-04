@@ -153,8 +153,10 @@ const NeuralNetworkBackground = () => {
     };
     const handleMouseLeave = () => { mouse.x = -9999; mouse.y = -9999; };
 
-    canvas.addEventListener("mousemove", handleMouseMove);
-    canvas.addEventListener("mouseleave", handleMouseLeave);
+    // El canvas tiene pointer-events: none (para no bloquear clicks), así que
+    // nunca recibe eventos propios: se escucha el cursor a nivel de ventana.
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    document.documentElement.addEventListener("mouseleave", handleMouseLeave);
 
     /* ── Inyecta señales nuevas periódicamente desde los nodos de input ── */
     let signalTimer = 0;
@@ -335,8 +337,8 @@ const NeuralNetworkBackground = () => {
 
     return () => {
       cancelAnimationFrame(rafId);
-      canvas.removeEventListener("mousemove", handleMouseMove);
-      canvas.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
       ro.disconnect();
     };
   }, []);

@@ -2,7 +2,10 @@
 
 import Button from "@/components/ui/Button";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
 import { HiArrowRight, HiPlay } from "react-icons/hi";
+import { useIsDesktop } from "@/lib/useIsDesktop";
 
 // Silenciar el warning interno inofensivo de Spline "Missing property"
 if (typeof window !== "undefined") {
@@ -62,6 +65,10 @@ const Spline = dynamic(() => import("@splinetool/react-spline"), {
 // ============================================================
 
 const Hero = () => {
+  // El robot 3D (Spline) solo se carga en escritorio: en celular pesa varios MB
+  // y además captura el gesto de scroll. En móvil se muestra una imagen ligera.
+  const isDesktop = useIsDesktop();
+
   return (
     <section className="relative pt-28 pb-16 px-6 md:px-12 lg:px-24 min-h-[90vh] flex items-center overflow-hidden">
 
@@ -79,12 +86,25 @@ const Hero = () => {
             👉 Moverlo a la izquierda (recortado) → aumenta el número de -ml-16 (ej: -ml-24)
             👉 Moverlo a la derecha → usa un valor menor de ml negativo o quítalo
           */}
-          <div className="relative w-full h-[380px] md:h-[480px] lg:h-[620px] -ml-6 lg:-ml-16 overflow-hidden order-first">
-            <Spline scene="https://prod.spline.design/bteTxASGaK5f18Hi/scene.splinecode" />
-            {/* Etiqueta que cubre el badge "Built with Spline" */}
-            <div className="absolute bottom-[16px] right-[16px] z-20 w-[150px] h-[42px] flex items-center justify-center rounded-full bg-brand-accent text-white text-xs font-bold tracking-widest select-none shadow-lg">
-              IEEE CIS UNI
-            </div>
+          <div className="relative w-full h-[240px] sm:h-[320px] lg:h-[620px] lg:-ml-16 overflow-hidden order-last lg:order-first">
+            {isDesktop ? (
+              <>
+                <Spline scene="https://prod.spline.design/bteTxASGaK5f18Hi/scene.splinecode" />
+                {/* Etiqueta que cubre el badge "Built with Spline" */}
+                <div className="absolute bottom-[16px] right-[16px] z-20 w-[150px] h-[42px] flex items-center justify-center rounded-full bg-brand-accent text-white text-xs font-bold tracking-widest select-none shadow-lg">
+                  IEEE CIS UNI
+                </div>
+              </>
+            ) : (
+              <Image
+                src="/images/hero_image.png"
+                alt="Ilustración de una red neuronal con forma de cabeza humana"
+                fill
+                sizes="(max-width: 1024px) 90vw, 50vw"
+                className="object-contain"
+                priority
+              />
+            )}
           </div>
 
           {/* ══════════════════════════════════════════════════════
@@ -98,7 +118,7 @@ const Hero = () => {
                  • `items-start` y `text-left`    → todo pegado a la izquierda
                  • `items-center` y `text-center` → todo centrado
           */}
-          <div className="flex flex-col items-end text-right w-full">
+          <div className="flex flex-col items-center text-center lg:items-end lg:text-right w-full">
             {/*
               ┌─────────────────────────────────────────────────┐
               │  BADGE (etiqueta pequeña arriba del título)     │
@@ -140,7 +160,7 @@ const Hero = () => {
               │     0.85 = muy compacto | 1.0 = normal | 1.2 = cómodo   │
               └──────────────────────────────────────────────────────────┘
             */}
-            <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
 
               {/* Línea 1 — "Inteligencia" (blanca) */}
               {/* 👉 Color: cambia `text-[var(--brand-text)]` por otro color */}
@@ -185,9 +205,10 @@ const Hero = () => {
               │  👉 Texto del botón → edita dentro de cada <Button>     │
               └──────────────────────────────────────────────────────────┘
             */}
-            <div className="flex flex-wrap gap-3 justify-end">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 justify-center lg:justify-end w-full sm:w-auto">
               {/* Botón primario — sólido azul */}
               <Button
+                href="/proyectos"
                 size="lg"
                 className="rounded-full px-8 shadow-lg shadow-brand-accent/25 font-semibold"
                 icon={<HiArrowRight />}
@@ -196,12 +217,15 @@ const Hero = () => {
               </Button>
 
               {/* Botón secundario — semi-transparente con icono play */}
-              <button className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] text-[var(--brand-text)] text-lg font-semibold hover:bg-[var(--brand-card-hover)] hover:border-[var(--brand-primary)] transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm">
+              <Link
+                href="/nosotros"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] text-[var(--brand-text)] text-lg font-semibold hover:bg-[var(--brand-card-hover)] hover:border-brand-accent transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm"
+              >
                 <span className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-500">
                   <HiPlay size={10} className="ml-0.5" />
                 </span>
                 Conócenos
-              </button>
+              </Link>
             </div>
 
           </div>

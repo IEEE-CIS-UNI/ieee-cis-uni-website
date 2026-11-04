@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isExternalUrl } from "@/lib/url";
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -23,11 +24,12 @@ const Button = ({
   
   const variants = {
     primary: "bg-brand-accent text-white hover:bg-brand-accent/90",
-    /* Variant outline reforzado:
-     * ─ border-white/25 siempre visible (antes era brand-border casi invisible)
-     * ─ hover:border-brand-accent/60 + tinte azul para mayor presencia del CTA
+    /* Variant outline:
+     * ─ borde azul tenue visible tanto en modo oscuro como en modo claro
+     * ─ el texto mantiene el color del tema al hover (antes pasaba a blanco
+     *   y desaparecía sobre el fondo claro)
      */
-    outline: "border border-white/25 text-[var(--brand-text)] hover:border-brand-accent/60 hover:bg-brand-accent/10 hover:text-white",
+    outline: "border border-brand-accent/40 text-[var(--brand-text)] hover:border-brand-accent/70 hover:bg-brand-accent/10",
     secondary: "bg-brand-secondary text-white hover:bg-brand-secondary/90",
   };
 
@@ -45,6 +47,16 @@ const Button = ({
       {icon && <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">{icon}</span>}
     </>
   );
+
+  // Enlaces a otros sitios (demo, Instagram, registro…) se abren en otra pestaña
+  // para que el usuario no abandone la web.
+  if (href && isExternalUrl(href)) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={combinedClasses} onClick={onClick}>
+        {content}
+      </a>
+    );
+  }
 
   if (href) {
     return (

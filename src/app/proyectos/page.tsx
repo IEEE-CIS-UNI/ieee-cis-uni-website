@@ -3,7 +3,8 @@ import ProjectGrid from "@/components/projects/ProjectGrid";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 
 export const metadata = {
-  title: "Proyectos | IEEE CIS UNI",
+  // El sufijo " | IEEE CIS UNI" lo agrega la plantilla de src/app/layout.tsx
+  title: "Proyectos",
   description: "Explora los proyectos de investigación y desarrollo del capítulo estudiantil IEEE CIS de la Universidad Nacional de Ingeniería.",
 };
 

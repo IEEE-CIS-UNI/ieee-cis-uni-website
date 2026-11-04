@@ -8,5 +8,6 @@ export const RULETA_PROJECT = {
   descripcion_corta: 'Descubre qué área hosteará el próximo evento con nuestra ruleta interactiva.',
   image_url: '/images/pinguinocis.png',
   tags: ['INTERACTIVO', 'EVENTOS'],
+  estado: 'Completado',
   slug: 'ruleta'
 } as Project;

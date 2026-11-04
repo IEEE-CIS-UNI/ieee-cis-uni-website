@@ -43,15 +43,16 @@ const ProjectGrid = () => {
 
   // Compute unique categories (tags) dynamically
   const categories = useMemo(() => {
-    const allTags = projects.flatMap(p => p.tags);
+    const allTags = projects.flatMap(p => p.tags ?? []);
     const uniqueTags = Array.from(new Set(allTags.map(t => t.toUpperCase())));
     return ["TODOS", ...uniqueTags.sort()];
   }, [projects]);
 
   const filteredProjects = projects.filter(project => {
-    const matchesFilter = filter === "TODOS" || project.tags.some(tag => tag.toUpperCase() === filter);
-    const matchesSearch = project.titulo.toLowerCase().includes(search.toLowerCase()) || 
-                          project.descripcion_corta.toLowerCase().includes(search.toLowerCase());
+    // `?? ""` / `?? []`: una fila de Supabase con campos vacíos no debe romper la página
+    const matchesFilter = filter === "TODOS" || (project.tags ?? []).some(tag => tag.toUpperCase() === filter);
+    const matchesSearch = (project.titulo ?? "").toLowerCase().includes(search.toLowerCase()) ||
+                          (project.descripcion_corta ?? "").toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -110,7 +111,8 @@ const ProjectGrid = () => {
                     title={project.titulo}
                     description={project.descripcion_corta}
                     image={project.image_url || ""}
-                    tags={project.tags}
+                    tags={project.tags ?? []}
+                    status={project.estado}
                     link={`/proyectos/${project.slug}`}
                   />
                 </div>

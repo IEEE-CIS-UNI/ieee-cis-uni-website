@@ -70,7 +70,7 @@ const Footer = () => {
                 <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
                   <FaEnvelope className="text-blue-400" size={14} />
                 </div>
-                <a href="mailto:cis@uni.edu.pe" className="hover:text-[var(--brand-text)] transition-colors text-sm md:text-base">cis@uni.edu.pe</a>
+                <a href="mailto:ieee.cis@uni.edu.pe" className="hover:text-[var(--brand-text)] transition-colors text-sm md:text-base break-all">ieee.cis@uni.edu.pe</a>
               </div>
               <div className="flex items-center justify-center md:justify-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">

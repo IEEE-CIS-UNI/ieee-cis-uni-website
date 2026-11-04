@@ -171,8 +171,8 @@ const MemberDirectory = () => {
                             name={member.nombre}
                             role={member.rol}
                             image={member.image_url || "/images/placeholder-member.png"}
-                            linkedin={member.linkedin || "#"}
-                            github={member.github || "#"}
+                            linkedin={member.linkedin}
+                            github={member.github}
                             interests={member.interests || []}
                           />
                         </motion.div>

@@ -7,26 +7,48 @@ import { HiArrowRight, HiCalendar } from "react-icons/hi";
 import { motion, Variants } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { Event } from "@/types/database";
+import { todayInLima } from "@/lib/events";
 
 const Events = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  // true cuando no hay eventos futuros y se muestran los más recientes
+  const [showingPast, setShowingPast] = useState(false);
 
   useEffect(() => {
     let ignore = false;
 
     const fetchUpcomingEvents = async () => {
       try {
+        // "Próximos" se decide por la fecha, no solo por el flag is_past
+        // (que hay que actualizar a mano en Supabase).
+        const today = todayInLima();
         const { data, error } = await supabase
           .from('eventos')
           .select('*')
           .eq('is_past', false)
+          .gte('fecha', today)
           .order('fecha', { ascending: true })
           .limit(3);
 
-        if (!ignore) {
-          if (error) throw error;
-          if (data) setEvents(data);
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          if (!ignore) setEvents(data);
+          return;
+        }
+
+        // Sin eventos próximos: mostrar los últimos realizados en vez de una sección vacía.
+        const { data: recent, error: recentError } = await supabase
+          .from('eventos')
+          .select('*')
+          .order('fecha', { ascending: false })
+          .limit(3);
+
+        if (recentError) throw recentError;
+        if (!ignore && recent) {
+          setEvents(recent);
+          setShowingPast(recent.length > 0);
         }
       } catch (error) {
         console.error('Error fetching upcoming events:', error);
@@ -84,7 +106,7 @@ const Events = () => {
           className="text-center mb-16"
         >
           <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
-            Próximos Eventos
+            {showingPast ? "Eventos Recientes" : "Próximos Eventos"}
           </h2>
           <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
             Eventos que{" "}
@@ -121,8 +143,8 @@ const Events = () => {
                     location={event.ubicacion}
                     speaker={event.ponente || "Por confirmar"}
                     category={event.categoria || "EVENTO"}
-                    status="Upcoming"
-                    link={event.link_registro || "#"}
+                    status={showingPast ? "Past" : "Upcoming"}
+                    link={event.link_registro}
                     imageUrl={event.image_url}
                   />
                 </motion.div>

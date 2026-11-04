@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { FaChrome } from "react-icons/fa";
+import { HiExternalLink } from "react-icons/hi";
 
 const Institutional = () => {
   const bodies = [
@@ -41,19 +41,25 @@ const Institutional = () => {
           </h3>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 items-stretch relative">
+        {/* 1 columna en celular (antes 2 columnas con texto de 10px), 2 en tablet, 3 en escritorio */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 items-stretch relative">
           {/* Decorative Connection Line Background - Hidden on Mobile */}
           <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-accent/20 to-transparent -z-10" />
-          
+
+          {/* Toda la tarjeta es el enlace (antes solo un icono de Chrome de 18px, poco visible) */}
           {bodies.map((body, index) => (
-            <motion.div 
+            <motion.a
               key={index}
+              href={body.web}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Visitar el sitio oficial de ${body.name}`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
-              className={`p-6 md:p-10 rounded-2xl md:rounded-3xl bg-[var(--brand-card)] border border-[var(--brand-border)] backdrop-blur-md flex flex-col items-center text-center group hover:border-brand-accent/30 shadow-sm transition-all ${
-                index === 2 ? "col-span-2 lg:col-span-1" : ""
+              className={`p-6 md:p-10 rounded-2xl md:rounded-3xl bg-[var(--brand-card)] border border-[var(--brand-border)] backdrop-blur-md flex flex-col items-center text-center group hover:border-brand-accent/40 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(6,107,243,0.1)] shadow-sm transition-all cursor-pointer ${
+                index === 2 ? "sm:col-span-2 lg:col-span-1" : ""
               }`}
             >
               <div className="h-16 md:h-20 flex items-center justify-center mb-6 md:mb-8">
@@ -65,21 +71,17 @@ const Institutional = () => {
                   className="w-auto h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity logo-adaptive"
                 />
               </div>
-              <h4 className="text-lg md:text-xl font-bold text-[var(--brand-text)] mb-2 md:mb-4">{body.name}</h4>
-              <p className="text-[var(--brand-text-muted)] opacity-80 text-[10px] md:text-sm leading-relaxed mb-6 md:mb-8 line-clamp-3 md:line-clamp-none">
+              <h4 className="text-lg md:text-xl font-bold text-[var(--brand-text)] mb-2 md:mb-4 group-hover:text-brand-accent transition-colors">{body.name}</h4>
+              <p className="text-[var(--brand-text-muted)] opacity-80 text-sm leading-relaxed mb-6 md:mb-8">
                 {body.description}
               </p>
-              <div className="mt-auto pt-4 md:pt-6 border-t border-[var(--brand-border)] w-full flex justify-center gap-4 md:gap-6">
-                <a
-                  href={body.web}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[var(--brand-text-muted)] opacity-60 hover:opacity-100 hover:text-brand-accent transition-colors"
-                >
-                  <FaChrome size={18} />
-                </a>
+              <div className="mt-auto pt-4 md:pt-6 border-t border-[var(--brand-border)] w-full flex justify-center">
+                <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-brand-accent">
+                  Visitar sitio
+                  <HiExternalLink className="text-base group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </span>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </div>

@@ -17,7 +17,9 @@ const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps
         {/* Editorial Background Gradient */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/5 rounded-full blur-[80px] -z-10 group-hover:bg-brand-accent/10 transition-colors" />
         
-        <div className="p-3 lg:p-8 flex flex-col h-full">
+        {/* En celular la grilla del Home pasa a 1 columna, así que la tarjeta usa
+            tamaños de texto normales (antes 9–10px para caber en 2 columnas). */}
+        <div className="p-5 sm:p-6 lg:p-8 flex flex-col h-full">
           {/* Mockup Frame */}
           <div className="relative aspect-video w-full mb-4 lg:mb-8 rounded-lg lg:rounded-xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-surface)]">
             {/* Mac-style Window Controls */}
@@ -32,7 +34,7 @@ const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps
                 src={image}
                 alt={title}
                 fill
-                sizes="(max-width: 768px) 100vw, 50vw"
+                sizes="(max-width: 640px) 100vw, 50vw"
                 className="object-contain pt-4 lg:pt-6 group-hover:scale-105 transition-transform duration-700"
               />
             ) : (
@@ -43,27 +45,26 @@ const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps
           </div>
 
           {/* Content */}
-          <div className="relative z-10 text-center lg:text-left flex flex-col flex-grow">
-            <div className="hidden lg:flex flex-wrap gap-2 mb-4">
-              {tags.map((tag, index) => (
-                <span key={index} className="text-[10px] font-bold uppercase tracking-widest text-brand-accent/80 bg-brand-accent/10 px-2 py-1 rounded">
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <h4 className="text-sm lg:text-2xl font-bold text-[var(--brand-text)] mb-1 lg:mb-3 group-hover:text-brand-accent transition-colors leading-tight">
+          <div className="relative z-10 text-left flex flex-col flex-grow">
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-3 lg:mb-4">
+                {tags.map((tag, index) => (
+                  <span key={index} className="text-[10px] font-bold uppercase tracking-widest text-brand-accent/80 bg-brand-accent/10 px-2 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            <h4 className="text-xl lg:text-2xl font-bold text-[var(--brand-text)] mb-2 lg:mb-3 group-hover:text-brand-accent transition-colors leading-tight">
               {title}
             </h4>
-            <p className="block lg:hidden text-[9px] leading-tight text-[var(--brand-text-muted)] mb-3 line-clamp-2 px-2">
+            <p className="text-[var(--brand-text-muted)] text-sm leading-relaxed mb-5 lg:mb-6 flex-grow line-clamp-3 lg:line-clamp-none">
               {description}
             </p>
-            <p className="hidden lg:block text-[var(--brand-text-muted)] text-sm leading-relaxed mb-6 flex-grow">
-              {description}
-            </p>
-            
-            <div className="inline-flex items-center text-[10px] lg:text-sm font-bold text-[var(--brand-text)] group-hover:text-brand-accent transition-colors mt-auto">
+
+            <div className="inline-flex items-center text-sm font-bold text-[var(--brand-text)] group-hover:text-brand-accent transition-colors mt-auto">
               Ver detalles
-              <HiArrowRight className="ml-1 lg:ml-2 group-hover:translate-x-1 transition-transform" />
+              <HiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
         </div>

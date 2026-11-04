@@ -5,6 +5,7 @@ import EventCard from "@/components/ui/EventCard";
 import { HiSearch, HiCalendar } from "react-icons/hi";
 import { supabase } from "@/lib/supabase";
 import { Event } from "@/types/database";
+import { isPastEvent } from "@/lib/events";
 
 const EventList = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -119,8 +120,8 @@ const EventList = () => {
                     location={event.ubicacion}
                     speaker={event.ponente || "Por confirmar"}
                     category={event.categoria || "EVENTO"}
-                    status={event.is_past ? "Past" : "Upcoming"}
-                    link={event.link_registro || "#"}
+                    status={isPastEvent(event) ? "Past" : "Upcoming"}
+                    link={event.link_registro}
                     imageUrl={event.image_url}
                   />
                 </div>

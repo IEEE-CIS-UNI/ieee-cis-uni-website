@@ -20,7 +20,7 @@ const ContactHero = () => {
               <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Contáctanos
               </span>
-              <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
                 <span className="block text-[var(--brand-text)] lg:text-[60px]">Establezcamos la</span>
                 <span className="block italic text-brand-accent lg:text-[120px]">
                   Conexión.

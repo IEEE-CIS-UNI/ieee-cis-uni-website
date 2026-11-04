@@ -4,6 +4,11 @@ import GlobalCIS from "@/components/about/GlobalCIS";
 import Institutional from "@/components/about/Institutional";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 
+export const metadata = {
+  title: "Nosotros",
+  description: "Conoce al capítulo estudiantil IEEE Computational Intelligence Society de la Universidad Nacional de Ingeniería: nuestra misión, trayectoria y red institucional.",
+};
+
 export default function AboutPage() {
   return (
     <div className="relative overflow-hidden about-page-bg">

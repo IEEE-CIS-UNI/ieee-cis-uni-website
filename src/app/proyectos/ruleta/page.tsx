@@ -108,6 +108,13 @@ export default function RuletaPage() {
     drawWheel(wheelAngleRef.current);
   }, [drawWheel]);
 
+  // Detener la animación si el usuario sale de la página a mitad de un giro.
+  useEffect(() => {
+    return () => {
+      if (animationRef.current !== null) cancelAnimationFrame(animationRef.current);
+    };
+  }, []);
+
   const easeOut = (t: number) => 1 - Math.pow(1 - t, 4);
 
   const getWinner = (angle: number) => {
@@ -165,13 +172,16 @@ export default function RuletaPage() {
   };
 
   const restoreAll = () => {
+    if (spinning) return;
     wheelAngleRef.current = 0;
+    // Redibujar: antes el ángulo se reiniciaba pero la rueda seguía viéndose girada.
+    drawWheel(0);
     setHistory([]);
     setResult(null);
   };
 
   return (
-    <div className="relative min-h-screen pt-28 pb-16 px-6 md:px-12 flex flex-col items-center justify-center overflow-hidden text-[var(--brand-text)]">
+    <div className="relative min-h-screen pt-28 pb-16 px-4 sm:px-6 md:px-12 flex flex-col items-center justify-center overflow-hidden text-[var(--brand-text)]">
       {/* Fondo orbes (azul y fucsia) */}
       <div className="hero-orb-a absolute top-1/3 -left-40 w-[600px] h-[600px] bg-brand-accent rounded-full blur-[160px] opacity-100 -z-10" />
       <div className="hero-orb-b absolute bottom-1/4 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-100 -z-10" style={{ backgroundColor: "#7C3AED" }} />
@@ -185,7 +195,7 @@ export default function RuletaPage() {
       <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
         
         {/* Imagen del pingüino a la izquierda con temática de hielo */}
-        <div className="flex-shrink-0 relative w-64 h-64 md:w-80 md:h-80 lg:w-[450px] lg:h-[450px] flex items-center justify-center mt-10 lg:mt-0">
+        <div className="flex-shrink-0 relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[450px] lg:h-[450px] flex items-center justify-center mt-10 lg:mt-0">
           
           {/* Cristales de hielo flotantes (Fragmentos de glaciar) */}
           {/* Shard 1 - Superior izquierdo */}
@@ -252,7 +262,7 @@ export default function RuletaPage() {
         </div>
 
         {/* Contenido de la Ruleta */}
-        <div className="flex-1 flex flex-col items-center bg-[var(--brand-surface)]/40 backdrop-blur-xl border border-[var(--brand-border)] rounded-3xl p-8 shadow-2xl w-full max-w-[500px]">
+        <div className="flex-1 flex flex-col items-center bg-[var(--brand-surface)]/40 backdrop-blur-xl border border-[var(--brand-border)] rounded-3xl p-5 sm:p-8 shadow-2xl w-full max-w-[500px]">
           
           {/* Título Dinámico Editable */}
           <div className="text-center mb-8 w-full">
@@ -266,9 +276,11 @@ export default function RuletaPage() {
             />
           </div>
 
-          <div className="relative w-[300px] h-[300px] mb-8">
+          {/* 260px en celular (no se desborda en pantallas de 360px). El canvas mantiene
+              su resolución interna de 300×300 y solo se escala por CSS. */}
+          <div className="relative w-[260px] h-[260px] sm:w-[300px] sm:h-[300px] mb-8">
             <div className="absolute top-[-14px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[24px] border-t-[#FFD700] drop-shadow-[0_2px_6px_rgba(255,215,0,0.6)] z-20" />
-            <canvas ref={canvasRef} width={300} height={300} className="rounded-full shadow-[0_0_40px_rgba(0,119,204,0.2),0_0_0_3px_rgba(0,119,204,0.2)] bg-[var(--brand-card)] backdrop-blur-sm" />
+            <canvas ref={canvasRef} width={300} height={300} className="w-full h-full rounded-full shadow-[0_0_40px_rgba(0,119,204,0.2),0_0_0_3px_rgba(0,119,204,0.2)] bg-[var(--brand-card)] backdrop-blur-sm" />
             <button
               onClick={spinWheel}
               disabled={spinning}
@@ -311,11 +323,14 @@ export default function RuletaPage() {
           <div className="w-full mb-6">
             <div className="text-xs text-[var(--brand-text-muted)] uppercase tracking-widest text-center mb-3">Elementos ({areas.length})</div>
             
+            {/* Deshabilitado durante el giro: si la lista cambia a mitad de la animación,
+                el ganador anunciado no coincide con el segmento que señala la flecha. */}
             <textarea
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}
+              disabled={spinning}
               placeholder="Ejemplo: Azul, Amarillo, Negro&#10;o sepáralos por Enter"
-              className="w-full bg-[var(--brand-background)]/80 border border-[var(--brand-border)] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent text-[var(--brand-text)] resize-y min-h-[120px] custom-scrollbar placeholder:text-[var(--brand-text-muted)] placeholder:opacity-50"
+              className="w-full bg-[var(--brand-background)]/80 border border-[var(--brand-border)] rounded-xl px-4 py-3 text-sm disabled:opacity-60 focus:outline-none focus:border-brand-accent text-[var(--brand-text)] resize-y min-h-[120px] custom-scrollbar placeholder:text-[var(--brand-text-muted)] placeholder:opacity-50"
             />
 
             <div className="text-center mt-4">

@@ -1,17 +1,19 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import { useIsDesktop } from "@/lib/useIsDesktop";
 
-// Suprimir los warnings inofensivos de Spline/Three.js igual que en Hero.tsx
+// Suprimir los warnings inofensivos de Spline/Three.js igual que en Hero.tsx.
+// Solo se filtran mensajes propios de Spline: antes también se ocultaba cualquier
+// error que contuviera "position", lo que podía esconder errores reales.
 if (typeof window !== "undefined") {
   const originalError = console.error;
   console.error = (...args: Parameters<typeof console.error>) => {
     const msg = args[0];
     if (
       typeof msg === "string" &&
-      (msg.includes("Missing property") ||
-        msg.includes("buildTimeline") ||
-        msg.includes("position"))
+      (msg.includes("Missing property") || msg.includes("buildTimeline"))
     )
       return;
     originalError(...args);
@@ -28,6 +30,9 @@ const Spline = dynamic(() => import("@splinetool/react-spline"), {
 });
 
 const ProjectHero = () => {
+  // En celular no se carga la escena 3D (pesada y bloquea el scroll táctil).
+  const isDesktop = useIsDesktop();
+
   return (
     <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center overflow-hidden">
       {/* Background Glows */}
@@ -42,14 +47,14 @@ const ProjectHero = () => {
               <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Investigación y Desarrollo
               </span>
-              <h1 className="text-5xl md:text-6xl font-extrabold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
                 Transformando{" "}
-                <em className="not-italic italic text-brand-accent text-6xl md:text-8xl font-extrabold">
+                <em className="not-italic italic text-brand-accent text-5xl sm:text-6xl md:text-8xl font-extrabold">
                   Ideas
                 </em>{" "}
                 en Soluciones Realidad
               </h1>
-              <p className="text-xl text-[var(--brand-text-muted)] leading-relaxed mb-8 drop-shadow-sm font-medium">
+              <p className="text-lg md:text-xl text-[var(--brand-text-muted)] leading-relaxed mb-8 drop-shadow-sm font-medium">
                 Nuestros proyectos abarcan desde la investigación teórica en redes neuronales hasta la implementación de sistemas autónomos y soluciones de IA con impacto social.
               </p>
             </div>
@@ -63,7 +68,18 @@ const ProjectHero = () => {
 
               {/* 3D Model Box */}
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] backdrop-blur-md flex items-center justify-center pointer-events-auto">
-                <Spline scene="https://prod.spline.design/HE4AYvwMqlguAv2S/scene.splinecode" />
+                {isDesktop ? (
+                  <Spline scene="https://prod.spline.design/HE4AYvwMqlguAv2S/scene.splinecode" />
+                ) : (
+                  <Image
+                    src="/images/hero_image.png"
+                    alt="Ilustración de una red neuronal"
+                    fill
+                    sizes="90vw"
+                    className="object-contain p-6"
+                    priority
+                  />
+                )}
               </div>
 
               {/* Decorative Tech Elements */}

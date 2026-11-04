@@ -105,7 +105,7 @@ const Projects = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 gap-4 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
             {[...Array(2)].map((_, i) => (
               <div key={i} className="aspect-video bg-[var(--brand-card)] backdrop-blur-md rounded-3xl animate-pulse" />
             ))}
@@ -113,7 +113,7 @@ const Projects = () => {
         ) : (
           <>
             <motion.div
-              className="grid grid-cols-2 gap-4 lg:gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8"
               variants={cardContainerVariants}
               initial="hidden"
               whileInView="visible"
@@ -125,7 +125,7 @@ const Projects = () => {
                     title={project.titulo}
                     description={project.descripcion_corta}
                     image={project.image_url || ""}
-                    tags={project.tags}
+                    tags={project.tags ?? []}
                     link={`/proyectos/${project.slug}`}
                   />
                 </motion.div>

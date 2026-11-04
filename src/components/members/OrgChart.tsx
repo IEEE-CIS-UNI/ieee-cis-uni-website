@@ -132,11 +132,13 @@ interface SubAreaRowProps {
   subAreaLabel: string;
   director?: Member;
   subdirectors: Member[];
+  /** Miembros del área que no son director ni subdirector (antes no se mostraban) */
+  others: Member[];
   accent: string;
   animDelay: number;
 }
 
-const SubAreaRow = ({ subAreaLabel, director, subdirectors, accent, animDelay }: SubAreaRowProps) => (
+const SubAreaRow = ({ subAreaLabel, director, subdirectors, others, accent, animDelay }: SubAreaRowProps) => (
   <motion.div
     initial={{ opacity: 0, y: 12 }}
     animate={{ opacity: 1, y: 0 }}
@@ -156,7 +158,7 @@ const SubAreaRow = ({ subAreaLabel, director, subdirectors, accent, animDelay }:
     </div>
 
     {/* Director (left) ──── Subdirector(es) (right) */}
-    <div className="flex items-start justify-center gap-4 md:gap-6">
+    <div className="flex items-start justify-center gap-3 md:gap-6">
       {/* Director */}
       <div className="flex flex-col items-center gap-1">
         {director ? (
@@ -168,8 +170,8 @@ const SubAreaRow = ({ subAreaLabel, director, subdirectors, accent, animDelay }:
 
       {/* Divider line */}
       <div className="flex flex-col items-center self-center mt-4">
-        <svg width="28" height="2" className="overflow-visible">
-          <line x1="0" y1="1" x2="28" y2="1" stroke={accent} strokeWidth="1.5" strokeDasharray="3 2" opacity="0.4" />
+        <svg height="2" className="w-4 sm:w-7 overflow-visible">
+          <line x1="0" y1="1" x2="100%" y2="1" stroke={accent} strokeWidth="1.5" strokeDasharray="3 2" opacity="0.4" />
         </svg>
       </div>
 
@@ -184,6 +186,15 @@ const SubAreaRow = ({ subAreaLabel, director, subdirectors, accent, animDelay }:
         )}
       </div>
     </div>
+
+    {/* Resto del equipo del área */}
+    {others.length > 0 && (
+      <div className="flex flex-wrap justify-center gap-3 mt-4">
+        {others.map((m, i) => (
+          <OrgNode key={m.id} member={m} size="sm" accentColor={accent} delay={animDelay + 0.15 + i * 0.05} />
+        ))}
+      </div>
+    )}
   </motion.div>
 );
 
@@ -283,8 +294,10 @@ const OrgChart = ({ members }: OrgChartProps) => {
         </motion.p>
 
         <div className="relative w-full">
+          {/* Ramas horizontales: solo en md+, donde la junta cabe en una sola fila.
+              En celular las tarjetas se envuelven y las ramas quedaban desalineadas. */}
           {boardMembers.length > 1 && (
-            <>
+            <div className="hidden md:block">
               <div className="flex justify-center">
                 <HorizontalBranch count={boardMembers.length} color={boardAccent} />
               </div>
@@ -295,7 +308,7 @@ const OrgChart = ({ members }: OrgChartProps) => {
                   </svg>
                 ))}
               </div>
-            </>
+            </div>
           )}
           <div className="flex flex-wrap justify-center gap-4 md:gap-6">
             {boardMembers.length > 0 ? (
@@ -311,11 +324,14 @@ const OrgChart = ({ members }: OrgChartProps) => {
         </div>
       </div>
 
-      {/* Connector: board → areas */}
-      <div className="flex justify-center">
+      {/* Connector: board → areas (en celular las áreas se apilan: basta una línea vertical) */}
+      <div className="md:hidden mt-4 mb-6">
+        <VerticalConnector color={boardAccent} height={28} />
+      </div>
+      <div className="hidden md:flex justify-center">
         <HorizontalBranch count={AREAS.length} color="rgba(255,255,255,0.2)" />
       </div>
-      <div className="flex justify-around" style={{ paddingLeft: "3%", paddingRight: "3%" }}>
+      <div className="hidden md:flex justify-around" style={{ paddingLeft: "3%", paddingRight: "3%" }}>
         {AREAS.map((area, i) => (
           <svg key={i} width="2" height="20" className="overflow-visible">
             <line x1="1" y1="0" x2="1" y2="20" stroke={area.accent} strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
@@ -324,7 +340,7 @@ const OrgChart = ({ members }: OrgChartProps) => {
       </div>
 
       {/* ── Áreas ─────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-2 md:px-0">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 px-0">
         {areasData.map((area, areaIdx) => (
           <motion.div
             key={area.label}
@@ -366,6 +382,7 @@ const OrgChart = ({ members }: OrgChartProps) => {
                     subAreaLabel={sub.label}
                     director={sub.director}
                     subdirectors={sub.subdirectors}
+                    others={sub.others}
                     accent={area.accent}
                     animDelay={0.35 + areaIdx * 0.1 + subIdx * 0.08}
                   />
