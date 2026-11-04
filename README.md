@@ -24,6 +24,7 @@ This platform serves as the digital hub for the IEEE CIS UNI community. It has b
   - Secure Server Actions implementation using **Nodemailer**.
   - Custom HTML email templates (Dark Mode) for both admin notifications and user confirmations.
 - **Content managed from Supabase**: projects, events, members and blog posts are edited in the Supabase Table Editor, no deploy needed. See the team guide: [docs/supabase-contenido.md](docs/supabase-contenido.md).
+- **3D robot (Spline)**: the Home hero loads the 3D robot on every device, above the text on mobile. The `/proyectos` hero loads it only on desktop (≥1024px) and shows a static image on mobile, because that scene is too heavy for phones (see `src/lib/useIsDesktop.ts`).
 - **Performance Optimized**: Built with Next.js 16+ for lightning-fast load times and efficient rendering.
 - **Computational Intelligence Aesthetic**: Custom tech-themed placeholders and high-fidelity favicon.
 
