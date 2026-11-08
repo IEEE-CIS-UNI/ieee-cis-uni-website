@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const BlogHero = () => {
   return (
-    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center">
+    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80svh] flex items-center">
       {/* Background Glows */}
       <div className="absolute top-1/4 -left-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-[120px] z-0 pointer-events-none" />
       
@@ -16,14 +16,14 @@ const BlogHero = () => {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.5 }}
             >
-              <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
+              <span className="text-[var(--brand-accent-label)] font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Conocimiento e Innovación
               </span>
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
                 Explora la{" "}
-                <em className="not-italic italic text-brand-accent text-5xl sm:text-6xl md:text-8xl font-extrabold">
+                <em className="not-italic italic text-brand-accent-text text-5xl sm:text-6xl md:text-8xl font-extrabold">
                   Frontera
                 </em>{" "}
                 de la Inteligencia
@@ -39,11 +39,11 @@ const BlogHero = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.6 }}
               className="relative group"
             >
               {/* Outer Glow */}
-              <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-700" />
+              <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-500" />
               
               {/* Image Container */}
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] flex items-center justify-center group">
@@ -52,7 +52,7 @@ const BlogHero = () => {
                   alt="Explora la Frontera de la Inteligencia"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
 

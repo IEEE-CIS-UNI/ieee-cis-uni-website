@@ -122,7 +122,7 @@ const EmptySlot = ({ accent, label }: { accent: string; label: string }) => (
     style={{ borderColor: `${accent}30` }}
   >
     <span className="text-lg opacity-20">👤</span>
-    <p className="text-[9px] text-[var(--brand-text-muted)] text-center leading-tight">{label}</p>
+    <p className="text-[11px] text-[var(--brand-text-muted)] text-center leading-tight">{label}</p>
   </div>
 );
 
@@ -149,7 +149,7 @@ const SubAreaRow = ({ subAreaLabel, director, subdirectors, others, accent, anim
     <div className="flex items-center gap-2 mb-3">
       <div className="flex-1 h-px" style={{ background: `linear-gradient(to right, ${accent}40, transparent)` }} />
       <span
-        className="text-[9px] font-black uppercase tracking-[0.18em] px-2.5 py-0.5 rounded-full border"
+        className="text-[11px] font-black uppercase tracking-[0.18em] px-2.5 py-0.5 rounded-full border"
         style={{ color: accent, borderColor: `${accent}35`, background: `${accent}10` }}
       >
         {subAreaLabel}
@@ -270,7 +270,7 @@ const OrgChart = ({ members }: OrgChartProps) => {
         <div className="flex items-center gap-3 px-8 py-3 bg-[var(--brand-card)] backdrop-blur-md border border-brand-accent/30 rounded-2xl shadow-[0_0_40px_rgba(37,99,235,0.15)]">
           <span className="text-xl">⚡</span>
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-brand-accent">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-brand-accent-text">
               Capítulo Estudiantil
             </p>
             <h3 className="text-base md:text-lg font-bold text-[var(--brand-text)] leading-tight">
@@ -288,7 +288,7 @@ const OrgChart = ({ members }: OrgChartProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand-accent mb-3 px-3 py-1 border border-brand-accent/30 rounded-full bg-brand-accent/10"
+          className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-accent-text mb-3 px-3 py-1 border border-brand-accent/30 rounded-full bg-brand-accent/10"
         >
           Junta Directiva
         </motion.p>
@@ -360,7 +360,7 @@ const OrgChart = ({ members }: OrgChartProps) => {
             >
               <span className="text-xl">{area.icon}</span>
               <div>
-                <p className="text-[10px] font-black uppercase tracking-widest leading-tight" style={{ color: area.accent }}>
+                <p className="text-[11px] font-black uppercase tracking-widest leading-tight" style={{ color: area.accent }}>
                   Área de
                 </p>
                 <h4 className="text-xs md:text-sm font-bold text-[var(--brand-text)] leading-tight">
@@ -402,12 +402,12 @@ const OrgChart = ({ members }: OrgChartProps) => {
       >
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-brand-accent opacity-80" />
-          <span className="text-[10px] text-[var(--brand-text-muted)] uppercase tracking-wider">Junta Directiva</span>
+          <span className="text-[11px] text-[var(--brand-text-muted)] uppercase tracking-wider">Junta Directiva</span>
         </div>
         {AREAS.map((area) => (
           <div key={area.label} className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: area.accent, opacity: 0.8 }} />
-            <span className="text-[10px] text-[var(--brand-text-muted)] uppercase tracking-wider">
+            <span className="text-[11px] text-[var(--brand-text-muted)] uppercase tracking-wider">
               {area.label.split(" y ")[0]}
             </span>
           </div>

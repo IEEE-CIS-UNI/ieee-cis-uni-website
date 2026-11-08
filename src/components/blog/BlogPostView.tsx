@@ -6,6 +6,7 @@ import { HiArrowLeft, HiCalendar, HiClock, HiBookOpen } from "react-icons/hi";
 import Image from "next/image";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import { BlogPost } from "@/types/database";
+import BrandOrbs from "@/components/ui/BrandOrbs";
 
 interface BlogPostWithAuthor extends BlogPost {
   author?: {
@@ -23,14 +24,16 @@ const BlogPostView = ({ post }: { post: BlogPostWithAuthor }) => {
   });
 
   return (
-    <div className="relative overflow-hidden about-page-bg min-h-screen">
+    <div className="relative overflow-hidden about-page-bg min-h-svh">
+      {/* Mismo fondo de marca que el Inicio; la red neuronal va encima */}
+      <BrandOrbs />
       <div className="fixed inset-0 z-0 pointer-events-none">
         <NeuralNetworkBackground />
         <div className="absolute inset-0 md:backdrop-blur-[2px] bg-[var(--brand-accent)]/5" />
         <div className="absolute inset-0 about-radial-gradient" />
       </div>
 
-      <main className="relative z-10 min-h-screen pt-32 pb-20 px-6 md:px-12 lg:px-24">
+      <main className="relative z-10 min-h-svh pt-32 pb-20 px-6 md:px-12 lg:px-24">
         <div className="max-w-4xl mx-auto">
         {/* Back Button */}
         <motion.div
@@ -50,10 +53,10 @@ const BlogPostView = ({ post }: { post: BlogPostWithAuthor }) => {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-wrap gap-3 mb-6"
           >
-            <span className="text-[10px] font-black text-brand-accent bg-brand-accent/10 px-4 py-1.5 rounded-full uppercase tracking-widest border border-brand-accent/20">
+            <span className="text-[11px] font-black text-brand-accent-text bg-brand-accent/10 px-4 py-1.5 rounded-full uppercase tracking-widest border border-brand-accent/20">
               {post.category}
             </span>
-            <span className="text-[10px] font-black text-[var(--brand-text-muted)] bg-[var(--brand-surface)] px-4 py-1.5 rounded-full uppercase tracking-widest border border-[var(--brand-border)]">
+            <span className="text-[11px] font-black text-[var(--brand-text-muted)] bg-[var(--brand-surface)] px-4 py-1.5 rounded-full uppercase tracking-widest border border-[var(--brand-border)]">
               {post.level}
             </span>
           </motion.div>
@@ -74,11 +77,11 @@ const BlogPostView = ({ post }: { post: BlogPostWithAuthor }) => {
             className="flex flex-wrap items-center gap-6 text-[var(--brand-text-muted)] text-sm"
           >
             <div className="flex items-center gap-2">
-              <HiCalendar className="text-brand-accent" />
+              <HiCalendar className="text-brand-accent-text" />
               <span>{formattedDate}</span>
             </div>
             <div className="flex items-center gap-2">
-              <HiClock className="text-brand-accent" />
+              <HiClock className="text-brand-accent-text" />
               <span>{post.read_time || "5 min"} de lectura</span>
             </div>
           </motion.div>
@@ -104,9 +107,9 @@ const BlogPostView = ({ post }: { post: BlogPostWithAuthor }) => {
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-[var(--brand-surface)]">
               <div className="relative">
                 <div className="absolute inset-0 bg-brand-accent rounded-full blur-3xl opacity-20 animate-pulse" />
-                <HiBookOpen className="text-[10rem] text-brand-accent relative z-10" />
+                <HiBookOpen className="text-[10rem] text-brand-accent-text relative z-10" />
               </div>
-              <p className="text-[var(--brand-text-muted)] opacity-50 font-black uppercase tracking-[0.3em] text-xs mt-8">Knowledge Post</p>
+              <p className="text-[var(--brand-text-muted)] font-black uppercase tracking-[0.3em] text-xs mt-8">Knowledge Post</p>
             </div>
           )}
         </motion.div>
@@ -135,13 +138,13 @@ const BlogPostView = ({ post }: { post: BlogPostWithAuthor }) => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-brand-accent font-black text-2xl uppercase">
+              <div className="w-full h-full flex items-center justify-center text-brand-accent-text font-black text-2xl uppercase">
                 {post.author?.nombre.charAt(0) || "C"}
               </div>
             )}
           </div>
           <div className="text-center md:text-left">
-            <p className="text-[10px] font-black text-brand-accent uppercase tracking-widest mb-1">Escrito por</p>
+            <p className="text-[11px] font-black text-brand-accent-text uppercase tracking-widest mb-1">Escrito por</p>
             <h3 className="text-2xl font-black text-[var(--brand-text)] mb-2 uppercase tracking-tighter">
               {post.author?.nombre || "Equipo IEEE CIS UNI"}
             </h3>

@@ -53,6 +53,19 @@ agregar notas.
 - **Títulos de pestaña:** el layout usa la plantilla `"%s | IEEE CIS UNI"`; cada
   página pone solo su nombre (`"Proyectos"`, no `"Proyectos | IEEE CIS UNI"`).
 
+### Herramientas de diseño para Claude (`.claude/`)
+
+Copiadas de `arness_inicial` el 2026-11-08. Se usan para trabajo de UI/UX:
+
+- **Skills** (`.claude/skills/`): `impeccable` (diseño general: crear,
+  criticar, auditar, pulir), `emil-design-eng`, `animate`, `choreograph`,
+  `review-animations`, `animation-performance`, `apple-design`,
+  `mobile-native`, `break-ui`, `prototype`, `pick-ui-library`.
+- **Agentes** (`.claude/agents/`): `disenador` (diseñador UI/UX en español; lee
+  esta memoria antes de proponer) y los 4 `impeccable-*` que usa la skill.
+- Si una skill choca con una decisión de la sección 3, manda la decisión,
+  salvo que se cambie a propósito y se anote aquí.
+
 ## 3. Decisiones tomadas (y por qué)
 
 - **Enlace vacío = no se muestra.** Íconos de LinkedIn/GitHub y botones
@@ -71,6 +84,13 @@ agregar notas.
   parpadeaba o desaparecía). Sin degradados por cuadro (sprite pre-renderizado),
   30 fps en táctil, pausa si no se ve y responde al dedo. El desenfoque encima
   (`backdrop-blur`) solo va desde `md:`.
+- **Dos azules:** `--brand-accent` para fondos y botones con texto blanco, y
+  `--brand-accent-text` para texto (más luminoso en modo oscuro). Un solo tono
+  no puede cumplir 4,5:1 en los dos casos.
+- **Un solo fondo para toda la web:** `src/components/ui/BrandOrbs.tsx` (orbe
+  azul a la izquierda, morado a la derecha). Las páginas no ponen fondo propio
+  en su contenedor, porque taparía los orbes. En modo claro: azul claro `#60a5fa`
+  y el morado original `#7c3aed` (más tenues en celular).
 - **Orbes de fondo quietos en celular** (<768px) y con "reducir movimiento".
 - **Dominio único en `src/lib/site.ts` (`SITE_URL`)**: lo usan el sitemap,
   `robots.txt` y las vistas previas (`metadataBase`). Si cambia el dominio, se
@@ -111,6 +131,8 @@ agregar notas.
 - [ ] Footer: logo como botón "Volver arriba" (pedido del webmaster).
 - [ ] Colores del robot y franja blanca: se cambian en el editor de Spline, no en código.
 - [ ] Probar en un celular real si el robot del Inicio impide bajar la página al deslizar sobre él.
+- [ ] Revisar en localhost los arreglos de la auditoría y publicarlos (commit + push) si todo se ve bien.
+- [ ] Confirmar el texto "Soluciones Realidad" del hero de /proyectos (¿"Reales"?).
 - [ ] Avisar a Google Search Console del nuevo sitemap
       (`https://ieee.cis.uni.edu.pe/sitemap.xml`), si el capítulo tiene acceso.
 - [ ] Datos en Supabase: despublicar "Publicación de prueba" del blog; completar
@@ -122,6 +144,40 @@ agregar notas.
 
 > Al cerrar cada conversación, agregar una entrada arriba de la anterior
 > (fecha, qué se hizo, decisiones, pendientes nuevos).
+
+### 2026-11-08 — Arreglos de la auditoría (en revisión local, sin publicar)
+
+- Se aplicaron los arreglos P1 y P2 del informe (detalle y números en
+  [docs/auditoria-ui-2026-11-08.md](docs/auditoria-ui-2026-11-08.md)). Avisos del
+  detector: 281 → 67 en computadora, 335 → 66 en celular.
+- Decisiones nuevas: el acento azul del modo claro es `#0452C4` y sigue al tema;
+  colores de estado en variables `--status-*`; mínimo de texto 11 px; el menú
+  de hamburguesa se usa hasta 1280 px (la barra completa no cabía en tablets).
+- Fondo unificado: todas las páginas usan `BrandOrbs` (orbes azul y morado del
+  Inicio) en claro y oscuro; se quitó el degradado celeste de las páginas con
+  red neuronal. Contraste: 0 avisos en computadora y 2 en el límite en celular.
+- Animaciones revisadas: hover de 300 ms, zoom de imágenes de 500 ms,
+  cascadas de 60–80 ms, sin `Reveal` doble en el Inicio. Cambio de tema parejo
+  (View Transition + `.theme-switching`).
+- Texto azul: usar `text-brand-accent-text` (en modo oscuro es `#2f86ff`); el
+  fondo y los botones siguen con `bg-brand-accent`. Contraste: 0 fallas en los
+  dos temas.
+- Quedan sin tocar a propósito: la identidad visual (P3) y el texto
+  "Soluciones Realidad" hasta que se confirme.
+
+### 2026-11-08 — Auditoría de UI/UX con las skills
+
+- Se corrió `impeccable audit` (más mobile-native, review-animations y break-ui)
+  sobre la web en vivo. Puntaje: **14/20 (Bueno)**. Informe completo y orden de
+  arreglos en [docs/auditoria-ui-2026-11-08.md](docs/auditoria-ui-2026-11-08.md).
+- Problemas más importantes: contraste del texto secundario en modo claro, y
+  títulos de Contacto y Proyectos que chocan con la imagen a 1280 px.
+
+### 2026-11-08 — Skills de diseño
+
+- Se copiaron a `.claude/` las skills y agentes de diseño UI/UX de
+  `arness_inicial` (`impeccable` y relacionadas). El agente `disenador` se
+  adaptó para leer `MEMORIA.md` en vez de `PROYECTO.md`.
 
 ### 2026-11-08 — Fondo de redes neuronales en celular y revisión general
 

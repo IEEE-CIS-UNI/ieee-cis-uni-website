@@ -9,6 +9,7 @@ import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import { Project } from "@/types/database";
 import { normalizeUrl } from "@/lib/url";
 import { ProjectAuthor } from "@/lib/authors";
+import BrandOrbs from "@/components/ui/BrandOrbs";
 
 interface ProjectDetailViewProps {
   project: Project;
@@ -21,14 +22,16 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
   const demoLink = normalizeUrl(project.demo_link);
 
   return (
-    <div className="relative overflow-hidden about-page-bg min-h-screen">
+    <div className="relative overflow-hidden about-page-bg min-h-svh">
+      {/* Mismo fondo de marca que el Inicio; la red neuronal va encima */}
+      <BrandOrbs />
       <div className="fixed inset-0 z-0 pointer-events-none">
         <NeuralNetworkBackground />
         <div className="absolute inset-0 md:backdrop-blur-[2px] bg-[var(--brand-accent)]/5" />
         <div className="absolute inset-0 about-radial-gradient" />
       </div>
 
-      <main className="relative z-10 min-h-screen pt-32 pb-20 px-6 md:px-12 lg:px-24">
+      <main className="relative z-10 min-h-svh pt-32 pb-20 px-6 md:px-12 lg:px-24">
         <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -48,7 +51,7 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
           >
             <div className="flex flex-wrap gap-2 mb-8">
               {(project.tags || []).map(tag => (
-                <span key={tag} className="text-[10px] font-black text-brand-accent bg-brand-accent/10 px-4 py-1.5 rounded-full uppercase tracking-widest border border-brand-accent/20">
+                <span key={tag} className="max-w-full break-words text-[11px] font-black text-brand-accent-text bg-brand-accent/10 px-4 py-1.5 rounded-full uppercase tracking-widest border border-brand-accent/20">
                   {tag}
                 </span>
               ))}
@@ -84,7 +87,7 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
               <section className="mt-10 md:mt-12" aria-labelledby="equipo-proyecto">
                 <h2
                   id="equipo-proyecto"
-                  className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.25em] text-brand-accent mb-5"
+                  className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.25em] text-brand-accent-text mb-5"
                 >
                   <HiUserGroup className="text-base" />
                   Equipo del proyecto
@@ -99,7 +102,7 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
                         {author.image_url ? (
                           <Image src={author.image_url} alt={author.nombre} fill sizes="44px" className="object-cover" />
                         ) : (
-                          <span className="text-brand-accent font-black text-base uppercase">
+                          <span className="text-brand-accent-text font-black text-base uppercase">
                             {author.nombre.charAt(0)}
                           </span>
                         )}
@@ -116,7 +119,7 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`LinkedIn de ${author.nombre}`}
-                          className="p-1.5 -m-1.5 shrink-0 text-[var(--brand-text-muted)] hover:text-brand-accent transition-colors"
+                          className="p-1.5 -m-1.5 shrink-0 text-[var(--brand-text-muted)] hover:text-brand-accent-text transition-colors"
                         >
                           <FaLinkedin size={18} />
                         </a>
@@ -135,7 +138,7 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
             transition={{ delay: 0.4 }}
             className="relative group lg:sticky lg:top-32"
           >
-            <div className="absolute -inset-10 bg-brand-accent/20 blur-[100px] rounded-full -z-10 group-hover:bg-brand-accent/30 transition-all duration-700" />
+            <div className="absolute -inset-10 bg-brand-accent/20 blur-[100px] rounded-full -z-10 group-hover:bg-brand-accent/30 transition duration-500" />
 
             {/* Con imagen, el recuadro toma la forma de la imagen (vertical u horizontal)
                 con un tope de alto; sin imagen, se mantiene el recuadro 4:3 del placeholder.
@@ -161,7 +164,7 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
                     width={1200}
                     height={900}
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="relative w-auto h-auto max-w-full max-h-[60vh] lg:max-h-[620px] object-contain p-4 md:p-6 transition-transform duration-700 group-hover:scale-105"
+                    className="relative w-auto h-auto max-w-full max-h-[60vh] lg:max-h-[620px] object-contain p-4 md:p-6 transition-transform duration-500 group-hover:scale-105"
                     priority
                   />
                 </>
@@ -169,14 +172,14 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[var(--brand-surface)] to-[var(--brand-background)]">
                   <div className="relative">
                     <div className="absolute inset-0 bg-brand-accent rounded-full blur-3xl opacity-20 animate-pulse" />
-                    <HiLightningBolt className="text-[10rem] text-brand-accent relative z-10" />
+                    <HiLightningBolt className="text-[10rem] text-brand-accent-text relative z-10" />
                   </div>
                   <p className="text-[var(--brand-text-muted)] font-black uppercase tracking-[0.3em] text-xs mt-8">Proyecto Tech</p>
                 </div>
               )}
 
               {/* Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-background)]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-background)]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
 
             {/* Decorative Tech Elements */}

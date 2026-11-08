@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeProvider from "@/components/ThemeProvider";
 import SplineErrorSuppressor from "@/components/SplineErrorSuppressor";
+import MotionProvider from "@/components/MotionProvider";
 import { SITE_URL } from "@/lib/site";
 
 const poppins = Poppins({ 
@@ -12,6 +13,14 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-poppins",
 });
+
+// Barra del navegador del celular con el color de fondo de la web (claro/oscuro)
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#EEF3FF" },
+    { media: "(prefers-color-scheme: dark)", color: "#000711" },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -54,14 +63,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="scroll-smooth dark" data-scroll-behavior="smooth" suppressHydrationWarning>
-      <body className={`${poppins.className} bg-[var(--brand-background)] text-[var(--brand-text)] min-h-screen flex flex-col transition-colors duration-400`} suppressHydrationWarning>
+      <body className={`${poppins.className} bg-[var(--brand-background)] text-[var(--brand-text)] min-h-svh flex flex-col transition-colors duration-400`} suppressHydrationWarning>
         <ThemeProvider>
-          <SplineErrorSuppressor />
-          <Navbar />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
+          <MotionProvider>
+            <SplineErrorSuppressor />
+            <Navbar />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

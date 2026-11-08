@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import MemberPlaceholder from "@/components/ui/MemberPlaceholder";
 import { motion } from "framer-motion";
 import { FaLinkedin } from "react-icons/fa";
 import { Member } from "@/types/database";
@@ -19,7 +20,7 @@ const SIZE_STYLES = {
     wrapper: "w-36 sm:w-40 md:w-48",
     image: "w-20 h-20 md:w-24 md:h-24",
     name: "text-sm md:text-base font-bold",
-    role: "text-[10px] md:text-[11px]",
+    role: "text-[11px]",
     card: "p-4 md:p-5 rounded-2xl",
     ring: "ring-2",
   },
@@ -28,7 +29,7 @@ const SIZE_STYLES = {
     wrapper: "w-32 sm:w-36 md:w-40",
     image: "w-14 h-14 md:w-16 md:h-16",
     name: "text-xs md:text-sm font-bold",
-    role: "text-[9px] md:text-[10px]",
+    role: "text-[11px]",
     card: "p-3 md:p-4 rounded-xl",
     ring: "ring-[1.5px]",
   },
@@ -36,7 +37,7 @@ const SIZE_STYLES = {
     wrapper: "w-32 md:w-36",
     image: "w-11 h-11 md:w-12 md:h-12",
     name: "text-[11px] md:text-xs font-semibold",
-    role: "text-[8px] md:text-[9px]",
+    role: "text-[11px]",
     card: "p-2.5 md:p-3 rounded-xl",
     ring: "ring-[1px]",
   },
@@ -65,7 +66,7 @@ const OrgNode = ({
           border border-[var(--brand-border)]
           hover:border-opacity-80
           shadow-lg hover:shadow-xl
-          transition-all duration-300 ease-out
+          transition duration-300 ease-out
           hover:-translate-y-1
           cursor-default
         `}
@@ -77,20 +78,24 @@ const OrgNode = ({
         <div
           className={`
             relative ${s.image} rounded-full overflow-hidden mb-3
-            transition-all duration-300
+            transition duration-300
           `}
           style={{
             outline: `${size === "lg" ? "2px" : "1.5px"} solid ${accentColor}`,
             outlineOffset: "3px",
           }}
         >
-          <Image
-            src={member.image_url || "/images/placeholder-member.png"}
-            alt={member.nombre}
-            fill
-            sizes="96px"
-            className="object-cover grayscale-[0.15] group-hover:grayscale-0 transition-all duration-500"
-          />
+          {member.image_url ? (
+            <Image
+              src={member.image_url}
+              alt={member.nombre}
+              fill
+              sizes="96px"
+              className="object-cover grayscale-[0.15] group-hover:grayscale-0 transition duration-500"
+            />
+          ) : (
+            <MemberPlaceholder label={`Sin foto de ${member.nombre}`} />
+          )}
           {/* Subtle glow overlay on hover */}
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-full"
@@ -120,7 +125,7 @@ const OrgNode = ({
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`LinkedIn de ${member.nombre}`}
-            className="mt-2 p-1 text-[var(--brand-text-muted)] hover:text-brand-accent transition-colors md:opacity-0 md:group-hover:opacity-100 duration-300"
+            className="mt-2 p-1 text-[var(--brand-text-muted)] hover:text-brand-accent-text transition-colors md:opacity-0 md:group-hover:opacity-100 duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             <FaLinkedin size={size === "lg" ? 14 : 12} />

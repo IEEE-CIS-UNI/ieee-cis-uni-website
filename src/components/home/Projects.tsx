@@ -43,30 +43,30 @@ const Projects = () => {
   }, []);
 
   const headerLeftVariants: Variants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    hidden: { opacity: 0, x: -24 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   const headerRightVariants: Variants = {
-    hidden: { opacity: 0, x: 50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    hidden: { opacity: 0, x: 24 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   const cardContainerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.3 }
+      transition: { staggerChildren: 0.08, delayChildren: 0.1 }
     }
   };
 
   const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 50, scale: 0.95 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: "easeOut" } }
+    hidden: { opacity: 0, y: 24, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   return (
-    <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden min-h-[60vh]">
+    <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden min-h-[60svh]">
 
       {/* Contenido principal — relative z-10 para quedar encima del fondo */}
       <div className="relative z-10 max-w-7xl mx-auto">
@@ -78,12 +78,12 @@ const Projects = () => {
             viewport={{ once: true, amount: 0.2 }}
             className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0"
           >
-            <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
+            <h2 className="text-sm font-bold text-brand-accent-text uppercase tracking-widest mb-4">
               Nuestro Portafolio
             </h2>
             <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
               Proyectos que{" "}
-              <em className="not-italic italic text-brand-accent text-5xl md:text-6xl lg:text-7xl font-extrabold">
+              <em className="not-italic italic text-brand-accent-text text-5xl md:text-6xl lg:text-7xl font-extrabold">
                 Impactan
               </em>
             </h3>
@@ -137,7 +137,7 @@ const Projects = () => {
                 <div className="w-16 h-16 bg-[var(--brand-card)] rounded-2xl flex items-center justify-center text-[var(--brand-text-muted)] mx-auto mb-4 shadow-sm">
                   <HiCode size={32} />
                 </div>
-                <p className="text-[var(--brand-text-muted)] opacity-70">No hay proyectos destacados por el momento.</p>
+                <p className="text-[var(--brand-text-muted)] ">No hay proyectos destacados por el momento.</p>
               </div>
             )}
           </>

@@ -4,21 +4,22 @@ import Team from "@/components/home/Team";
 import Projects from "@/components/home/Projects";
 import Events from "@/components/home/Events";
 import Blog from "@/components/home/Blog";
-import Reveal from "@/components/ui/Reveal";
+import BrandOrbs from "@/components/ui/BrandOrbs";
 
 export default function Home() {
   return (
-    <div className="relative w-full min-h-screen">
+    <div className="relative w-full min-h-svh">
       {/* Fondo de Orbes fijo global */}
-      <div className="hero-orb-a fixed top-1/4 -left-20 w-[600px] h-[600px] bg-brand-accent rounded-full blur-[160px] opacity-50 -z-20 pointer-events-none" />
-      <div className="hero-orb-b fixed bottom-1/4 -right-20 w-[600px] h-[600px] rounded-full blur-[140px] opacity-40 -z-20 pointer-events-none" style={{ backgroundColor: "#7C3AED" }} />
+      <BrandOrbs />
 
       <Hero />
-      <Reveal><About /></Reveal>
-      <Reveal><Team /></Reveal>
-      <Reveal><Projects /></Reveal>
-      <Reveal><Events /></Reveal>
-      <Reveal><Blog /></Reveal>
+      {/* Sin <Reveal>: cada sección ya tiene su propia entrada; envolverlas
+          hacía que todo entrara dos veces (la sección subía y sus tarjetas se deslizaban). */}
+      <About />
+      <Team />
+      <Projects />
+      <Events />
+      <Blog />
     </div>
   );
 }

@@ -34,14 +34,14 @@ const ProjectCard = ({
 }: ProjectCardProps) => {
   const status = toStatus(estado);
   const statusColors = {
-    Desarrollo: "text-amber-400 bg-amber-400/10 border-amber-400/20",
-    Completado: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
-    Beta: "text-brand-accent bg-brand-accent/10 border-brand-accent/20"
+    Desarrollo: "text-[var(--status-warning)] bg-[var(--status-warning)]/10 border-[var(--status-warning)]/20",
+    Completado: "text-[var(--status-success)] bg-[var(--status-success)]/10 border-[var(--status-success)]/20",
+    Beta: "text-brand-accent-text bg-brand-accent/10 border-brand-accent/20"
   };
 
   return (
     <Link href={link}>
-      <div className="group relative flex flex-col h-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-3xl overflow-hidden transition-all duration-300 hover:border-brand-accent/30 hover:shadow-[0_0_40px_rgba(6,107,243,0.15)] cursor-pointer hover:-translate-y-2.5">
+      <div className="group relative flex flex-col h-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-3xl overflow-hidden transition duration-300 hover:border-brand-accent/30 hover:shadow-[0_0_40px_rgba(6,107,243,0.15)] cursor-pointer hover:-translate-y-2.5">
         {/* Image Section */}
         <div className="relative aspect-[3/4] overflow-hidden bg-[var(--brand-surface)]">
           {image ? (
@@ -56,12 +56,12 @@ const ProjectCard = ({
                 alt={title}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-contain transition-transform duration-700 group-hover:scale-105"
+                className="object-contain transition-transform duration-500 group-hover:scale-105"
               />
             </>
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-secondary/20 to-brand-background group-hover:scale-110 transition-transform duration-700">
-              <HiLightningBolt className="text-6xl text-brand-accent/40" />
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-accent/15 to-[var(--brand-surface)] group-hover:scale-110 transition-transform duration-300">
+              <HiLightningBolt className="text-6xl text-brand-accent-text/40" />
             </div>
           )}
           
@@ -74,7 +74,7 @@ const ProjectCard = ({
           </div>
           
           {/* Status Badge */}
-          <div className={`absolute top-4 left-4 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter border backdrop-blur-md ${statusColors[status]}`}>
+          <div className={`absolute top-4 left-4 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-tighter border backdrop-blur-md ${statusColors[status]}`}>
             {status}
           </div>
         </div>
@@ -82,19 +82,19 @@ const ProjectCard = ({
         {/* Content Section */}
         <div className="p-6 md:p-8 flex flex-col flex-grow">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-brand-accent">
+            <span className="text-brand-accent-text">
               <HiLightningBolt size={18} />
             </span>
-            <span className="text-[10px] font-bold text-[var(--brand-text-muted)] opacity-70 uppercase tracking-[0.2em]">
+            <span className="text-[11px] font-bold text-[var(--brand-text-muted)] uppercase tracking-[0.2em]">
               {category}
             </span>
           </div>
 
-          <h3 className="text-2xl font-black text-[var(--brand-text)] mb-3 tracking-tight group-hover:text-brand-accent transition-colors drop-shadow-sm">
+          <h3 className="text-2xl font-black text-[var(--brand-text)] mb-3 tracking-tight group-hover:text-brand-accent-text transition-colors drop-shadow-sm">
             {title}
           </h3>
           
-          <p className="text-[var(--brand-text-muted)] opacity-80 text-sm leading-relaxed mb-6 line-clamp-3">
+          <p className="text-[var(--brand-text-muted)] text-sm leading-relaxed mb-6 line-clamp-3">
             {description}
           </p>
 
@@ -102,13 +102,13 @@ const ProjectCard = ({
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-6">
               {tags.map((tag, idx) => (
-                <span key={idx} className="text-[9px] font-bold text-[var(--brand-text-muted)] bg-[var(--brand-surface)] px-2 py-1 rounded-md border border-[var(--brand-border)] uppercase shadow-sm">
+                <span key={idx} className="max-w-full truncate text-[11px] font-bold text-[var(--brand-text-muted)] bg-[var(--brand-surface)] px-2 py-1 rounded-md border border-[var(--brand-border)] uppercase shadow-sm">
                   {tag}
                 </span>
               ))}
             </div>
 
-            <div className="inline-flex items-center gap-2 text-xs font-black text-[var(--brand-text)] uppercase tracking-widest group-hover:text-brand-accent transition-colors">
+            <div className="inline-flex items-center gap-2 text-xs font-black text-[var(--brand-text)] uppercase tracking-widest group-hover:text-brand-accent-text transition-colors">
               Explorar Proyecto 
               <HiArrowRight className="transition-transform duration-300 group-hover:translate-x-2" />
             </div>

@@ -101,9 +101,9 @@ const EventCalendar = () => {
         
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-black text-[var(--brand-text)] mb-4 tracking-tighter uppercase">
-            Calendario de <span className="text-brand-accent">Actividades</span>
+            Calendario de <span className="text-brand-accent-text">Actividades</span>
           </h2>
-          <p className="text-[var(--brand-text-muted)] opacity-80 max-w-2xl mx-auto">
+          <p className="text-[var(--brand-text-muted)] max-w-2xl mx-auto">
             Explora las fechas clave de nuestra comunidad. Haz clic en los días marcados para ver el detalle de cada evento.
           </p>
         </div>
@@ -124,19 +124,19 @@ const EventCalendar = () => {
               <button
                 onClick={prevMonth}
                 aria-label="Mes anterior"
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-[var(--brand-surface)] text-[var(--brand-text)] hover:text-brand-accent hover:-translate-x-1 transition-all"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-[var(--brand-surface)] text-[var(--brand-text)] hover:text-brand-accent-text hover:-translate-x-1 transition"
               >
                 <HiChevronLeft size={24} />
               </button>
 
               <h3 className="text-lg sm:text-2xl font-black text-[var(--brand-text)] uppercase tracking-wider sm:tracking-widest">
-                {monthNames[currentMonth]} <span className="text-brand-accent">{currentYear}</span>
+                {monthNames[currentMonth]} <span className="text-brand-accent-text">{currentYear}</span>
               </h3>
 
               <button
                 onClick={nextMonth}
                 aria-label="Mes siguiente"
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-[var(--brand-surface)] text-[var(--brand-text)] hover:text-brand-accent hover:translate-x-1 transition-all"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center bg-[var(--brand-surface)] text-[var(--brand-text)] hover:text-brand-accent-text hover:translate-x-1 transition"
               >
                 <HiChevronRight size={24} />
               </button>
@@ -145,7 +145,7 @@ const EventCalendar = () => {
             {/* Days of week */}
             <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-4">
               {daysOfWeek.map((day, idx) => (
-                <div key={idx} className="text-center font-bold text-[var(--brand-text-muted)] text-[10px] sm:text-xs sm:tracking-widest uppercase">
+                <div key={idx} className="text-center font-bold text-[var(--brand-text-muted)] text-[11px] sm:text-xs sm:tracking-widest uppercase">
                   {day}
                 </div>
               ))}
@@ -168,7 +168,7 @@ const EventCalendar = () => {
                   <button
                     key={`day-${day}`}
                     onClick={() => handleDayClick(day)}
-                    className={`relative h-11 sm:h-12 md:h-16 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center transition-all hover:scale-105 active:scale-95 ${
+                    className={`relative h-11 sm:h-12 md:h-16 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center transition hover:scale-105 active:scale-95 ${
                       isSelected
                         ? 'bg-brand-accent text-white shadow-[0_0_20px_rgba(6,107,243,0.4)]'
                         : hasEvents
@@ -176,7 +176,7 @@ const EventCalendar = () => {
                           : 'text-[var(--brand-text)] hover:bg-[var(--brand-surface)]'
                     }`}
                   >
-                    <span className={`text-sm md:text-lg font-bold ${isToday && !isSelected ? 'text-brand-accent' : ''}`}>
+                    <span className={`text-sm md:text-lg font-bold ${isToday && !isSelected ? 'text-brand-accent-text' : ''}`}>
                       {day}
                     </span>
 
@@ -196,11 +196,11 @@ const EventCalendar = () => {
           {/* Right: Selected Day Events */}
           <div ref={detailRef} className="lg:col-span-1 relative scroll-mt-28">
             {/* Panel: date selected */}
-            <div className={`transition-all duration-300 ${selectedDate ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-5 pointer-events-none absolute inset-0'} h-full`}>
+            <div className={`transition duration-300 ${selectedDate ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-5 pointer-events-none absolute inset-0'} h-full`}>
               {selectedDate && (
                 <>
                   <h4 className="text-xl font-bold text-[var(--brand-text)] mb-6 flex items-center gap-2">
-                    <HiCalendar className="text-brand-accent" />
+                    <HiCalendar className="text-brand-accent-text" />
                     {selectedDate.getDate()} de {monthNames[selectedDate.getMonth()]}
                   </h4>
 
@@ -225,7 +225,7 @@ const EventCalendar = () => {
                     </div>
                   ) : (
                     <div className="bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-sm rounded-[2rem] p-8 text-center">
-                      <p className="text-[var(--brand-text-muted)] opacity-80">
+                      <p className="text-[var(--brand-text-muted)] ">
                         No hay eventos programados para este día.
                       </p>
                     </div>
@@ -235,12 +235,12 @@ const EventCalendar = () => {
             </div>
 
             {/* Panel: no date selected */}
-            <div className={`transition-all duration-300 ${!selectedDate ? 'opacity-100' : 'opacity-0 pointer-events-none absolute inset-0'} h-full flex flex-col items-center justify-center bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-sm rounded-[3rem] p-12 text-center`}>
+            <div className={`transition duration-300 ${!selectedDate ? 'opacity-100' : 'opacity-0 pointer-events-none absolute inset-0'} h-full flex flex-col items-center justify-center bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-sm rounded-[3rem] p-12 text-center`}>
               <div className="w-20 h-20 bg-[var(--brand-surface)] rounded-full flex items-center justify-center mb-6 text-[var(--brand-text-muted)] opacity-50">
                 <HiCalendar size={32} />
               </div>
               <h4 className="text-[var(--brand-text)] font-bold text-lg mb-2">Selecciona un día</h4>
-              <p className="text-[var(--brand-text-muted)] opacity-70 text-sm">
+              <p className="text-[var(--brand-text-muted)] text-sm">
                 Haz clic en cualquier día del calendario para ver los eventos programados.
               </p>
             </div>

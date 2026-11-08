@@ -72,25 +72,25 @@ const Events = () => {
 
   const headerVariants: Variants = {
     hidden: { opacity: 0, scale: 0.9 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } }
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   const listVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.2 }
+      transition: { staggerChildren: 0.08, delayChildren: 0.1 }
     }
   };
 
   const ticketVariants: Variants = {
-    hidden: { opacity: 0, x: 100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6, type: "spring", bounce: 0.3 } }
+    hidden: { opacity: 0, x: 32 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, type: "spring", bounce: 0.3 } }
   };
 
   const ctaVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.5 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut", delay: 0.5 } }
   };
 
   return (
@@ -105,12 +105,12 @@ const Events = () => {
           viewport={{ once: true, amount: 0.2 }}
           className="text-center mb-16"
         >
-          <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
+          <h2 className="text-sm font-bold text-brand-accent-text uppercase tracking-widest mb-4">
             {showingPast ? "Eventos Recientes" : "Próximos Eventos"}
           </h2>
           <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
             Eventos que{" "}
-            <em className="not-italic italic text-brand-accent text-5xl md:text-6xl lg:text-7xl font-extrabold">
+            <em className="not-italic italic text-brand-accent-text text-5xl md:text-6xl lg:text-7xl font-extrabold">
               Inspiran
             </em>
           </h3>

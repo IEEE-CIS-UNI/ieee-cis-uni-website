@@ -28,13 +28,13 @@ const Footer = () => {
             </p>
             {/* Social Media */}
             <div className="flex items-center gap-4 pt-2">
-              <a href={process.env.NEXT_PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--brand-card)] border border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:text-white hover:bg-gradient-to-tr hover:from-pink-500 hover:to-orange-400 hover:border-transparent transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+              <a href={process.env.NEXT_PUBLIC_INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--brand-card)] border border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:text-white hover:bg-gradient-to-tr hover:from-pink-500 hover:to-orange-400 hover:border-transparent transition duration-300 transform hover:-translate-y-1 hover:shadow-lg">
                 <FaInstagram size={18} />
               </a>
-              <a href={process.env.NEXT_PUBLIC_LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--brand-card)] border border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:text-white hover:bg-[#0A66C2] hover:border-transparent transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+              <a href={process.env.NEXT_PUBLIC_LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--brand-card)] border border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:text-white hover:bg-[#0A66C2] hover:border-transparent transition duration-300 transform hover:-translate-y-1 hover:shadow-lg">
                 <FaLinkedin size={18} />
               </a>
-              <a href={process.env.NEXT_PUBLIC_FACEBOOK_URL} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--brand-card)] border border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:text-white hover:bg-[#1877F2] hover:border-transparent transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+              <a href={process.env.NEXT_PUBLIC_FACEBOOK_URL} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--brand-card)] border border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:text-white hover:bg-[#1877F2] hover:border-transparent transition duration-300 transform hover:-translate-y-1 hover:shadow-lg">
                 <FaFacebook size={18} />
               </a>
             </div>
@@ -82,7 +82,7 @@ const Footer = () => {
 
             <Link 
               href="/contacto"
-              className="group relative inline-flex items-center justify-center gap-3 px-8 py-3.5 text-sm font-semibold text-white transition-all duration-300 rounded-full overflow-hidden bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-cyan-400 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:-translate-y-1 w-full sm:w-auto"
+              className="group relative inline-flex items-center justify-center gap-3 px-8 py-3.5 text-sm font-semibold text-white transition duration-300 rounded-full overflow-hidden bg-gradient-to-r from-blue-700 to-blue-600 hover:from-blue-700 hover:to-indigo-600 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:-translate-y-1 w-full sm:w-auto"
             >
               <span className="relative z-10">Contáctanos ahora</span>
               <FaArrowRight className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-300" />
@@ -93,7 +93,7 @@ const Footer = () => {
 
         {/* Bottom part: Copyright and Institutional Logos */}
         <div className="pt-8 border-t border-[var(--brand-border)]/50 flex flex-col-reverse md:flex-row items-center justify-between gap-6">
-          <p className="text-[var(--brand-text-muted)] opacity-60 text-sm">
+          <p className="text-[var(--brand-text-muted)] text-sm">
             © {new Date().getFullYear()} IEEE Computational Intelligence Society UNI. Todos los derechos reservados.
           </p>
           
@@ -103,14 +103,14 @@ const Footer = () => {
               alt="IEEE Logo"
               width={100}
               height={25}
-              className="h-6 w-auto object-contain opacity-40 hover:opacity-100 transition-all duration-300 logo-adaptive grayscale hover:grayscale-0"
+              className="h-6 w-auto object-contain opacity-40 hover:opacity-100 transition duration-300 logo-adaptive grayscale hover:grayscale-0"
             />
             <Image
               src="/images/logo_uni_white.png"
               alt="UNI Logo"
               width={80}
               height={30}
-              className="h-8 w-auto object-contain opacity-40 hover:opacity-100 transition-all duration-300 logo-adaptive grayscale hover:grayscale-0"
+              className="h-8 w-auto object-contain opacity-40 hover:opacity-100 transition duration-300 logo-adaptive grayscale hover:grayscale-0"
             />
           </div>
         </div>

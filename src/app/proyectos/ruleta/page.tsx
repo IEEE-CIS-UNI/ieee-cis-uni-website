@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { HiArrowLeft } from "react-icons/hi";
+import BrandOrbs from "@/components/ui/BrandOrbs";
 
 // Paleta de colores para nuevos elementos
 const COLORS = [
@@ -181,13 +182,12 @@ export default function RuletaPage() {
   };
 
   return (
-    <div className="relative min-h-screen pt-28 pb-16 px-4 sm:px-6 md:px-12 flex flex-col items-center justify-center overflow-hidden text-[var(--brand-text)]">
-      {/* Fondo orbes (azul y fucsia) */}
-      <div className="hero-orb-a absolute top-1/3 -left-40 w-[600px] h-[600px] bg-brand-accent rounded-full blur-[160px] opacity-100 -z-10" />
-      <div className="hero-orb-b absolute bottom-1/4 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-100 -z-10" style={{ backgroundColor: "#7C3AED" }} />
+    <div className="relative min-h-svh pt-28 pb-16 px-4 sm:px-6 md:px-12 flex flex-col items-center justify-center overflow-hidden text-[var(--brand-text)]">
+      {/* Mismo fondo de marca que el resto de la web */}
+      <BrandOrbs />
 
       <div className="w-full max-w-6xl mx-auto mb-8 relative z-10">
-        <Link href="/proyectos" className="inline-flex items-center text-sm font-bold text-[var(--brand-text-muted)] hover:text-brand-accent transition-colors">
+        <Link href="/proyectos" className="inline-flex items-center text-sm font-bold text-[var(--brand-text-muted)] hover:text-brand-accent-text transition-colors">
           <HiArrowLeft className="mr-2" /> Volver a Proyectos
         </Link>
       </div>
@@ -270,7 +270,7 @@ export default function RuletaPage() {
             <textarea 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full text-2xl md:text-3xl font-black text-[var(--brand-text)] text-center bg-transparent border border-transparent hover:border-[var(--brand-border)] focus:border-brand-accent/50 rounded-lg outline-none resize-none overflow-hidden transition-all placeholder-[var(--brand-text-muted)] placeholder-opacity-40"
+              className="w-full text-2xl md:text-3xl font-black text-[var(--brand-text)] text-center bg-transparent border border-transparent hover:border-[var(--brand-border)] focus:border-brand-accent/50 rounded-lg outline-none resize-none overflow-hidden transition placeholder-[var(--brand-text-muted)] placeholder-opacity-40"
               rows={2}
               placeholder="Escribe el título aquí..."
             />
@@ -284,7 +284,7 @@ export default function RuletaPage() {
             <button
               onClick={spinWheel}
               disabled={spinning}
-              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[52px] h-[52px] rounded-full bg-[#0077cc] border-4 border-white flex items-center justify-center text-xl z-20 shadow-[0_0_20px_rgba(0,119,204,0.7)] transition-all hover:scale-110 active:scale-95 text-white ${spinning ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
+              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[52px] h-[52px] rounded-full bg-[#0077cc] border-4 border-white flex items-center justify-center text-xl z-20 shadow-[0_0_20px_rgba(0,119,204,0.7)] transition hover:scale-110 active:scale-95 text-white ${spinning ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
             >
               {spinning ? '⏳' : '🎤'}
             </button>
@@ -292,12 +292,12 @@ export default function RuletaPage() {
 
           {/* Resultado */}
           <div
-            className={`w-full max-w-[340px] rounded-2xl p-4 text-center border transition-all duration-300 mb-8 flex flex-col items-center justify-center gap-1 min-h-[80px]
+            className={`w-full max-w-[340px] rounded-2xl p-4 text-center border transition duration-300 mb-8 flex flex-col items-center justify-center gap-1 min-h-[80px]
               ${result ? 'border-[#FFD700]/60 bg-[#FFD700]/10 shadow-[0_0_20px_rgba(255,215,0,0.2)]' : 'border-[#0077cc]/40 bg-[#0077cc]/15'}`}
           >
             <span className="text-[11px] text-[var(--brand-text-muted)] uppercase tracking-widest">el turno es de...</span>
             <span
-              className="text-2xl font-black transition-all"
+              className="text-2xl font-black transition"
               style={{ color: result ? result.color : 'var(--brand-text)' }}
             >
               {result ? result.label : '— — —'}
@@ -311,7 +311,7 @@ export default function RuletaPage() {
                     setRawText(parsed.join("\n"));
                     setResult(null);
                   }}
-                  className="text-[10px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 hover:text-red-300 transition-colors"
+                  className="text-[11px] uppercase tracking-wider font-semibold px-3 py-1.5 rounded-lg bg-[var(--status-danger)]/10 text-[var(--status-danger)] border border-[var(--status-danger)]/30 hover:bg-[var(--status-danger)]/20 transition-colors"
                 >
                   Eliminar de la ruleta
                 </button>
@@ -330,13 +330,13 @@ export default function RuletaPage() {
               onChange={(e) => setRawText(e.target.value)}
               disabled={spinning}
               placeholder="Ejemplo: Azul, Amarillo, Negro&#10;o sepáralos por Enter"
-              className="w-full bg-[var(--brand-background)]/80 border border-[var(--brand-border)] rounded-xl px-4 py-3 text-sm disabled:opacity-60 focus:outline-none focus:border-brand-accent text-[var(--brand-text)] resize-y min-h-[120px] custom-scrollbar placeholder:text-[var(--brand-text-muted)] placeholder:opacity-50"
+              className="w-full bg-[var(--brand-background)]/80 border border-[var(--brand-border)] rounded-xl px-4 py-3 text-base sm:text-sm disabled:opacity-60 focus:outline-none focus:border-brand-accent text-[var(--brand-text)] resize-y min-h-[120px] custom-scrollbar placeholder:text-[var(--brand-text-muted)] placeholder:opacity-50"
             />
 
             <div className="text-center mt-4">
               <button
                 onClick={restoreAll}
-                className="text-xs text-[var(--brand-text-muted)] border border-[var(--brand-border)] rounded-lg px-4 py-1.5 hover:text-brand-accent hover:border-brand-accent/50 transition-all"
+                className="text-xs text-[var(--brand-text-muted)] border border-[var(--brand-border)] rounded-lg px-4 py-1.5 hover:text-brand-accent-text hover:border-brand-accent/50 transition"
               >
                 ↺ Limpiar Historial
               </button>
@@ -349,7 +349,7 @@ export default function RuletaPage() {
               <div className="text-xs text-[var(--brand-text-muted)] uppercase tracking-widest text-center mb-2">Historial de turnos</div>
               <div className="flex flex-wrap justify-center gap-1.5">
                 {history.map((h, i) => (
-                  <div key={i} className="text-[10px] px-2.5 py-1 rounded-full border border-[var(--brand-border)] text-[var(--brand-text-muted)] bg-[var(--brand-background)]/50">
+                  <div key={i} className="text-[11px] px-2.5 py-1 rounded-full border border-[var(--brand-border)] text-[var(--brand-text-muted)] bg-[var(--brand-background)]/50">
                     {i + 1}. {h.label}
                   </div>
                 ))}

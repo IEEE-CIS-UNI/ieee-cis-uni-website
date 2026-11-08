@@ -57,26 +57,26 @@ const Blog = () => {
   };
 
   const headerLeftVariants: Variants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    hidden: { opacity: 0, x: -24 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   const headerRightVariants: Variants = {
-    hidden: { opacity: 0, x: 50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    hidden: { opacity: 0, x: 24 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   const gridVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.3, delayChildren: 0.2 }
+      transition: { staggerChildren: 0.08, delayChildren: 0.1 }
     }
   };
 
   const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 50, rotate: -2 },
-    visible: { opacity: 1, y: 0, rotate: 0, transition: { duration: 0.7, type: "spring", bounce: 0.4 } }
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0, rotate: 0, transition: { duration: 0.5, type: "spring", bounce: 0.4 } }
   };
 
   return (
@@ -92,12 +92,12 @@ const Blog = () => {
             viewport={{ once: true, amount: 0.2 }}
             className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0"
           >
-            <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
+            <h2 className="text-sm font-bold text-brand-accent-text uppercase tracking-widest mb-4">
               Blog & Noticias
             </h2>
             <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
               Artículos{" "}
-              <em className="not-italic italic text-brand-accent text-5xl md:text-6xl lg:text-7xl font-extrabold">
+              <em className="not-italic italic text-brand-accent-text text-5xl md:text-6xl lg:text-7xl font-extrabold">
                 Recientes
               </em>
             </h3>
@@ -155,7 +155,7 @@ const Blog = () => {
                 <div className="w-16 h-16 bg-[var(--brand-card)] rounded-2xl flex items-center justify-center text-[var(--brand-text-muted)] mx-auto mb-4 shadow-sm">
                   <HiBookOpen size={32} />
                 </div>
-                <p className="text-[var(--brand-text-muted)] opacity-70">Sin artículos publicados recientemente.</p>
+                <p className="text-[var(--brand-text-muted)] ">Sin artículos publicados recientemente.</p>
               </div>
             )}
           </>

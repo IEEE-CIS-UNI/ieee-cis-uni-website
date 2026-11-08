@@ -6,8 +6,16 @@
 @theme {
   --color-brand-background: #000711;
   --color-brand-secondary: #01357B;
-  --color-brand-accent: #066BF3;
   --color-brand-text: #FFFFFF;
+}
+
+/* El acento sigue al tema (oscuro/claro): `inline` hace que las utilidades
+   (text-brand-accent, bg-brand-accent/10, ...) lean var(--brand-accent). */
+@theme inline {
+  --color-brand-accent: var(--brand-accent);
+  /* Azul para TEXTO: en modo oscuro es más luminoso que el de los botones
+     (#056cf2 sobre el fondo casi negro daba 4.27:1; el mínimo es 4.5:1). */
+  --color-brand-accent-text: var(--brand-accent-text);
 }
 
 :root {
@@ -27,6 +35,13 @@
   --logo-filter: none;
   /* Scroll thumb */
   --scroll-thumb: rgba(255, 255, 255, 0.1);
+  /* Colores de estado (insignias): claros sobre fondo oscuro */
+  /* Azul para texto (5.75:1 sobre el fondo) y para etiquetas chicas */
+  --brand-accent-text: #2f86ff;
+  --brand-accent-label: #2f86ff;
+  --status-success: #34d399;
+  --status-warning: #fbbf24;
+  --status-danger: #f87171;
 }
 
 /* ============================================================
@@ -37,9 +52,12 @@
   --brand-background: #EEF3FF;
   --brand-surface: #E2EAFF;
   --brand-secondary: #C5D6FF;
-  --brand-accent: #066BF3;
+  /* Un poco más oscuro que en modo oscuro: 6.3:1 sobre el fondo claro (antes 4.3:1) */
+  --brand-accent: #0452C4;
   --brand-text: #0A1628;
-  --brand-text-muted: rgba(10, 22, 40, 0.55);
+  /* 0.76 ≈ 7.5:1 sobre el fondo (antes 0.55 ≈ 3.9:1, no cumplía WCAG AA);
+     mantiene 4.5:1 también sobre el orbe morado */
+  --brand-text-muted: rgba(10, 22, 40, 0.76);
   --brand-border: rgba(6, 107, 243, 0.15);
   --brand-card: rgba(198, 218, 255, 0.5);
   --brand-card-hover: rgba(198, 218, 255, 0.8);
@@ -49,6 +67,13 @@
   /* Invert white logos to dark so they're visible on light background */
   --logo-filter: brightness(0) saturate(100%) invert(8%) sepia(50%) saturate(800%) hue-rotate(195deg) brightness(92%);
   --scroll-thumb: rgba(6, 107, 243, 0.2);
+  /* En modo claro, tonos oscuros para llegar a 4.5:1 */
+  --brand-accent-text: #0452C4;
+  /* Etiquetas chicas sobre los orbes: un poco más profundo (≈5.3:1 en celular) */
+  --brand-accent-label: #03449f;
+  --status-success: #065f46;
+  --status-warning: #b45309;
+  --status-danger: #b91c1c;
 }
 
 /* ============================================================
@@ -61,6 +86,25 @@
 html,
 body {
   overflow-x: clip;
+}
+
+/* Celular: sin destello azul al tocar, sin inflar el texto al girar la pantalla,
+   y toques sin el retraso de doble-toque en controles. */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+a,
+button,
+[role="button"],
+summary {
+  touch-action: manipulation;
+}
+
+button {
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -102,7 +146,7 @@ body {
   background: var(--scroll-thumb);
   border-radius: 20px;
   border: 3px solid var(--brand-background);
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -136,7 +180,7 @@ body {
   isolation: isolate;          /* crea stacking context propio */
   cursor: pointer;
   transition:
-    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
     color 0.25s ease;
 }
 
@@ -189,7 +233,7 @@ body {
   opacity: 0;                                  /* invisible por defecto */
   transition:
     opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   z-index: -1;
   pointer-events: none;
 }
@@ -296,13 +340,40 @@ body {
   will-change: transform, opacity;
 }
 
+/* Modo claro: orbes más tenues. Detrás del texto del Inicio, el morado intenso
+   dejaba el contraste en 2,9:1; con esta opacidad el texto llega a 4,5:1. */
+@keyframes orb-breathe-a-light {
+  0%, 100% { transform: scale(1);    opacity: 0.35; }
+  50%       { transform: scale(1.12); opacity: 0.5; }
+}
+@keyframes orb-breathe-b-light {
+  0%, 100% { transform: scale(1);    opacity: 0.6; }
+  50%       { transform: scale(1.08); opacity: 0.8; }
+}
+:root:not(.dark) .hero-orb-a { opacity: 0.35; animation-name: orb-breathe-a-light; }
+:root:not(.dark) .hero-orb-b { opacity: 0.6; animation-name: orb-breathe-b-light; }
+/* En modo claro los orbes usan tonos luminosos (azul y violeta claros): el
+   acento del texto es más oscuro (#0452C4) y una bruma de ese mismo azul
+   oscuro detrás del texto le quitaba contraste. */
+:root:not(.dark) .hero-orb-a { background-color: #60a5fa !important; }
+:root:not(.dark) .hero-orb-b { background-color: #7c3aed !important; }
+
+/* Celular en modo claro: los orbes (600px) cubren casi toda la pantalla y el
+   texto azul quedaba encima del orbe azul; más tenues para mantener 4.5:1. */
+@media (max-width: 767px) {
+  :root:not(.dark) .hero-orb-a { opacity: 0.2; }
+  :root:not(.dark) .hero-orb-b { opacity: 0.22; }
+}
+
 /* Orbes quietos (va después de .hero-orb-a/b para poder anular su animación):
    - quien pide menos movimiento en el sistema operativo;
    - celulares: animar círculos de 600px con blur de 140–160px gasta mucha GPU
      y batería, y sobre el fondo de red neuronal causaba tirones al hacer scroll. */
 @media (prefers-reduced-motion: reduce), (max-width: 767px) {
   .hero-orb-a,
-  .hero-orb-b {
+  .hero-orb-b,
+  :root:not(.dark) .hero-orb-a,
+  :root:not(.dark) .hero-orb-b {
     animation: none;
     will-change: auto;
   }
@@ -323,21 +394,26 @@ body {
    ABOUT PAGE RADIAL GRADIENT
    ============================================================ */
 .about-radial-gradient {
-  background: radial-gradient(ellipse at 60% 20%, transparent 20%, #00102a 85%);
+  /* Viñeta suave en los bordes (modo oscuro) para que la red neuronal no
+     compita con el texto; translúcida para que se vean los orbes de marca. */
+  background: radial-gradient(ellipse at 60% 20%, transparent 30%, rgba(0, 16, 42, 0.55) 95%);
 }
 
 .about-page-bg {
-  background-color: var(--brand-background);
+  /* Sin fondo propio: el color base lo pone <body> y así se ven los orbes
+     (BrandOrbs, -z-20). Antes, en modo claro, era un degradado celeste
+     distinto al del Inicio y el cambio entre páginas se sentía brusco. */
+  background: transparent;
 }
+
+/* Red neuronal de fondo: en modo claro, más tenue para que los textos azules
+   que caen encima de los nodos azules sigan legibles. */
+.neural-canvas { opacity: 0.8; }
+:root:not(.dark) .neural-canvas { opacity: 0.5; }
 
 :root:not(.dark) .about-radial-gradient {
-  /* En modo claro, difuminado radial con bordes en cian/celeste para dar ese toque tecnológico iluminado */
-  background: radial-gradient(ellipse at 60% 20%, transparent 20%, #7dd3fc 95%);
-}
-
-:root:not(.dark) .about-page-bg {
-  /* Gradiente lineal vibrante para el fondo base en modo claro */
-  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #38bdf8 100%);
+  /* Modo claro: sin viñeta; el fondo es el mismo del Inicio */
+  background: none;
 }
 
 /* ============================================================
@@ -359,4 +435,35 @@ body {
 
 .animate-fade-in-scale {
   animation: fadeInScale 0.3s ease-out both;
+}
+
+/* Cambio de tema (ThemeProvider): sin transiciones individuales mientras
+   cambia, para que todo cambie a la vez; el fundido general lo hace la
+   View Transition de la raíz. */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 250ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Reducir movimiento: pulsos, rebotes y ondas decorativas se detienen
+   (los spinners de carga siguen, porque informan que algo está pasando). */
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse,
+  .animate-bounce,
+  .animate-ping {
+    animation: none;
+  }
+}
+
+/* Reducir movimiento: se mantiene el fundido, se quita el desplazamiento/escala */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes fadeInUp { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeInScale { from { opacity: 0; } to { opacity: 1; } }
 }

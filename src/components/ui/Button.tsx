@@ -20,7 +20,8 @@ const Button = ({
   size = "md",
   icon,
 }: ButtonProps) => {
-  const baseStyles = "inline-flex items-center justify-center font-bold transition-all transform hover:scale-105 active:scale-95 rounded-lg group";
+  // Hover y presión sutiles (2% / 3%), respuesta rápida al presionar
+  const baseStyles = "inline-flex items-center justify-center font-bold transition duration-200 ease-out hover:scale-[1.02] active:scale-[0.97] active:duration-100 rounded-lg group";
   
   const variants = {
     primary: "bg-brand-accent text-white hover:bg-brand-accent/90",

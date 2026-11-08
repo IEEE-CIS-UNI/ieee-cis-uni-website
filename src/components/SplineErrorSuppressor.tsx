@@ -13,6 +13,9 @@ export default function SplineErrorSuppressor() {
         file.includes("splinetool") ||
         file.includes("@spline") ||
         (msg.includes("position") && file.includes("runtime")) ||
+        // En producción el bundle está minificado: el archivo no dice "runtime",
+        // pero el error de Spline siempre nace en su bucle de cuadros (`onFrame`).
+        (msg.includes("reading 'position'") && String(event.error?.stack ?? "").includes("onFrame")) ||
         msg.includes("Missing property") ||
         msg.includes("buildTimeline")
       ) {

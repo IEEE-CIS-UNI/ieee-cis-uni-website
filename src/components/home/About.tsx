@@ -9,7 +9,7 @@
  *    "capitulo" → "capítulo"  |  "Ingenieria" → "Ingeniería"
  *
  * 2. JERARQUÍA VISUAL EN EL TÍTULO
- *    La palabra "Innovación" usa <em> con font-serif + italic + text-brand-accent
+ *    La palabra "Innovación" usa <em> con font-serif + italic + text-brand-accent-text
  *    para destacarla visualmente (mismo truco que "el futuro" en el Hero).
  *
  * 3. MEJOR LEGIBILIDAD
@@ -53,18 +53,18 @@ const About = () => {
   ];
 
   const leftColVariants: Variants = {
-    hidden: { x: -100, opacity: 0 },
+    hidden: { x: -32, opacity: 0 },
     visible: { 
       x: 0, opacity: 1, 
-      transition: { duration: 0.8, ease: "easeOut" } 
+      transition: { duration: 0.5, ease: "easeOut" } 
     }
   };
 
   const rightColVariants: Variants = {
-    hidden: { x: 100, opacity: 0 },
+    hidden: { x: 32, opacity: 0 },
     visible: { 
       x: 0, opacity: 1, 
-      transition: { duration: 0.8, ease: "easeOut", staggerChildren: 0.2 } 
+      transition: { duration: 0.5, ease: "easeOut", staggerChildren: 0.08 } 
     }
   };
 
@@ -94,7 +94,7 @@ const About = () => {
           >
 
             {/* Eyebrow label */}
-            <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
+            <h2 className="text-sm font-bold text-brand-accent-text uppercase tracking-widest mb-4">
               Sobre Nosotros
             </h2>
 
@@ -103,7 +103,7 @@ const About = () => {
              */}
             <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-6 leading-tight">
               Compromiso con la Excelencia e{" "}
-              <em className="not-italic italic text-brand-accent text-5xl md:text-6xl lg:text-7xl font-extrabold">
+              <em className="not-italic italic text-brand-accent-text text-5xl md:text-6xl lg:text-7xl font-extrabold">
                 Innovación
               </em>
             </h3>

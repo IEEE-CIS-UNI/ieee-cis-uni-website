@@ -36,7 +36,7 @@ const Navbar = () => {
 
   return (
       <nav
-        className={`fixed w-full z-50 transition-all duration-300 ${scrolled
+        className={`fixed w-full z-50 transition-[padding,background-color,box-shadow,backdrop-filter] duration-300 ${scrolled
             ? "bg-[var(--brand-navbar-bg)] backdrop-blur-md py-4 shadow-lg"
             : "bg-transparent py-6"
           }`}
@@ -56,7 +56,7 @@ const Navbar = () => {
               </Link>
             </div>
 
-            <div className="hidden md:block">
+            <div className="hidden xl:block">
               {/* Liquid Glass nav row: space-x-1 para que los pills queden juntos pero no superpuestos */}
               <div className="ml-10 flex items-center space-x-1">
                 {navigationData.navbar.map((item) => (
@@ -84,7 +84,7 @@ const Navbar = () => {
                 <button
                   onClick={toggleTheme}
                   aria-label="Cambiar tema"
-                  className="relative w-10 h-10 rounded-full border border-[var(--brand-border)] bg-[var(--brand-card)] hover:border-brand-accent/50 hover:bg-[var(--brand-card-hover)] transition-all duration-300 flex items-center justify-center group overflow-hidden"
+                  className="relative w-10 h-10 rounded-full border border-[var(--brand-border)] bg-[var(--brand-card)] hover:border-brand-accent/50 hover:bg-[var(--brand-card-hover)] transition duration-300 flex items-center justify-center group overflow-hidden"
                 >
                   <AnimatePresence mode="wait" initial={false}>
                     {theme === "dark" ? (
@@ -105,7 +105,7 @@ const Navbar = () => {
                         animate={{ rotate: 0, opacity: 1, scale: 1 }}
                         exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute text-brand-accent"
+                        className="absolute text-brand-accent-text"
                       >
                         <HiMoon size={18} />
                       </motion.span>
@@ -123,7 +123,7 @@ const Navbar = () => {
               </div>
             </div>
 
-            <div className="md:hidden flex items-center gap-3">
+            <div className="xl:hidden flex items-center gap-3">
               {/* Mobile Theme Toggle */}
               <button
                 onClick={toggleTheme}
@@ -149,7 +149,7 @@ const Navbar = () => {
                       animate={{ rotate: 0, opacity: 1 }}
                       exit={{ rotate: -90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute text-brand-accent"
+                      className="absolute text-brand-accent-text"
                     >
                       <HiMoon size={16} />
                     </motion.span>
@@ -173,7 +173,7 @@ const Navbar = () => {
         {/* max-h con scroll interno: en un celular horizontal el menú ya no se corta */}
         <div
           id="mobile-menu"
-          className={`md:hidden absolute w-full bg-[var(--brand-navbar-bg)] backdrop-blur-xl transition-all duration-300 ease-in-out ${isOpen ? "max-h-[calc(100dvh-4rem)] overflow-y-auto opacity-100 py-6 shadow-lg" : "max-h-0 opacity-0 overflow-hidden pointer-events-none"
+          className={`xl:hidden absolute w-full bg-[var(--brand-navbar-bg)] backdrop-blur-xl transition-[max-height,opacity,padding] duration-300 ease-out ${isOpen ? "max-h-[calc(100dvh-4rem)] overflow-y-auto opacity-100 py-6 shadow-lg" : "max-h-0 opacity-0 overflow-hidden pointer-events-none"
             }`}
         >
           <div className="px-4 space-y-4">
@@ -183,9 +183,9 @@ const Navbar = () => {
                 href={item.path}
                 onClick={() => setIsOpen(false)}
                 aria-current={isActive(item.path) ? "page" : undefined}
-                className={`block hover:text-brand-accent text-lg font-medium py-2 border-b border-[var(--brand-border)] ${
+                className={`block hover:text-brand-accent-text text-lg font-medium py-2 border-b border-[var(--brand-border)] ${
                   isActive(item.path)
-                    ? "text-brand-accent border-l-2 border-l-brand-accent pl-3"
+                    ? "text-brand-accent-text border-l-2 border-l-brand-accent pl-3"
                     : "text-[var(--brand-text)]"
                 }`}
               >

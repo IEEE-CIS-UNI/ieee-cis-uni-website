@@ -3,6 +3,7 @@ import Stats from "@/components/about/Stats";
 import GlobalCIS from "@/components/about/GlobalCIS";
 import Institutional from "@/components/about/Institutional";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
+import BrandOrbs from "@/components/ui/BrandOrbs";
 
 export const metadata = {
   title: "Nosotros",
@@ -16,6 +17,8 @@ export default function AboutPage() {
            El contenedor está fijo para que permanezca en la pantalla
            mientras se hace scroll por el contenido.
       ─────────────────────────────────────────────────────────────────── */}
+      {/* Mismo fondo de marca que el Inicio; la red neuronal va encima */}
+      <BrandOrbs />
       <div className="fixed inset-0 z-0 pointer-events-none">
         <NeuralNetworkBackground />
         {/* Capa de difuminado muy suave para no ocultar la red */}

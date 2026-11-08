@@ -30,12 +30,12 @@ const Institutional = () => {
     <section className="py-12 md:py-24 px-6 md:px-12 lg:px-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
+          <h2 className="text-sm font-bold text-brand-accent-text uppercase tracking-widest mb-4">
             Respaldo Institucional
           </h2>
           <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-8 drop-shadow-sm">
             Nuestra{" "}
-            <em className="not-italic italic text-brand-accent text-5xl md:text-6xl font-extrabold">
+            <em className="not-italic italic text-brand-accent-text text-5xl md:text-6xl font-extrabold">
               Red
             </em>
           </h3>
@@ -57,8 +57,8 @@ const Institutional = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              className={`p-6 md:p-10 rounded-2xl md:rounded-3xl bg-[var(--brand-card)] border border-[var(--brand-border)] backdrop-blur-md flex flex-col items-center text-center group hover:border-brand-accent/40 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(6,107,243,0.1)] shadow-sm transition-all cursor-pointer ${
+              transition={{ delay: index * 0.08 }}
+              className={`p-6 md:p-10 rounded-2xl md:rounded-3xl bg-[var(--brand-card)] border border-[var(--brand-border)] backdrop-blur-md flex flex-col items-center text-center group hover:border-brand-accent/40 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(6,107,243,0.1)] shadow-sm transition cursor-pointer ${
                 index === 2 ? "sm:col-span-2 lg:col-span-1" : ""
               }`}
             >
@@ -71,12 +71,12 @@ const Institutional = () => {
                   className="w-auto h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity logo-adaptive"
                 />
               </div>
-              <h4 className="text-lg md:text-xl font-bold text-[var(--brand-text)] mb-2 md:mb-4 group-hover:text-brand-accent transition-colors">{body.name}</h4>
-              <p className="text-[var(--brand-text-muted)] opacity-80 text-sm leading-relaxed mb-6 md:mb-8">
+              <h4 className="text-lg md:text-xl font-bold text-[var(--brand-text)] mb-2 md:mb-4 group-hover:text-brand-accent-text transition-colors">{body.name}</h4>
+              <p className="text-[var(--brand-text-muted)] text-sm leading-relaxed mb-6 md:mb-8">
                 {body.description}
               </p>
               <div className="mt-auto pt-4 md:pt-6 border-t border-[var(--brand-border)] w-full flex justify-center">
-                <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-brand-accent">
+                <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-brand-accent-text">
                   Visitar sitio
                   <HiExternalLink className="text-base group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </span>

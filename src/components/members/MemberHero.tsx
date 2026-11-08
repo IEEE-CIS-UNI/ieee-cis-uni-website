@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const MemberHero = () => {
   return (
-    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center overflow-hidden">
+    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80svh] flex items-center overflow-hidden">
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -14,15 +14,15 @@ const MemberHero = () => {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.5 }}
             >
-              <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
+              <span className="text-[var(--brand-accent-label)] font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Nuestra Comunidad
               </span>
               <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
                 <span className="block text-[var(--brand-text)]">El Talento</span>
                 <span className="block text-[var(--brand-text)]">Detrás de la</span>
-                <span className="block italic text-brand-accent lg:text-[90px]">Innovación.</span>
+                <span className="block italic text-brand-accent-text lg:text-[90px]">Innovación.</span>
               </h1>
               <p className="text-xl text-[var(--brand-text-muted)] leading-relaxed mb-8">
                 Conoce a los estudiantes e investigadores que conforman el capítulo CIS UNI. Un equipo multidisciplinario dedicado al avance de la inteligencia computacional.
@@ -35,7 +35,7 @@ const MemberHero = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.6 }}
               className="relative group"
             >
 
@@ -50,7 +50,7 @@ const MemberHero = () => {
                   width={900}
                   height={600}
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-1000 ease-out rounded-3xl"
+                  className="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-500 ease-out rounded-3xl"
                   priority
                 />
               </div>

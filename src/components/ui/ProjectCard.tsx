@@ -13,7 +13,7 @@ interface ProjectCardProps {
 const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps) => {
   return (
     <Link href={link || "#"}>
-      <div className="group relative bg-[var(--brand-card)] rounded-3xl border border-[var(--brand-border)] overflow-hidden hover:border-brand-accent/30 transition-all duration-500 cursor-pointer h-full">
+      <div className="group relative bg-[var(--brand-card)] rounded-3xl border border-[var(--brand-border)] overflow-hidden hover:border-brand-accent/30 transition duration-300 cursor-pointer h-full">
         {/* Editorial Background Gradient */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/5 rounded-full blur-[80px] -z-10 group-hover:bg-brand-accent/10 transition-colors" />
         
@@ -35,11 +35,11 @@ const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps
                 alt={title}
                 fill
                 sizes="(max-width: 640px) 100vw, 50vw"
-                className="object-contain pt-4 lg:pt-6 group-hover:scale-105 transition-transform duration-700"
+                className="object-contain pt-4 lg:pt-6 group-hover:scale-105 transition-transform duration-500"
               />
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--brand-card)] to-[var(--brand-surface)] pt-4 lg:pt-6 group-hover:scale-105 transition-transform duration-700">
-                <HiLightningBolt className="text-5xl text-brand-accent/30" />
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--brand-card)] to-[var(--brand-surface)] pt-4 lg:pt-6 group-hover:scale-105 transition-transform duration-300">
+                <HiLightningBolt className="text-5xl text-brand-accent-text/30" />
               </div>
             )}
           </div>
@@ -49,20 +49,20 @@ const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-3 lg:mb-4">
                 {tags.map((tag, index) => (
-                  <span key={index} className="text-[10px] font-bold uppercase tracking-widest text-brand-accent/80 bg-brand-accent/10 px-2 py-1 rounded">
+                  <span key={index} className="max-w-full truncate text-[11px] font-bold uppercase tracking-widest text-brand-accent-text bg-brand-accent/10 px-2 py-1 rounded">
                     {tag}
                   </span>
                 ))}
               </div>
             )}
-            <h4 className="text-xl lg:text-2xl font-bold text-[var(--brand-text)] mb-2 lg:mb-3 group-hover:text-brand-accent transition-colors leading-tight">
+            <h4 className="text-xl lg:text-2xl font-bold text-[var(--brand-text)] mb-2 lg:mb-3 group-hover:text-brand-accent-text transition-colors leading-tight">
               {title}
             </h4>
             <p className="text-[var(--brand-text-muted)] text-sm leading-relaxed mb-5 lg:mb-6 flex-grow line-clamp-3 lg:line-clamp-none">
               {description}
             </p>
 
-            <div className="inline-flex items-center text-sm font-bold text-[var(--brand-text)] group-hover:text-brand-accent transition-colors mt-auto">
+            <div className="inline-flex items-center text-sm font-bold text-[var(--brand-text)] group-hover:text-brand-accent-text transition-colors mt-auto">
               Ver detalles
               <HiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </div>

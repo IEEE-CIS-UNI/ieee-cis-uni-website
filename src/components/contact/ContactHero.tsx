@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const ContactHero = () => {
   return (
-    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center">
+    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80svh] flex items-center">
       {/* Fondo manejado globalmente en page.tsx */}
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
@@ -15,14 +15,16 @@ const ContactHero = () => {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.5 }}
             >
-              <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
+              <span className="text-[var(--brand-accent-label)] font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Contáctanos
               </span>
               <h1 className="font-extrabold leading-[1] tracking-tight mb-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
                 <span className="block text-[var(--brand-text)] lg:text-[60px]">Establezcamos la</span>
-                <span className="block italic text-brand-accent lg:text-[120px]">
+                {/* clamp: en laptops (1024–1440px) la palabra se ajusta al ancho de la columna
+                    y no se mete debajo del mapa; desde ~1470px vuelve a 120px. */}
+                <span className="block italic text-brand-accent-text lg:text-[clamp(4.5rem,calc(9.6vw-1.75rem),7.5rem)]">
                   Conexión.
                 </span>
               </h1>
@@ -37,11 +39,11 @@ const ContactHero = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.6 }}
               className="relative group"
             >
               {/* Outer Glow */}
-              <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-700" />
+              <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-500" />
 
               {/* Frame Container - Color Map */}
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-surface)] backdrop-blur-md">

@@ -51,7 +51,7 @@ const AboutHero = () => {
   }, [images.length]);
 
   return (
-    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80vh] flex items-center">
+    <section className="relative pt-28 pb-12 md:pt-36 md:pb-20 px-6 md:px-12 lg:px-24 min-h-[80svh] flex items-center">
       {/* Background Glows */}
       <div className="absolute top-1/4 -left-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-[120px] z-0 pointer-events-none" />
       
@@ -60,17 +60,17 @@ const AboutHero = () => {
           {/* Text Content */}
           <div className="text-center lg:text-left order-2 lg:order-1">
             <div className="animate-fade-in-up">
-              <span className="text-brand-accent font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
+              <span className="text-[var(--brand-accent-label)] font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Nuestra Identidad
               </span>
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
                 Impulsando la{" "}
-                <em className="not-italic italic text-brand-accent text-5xl sm:text-6xl md:text-8xl font-extrabold">
+                <em className="not-italic italic text-brand-accent-text text-5xl sm:text-6xl md:text-8xl font-extrabold">
                   Excelencia
                 </em>{" "}
                 e Innovación
               </h1>
-              <p className="text-xl text-[var(--brand-text-muted)] opacity-90 leading-relaxed mb-8">
+              <p className="text-xl text-[var(--brand-text-muted)] leading-relaxed mb-8">
                 Somos una comunidad de investigadores y apasionados por la inteligencia computacional que buscan dejar una huella en el mundo tecnológico desde la UNI.
               </p>
             </div>
@@ -80,7 +80,7 @@ const AboutHero = () => {
           <div className="order-1 lg:order-2">
             <div className="animate-fade-in-scale relative group">
               {/* Outer Glow - Softer and more atmospheric */}
-              <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-700" />
+              <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-500" />
 
               {/* Carrusel de Imágenes */}
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] backdrop-blur-md flex items-center justify-center group">
@@ -111,10 +111,10 @@ const AboutHero = () => {
 
                     {/* Large Central Icon (fallback) */}
                     <div className="relative z-10 flex flex-col items-center">
-                      <div className="w-24 h-24 bg-brand-accent/10 rounded-2xl flex items-center justify-center mb-4 border border-brand-accent/20 group-hover:scale-110 transition-transform duration-500">
-                        <HiUserGroup className="text-brand-accent text-5xl" />
+                      <div className="w-24 h-24 bg-brand-accent/10 rounded-2xl flex items-center justify-center mb-4 border border-brand-accent/20 group-hover:scale-110 transition-transform duration-300">
+                        <HiUserGroup className="text-brand-accent-text text-5xl" />
                       </div>
-                      <span className="text-[var(--brand-text-muted)] opacity-70 text-xs font-bold uppercase tracking-widest">
+                      <span className="text-[var(--brand-text-muted)] text-xs font-bold uppercase tracking-widest">
                         Cargando fotos...
                       </span>
                     </div>

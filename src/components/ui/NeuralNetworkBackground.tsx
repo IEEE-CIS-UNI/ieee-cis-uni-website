@@ -341,7 +341,7 @@ const NeuralNetworkBackground = () => {
       // oculta, así el canvas no cambia de tamaño al hacer scroll. Si el
       // navegador no soporta `lvh`, se ignora y queda h-full.
       style={{ pointerEvents: "none", height: "max(100%, 100lvh)" }}
-      className="absolute inset-x-0 top-0 w-full h-full opacity-80"
+      className="neural-canvas absolute inset-x-0 top-0 w-full h-full"
       aria-hidden="true"
     />
   );

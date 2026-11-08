@@ -1,6 +1,7 @@
 import BlogHero from "@/components/blog/BlogHero";
 import BlogGrid from "@/components/blog/BlogGrid";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
+import BrandOrbs from "@/components/ui/BrandOrbs";
 
 export const metadata = {
   title: "Blog",
@@ -9,11 +10,13 @@ export const metadata = {
 
 export default function BlogPage() {
   return (
-    <div className="relative overflow-hidden about-page-bg min-h-screen">
+    <div className="relative overflow-hidden about-page-bg min-h-svh">
       {/* ── Fondo dinámico: red neuronal interactiva ────────────────────────
            El contenedor está fijo para que permanezca en la pantalla
            mientras se hace scroll por el contenido.
       ─────────────────────────────────────────────────────────────────── */}
+      {/* Mismo fondo de marca que el Inicio; la red neuronal va encima */}
+      <BrandOrbs />
       <div className="fixed inset-0 z-0 pointer-events-none">
         <NeuralNetworkBackground />
         {/* Capa de difuminado muy suave para no ocultar la red */}

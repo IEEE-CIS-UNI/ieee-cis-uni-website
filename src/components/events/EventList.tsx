@@ -65,30 +65,30 @@ const EventList = () => {
   });
 
   return (
-    <section className="py-20 px-6 md:px-12 lg:px-24 relative min-h-[60vh]">
+    <section className="py-20 px-6 md:px-12 lg:px-24 relative min-h-[60svh]">
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Toolbar: Search and Filters Stacked */}
         <div className="flex flex-col items-center mb-16 gap-8">
           <div className="relative w-full max-w-xl group">
-            <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--brand-text-muted)] opacity-50 group-focus-within:text-brand-accent transition-colors" size={20} />
+            <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--brand-text-muted)] opacity-50 group-focus-within:text-brand-accent-text transition-colors" size={20} />
             <input 
               type="text" 
               placeholder="Buscar por evento, ponente o lugar..."
-              className="w-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-full py-4 pl-12 pr-6 text-[var(--brand-text)] placeholder:text-[var(--brand-text-muted)] focus:outline-none focus:border-brand-accent/50 focus:bg-[var(--brand-surface)] transition-all text-center"
+              className="w-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-full py-4 pl-12 pr-6 text-[var(--brand-text)] placeholder:text-[var(--brand-text-muted)] focus:outline-none focus:border-brand-accent/50 focus:bg-[var(--brand-surface)] transition text-center"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
-          <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+          <div className="flex w-full max-w-full flex-wrap justify-center gap-2 md:gap-3">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-4 sm:px-8 py-2.5 rounded-full text-[10px] sm:text-xs font-bold transition-all border tracking-widest ${
+                className={`max-w-full truncate px-4 sm:px-8 py-2.5 rounded-full text-[11px] sm:text-xs font-bold transition border tracking-widest ${
                   filter === cat 
                   ? "bg-brand-accent border-brand-accent text-white" 
-                  : "bg-transparent border-[var(--brand-border)] text-[var(--brand-text-muted)] opacity-70 hover:opacity-100 hover:border-brand-accent/30 hover:text-[var(--brand-text)]"
+                  : "bg-transparent border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:text-[var(--brand-text)] hover:border-brand-accent/30 hover:text-[var(--brand-text)]"
                 }`}
               >
                 {cat}
@@ -134,7 +134,7 @@ const EventList = () => {
                   <HiCalendar size={40} />
                 </div>
                 <h3 className="text-xl font-bold text-[var(--brand-text)] mb-2 uppercase tracking-widest">Sin eventos</h3>
-                <p className="text-[var(--brand-text-muted)] opacity-70 max-w-xs mx-auto">No hay eventos programados en esta categoría por el momento.</p>
+                <p className="text-[var(--brand-text-muted)] max-w-xs mx-auto">No hay eventos programados en esta categoría por el momento.</p>
               </div>
             )}
           </>

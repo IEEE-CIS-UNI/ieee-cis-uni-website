@@ -20,9 +20,9 @@ const InstagramShowcase = () => {
 
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-black text-[var(--brand-text)] mb-4 tracking-tighter uppercase flex items-center justify-center gap-4">
-            <FaInstagram className="text-brand-accent" /> Nuestro <span className="text-brand-accent">Instagram</span>
+            <FaInstagram className="text-brand-accent-text" /> Nuestro <span className="text-brand-accent-text">Instagram</span>
           </h2>
-          <p className="text-[var(--brand-text-muted)] opacity-80 max-w-2xl mx-auto">
+          <p className="text-[var(--brand-text-muted)] max-w-2xl mx-auto">
             Síguenos para enterarte de nuestras últimas novedades, fotos de eventos y detrás de cámaras de nuestra comunidad.
           </p>
         </div>
@@ -47,7 +47,7 @@ const InstagramShowcase = () => {
                 alt={post.alt}
                 fill
                 sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-contain transition-transform duration-700 group-hover:scale-105"
+                className="object-contain transition-transform duration-500 group-hover:scale-105"
               />
 
               {/* Hover Overlay */}
@@ -65,7 +65,7 @@ const InstagramShowcase = () => {
             href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-sm rounded-full text-[var(--brand-text)] font-bold tracking-widest uppercase text-xs hover:bg-[var(--brand-surface)] hover:text-brand-accent hover:scale-105 active:scale-95 transition-all duration-200"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] shadow-sm rounded-full text-[var(--brand-text)] font-bold tracking-widest uppercase text-xs hover:bg-[var(--brand-surface)] hover:text-brand-accent-text hover:scale-105 active:scale-95 transition duration-200"
           >
             <FaInstagram size={18} /> Ver más en Instagram
           </a>

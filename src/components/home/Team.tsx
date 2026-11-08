@@ -43,25 +43,25 @@ const Team = () => {
 
   const headerVariants: Variants = {
     hidden: { opacity: 0, y: -40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   const gridVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+      transition: { staggerChildren: 0.06, delayChildren: 0.1 }
     }
   };
 
   const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 50, scale: 0.9 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } }
+    hidden: { opacity: 0, y: 24, scale: 0.9 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   const ctaVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.4 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut", delay: 0.4 } }
   };
 
   return (
@@ -76,7 +76,7 @@ const Team = () => {
           viewport={{ once: true, amount: 0.2 }}
           className="text-center mb-16"
         >
-          <h2 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4">
+          <h2 className="text-sm font-bold text-brand-accent-text uppercase tracking-widest mb-4">
             Nuestro Equipo
           </h2>
           <h3 className="text-4xl md:text-5xl font-bold text-[var(--brand-text)] mb-6 leading-tight drop-shadow-sm">
@@ -107,7 +107,7 @@ const Team = () => {
                   <MemberCard
                     name={member.nombre}
                     role={member.rol}
-                    image={member.image_url || "/images/placeholder-member.png"}
+                    image={member.image_url || ""}
                     linkedin={member.linkedin}
                     github={member.github}
                     interests={member.interests || []}
@@ -121,7 +121,7 @@ const Team = () => {
                 <div className="w-16 h-16 bg-[var(--brand-card)] rounded-2xl flex items-center justify-center text-[var(--brand-text-muted)] mx-auto mb-4 shadow-sm">
                   <HiUsers size={32} />
                 </div>
-                <p className="text-[var(--brand-text-muted)] opacity-70">Sin miembros de la directiva registrados actualmente.</p>
+                <p className="text-[var(--brand-text-muted)] ">Sin miembros de la directiva registrados actualmente.</p>
               </div>
             )}
           </>

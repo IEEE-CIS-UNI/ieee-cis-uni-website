@@ -65,7 +65,8 @@ const MemberDirectory = () => {
   });
 
   return (
-    <section className="py-20 px-6 md:px-12 lg:px-24 min-h-[60vh]">
+    <section className="py-20 px-6 md:px-12 lg:px-24 min-h-[60svh]" aria-labelledby="directorio-miembros">
+      <h2 id="directorio-miembros" className="sr-only">Directorio y organigrama</h2>
       <div className="max-w-7xl mx-auto">
 
         {/* ── View Tabs ──────────────────────────────────────────── */}
@@ -79,7 +80,7 @@ const MemberDirectory = () => {
                 className={`
                   relative flex items-center gap-2 px-6 py-2.5 rounded-full
                   text-xs font-bold uppercase tracking-widest
-                  transition-all duration-300
+                  transition duration-300
                   ${view === tab.id
                     ? "bg-brand-accent text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]"
                     : "text-[var(--brand-text-muted)] hover:text-[var(--brand-text)]"
@@ -105,22 +106,22 @@ const MemberDirectory = () => {
               className="flex flex-col items-center mb-16 gap-8 overflow-hidden"
             >
               <div className="relative w-full max-w-xl group">
-                <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--brand-text-muted)] group-focus-within:text-brand-accent transition-colors" size={20} />
+                <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--brand-text-muted)] group-focus-within:text-brand-accent-text transition-colors" size={20} />
                 <input 
                   type="text" 
                   placeholder="Buscar por nombre o cargo..."
-                  className="w-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-full py-4 pl-12 pr-6 text-[var(--brand-text)] placeholder:text-[var(--brand-text-muted)] focus:outline-none focus:border-brand-accent/50 focus:bg-[var(--brand-card-hover)] transition-all text-center shadow-sm"
+                  className="w-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] rounded-full py-4 pl-12 pr-6 text-[var(--brand-text)] placeholder:text-[var(--brand-text-muted)] focus:outline-none focus:border-brand-accent/50 focus:bg-[var(--brand-card-hover)] transition text-center shadow-sm"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
 
-              <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+              <div className="flex w-full max-w-full flex-wrap justify-center gap-2 md:gap-3">
                 {categories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setFilter(cat)}
-                    className={`px-4 sm:px-8 py-2.5 rounded-full text-[10px] sm:text-xs font-bold transition-all border tracking-widest backdrop-blur-md ${
+                    className={`max-w-full truncate px-4 sm:px-8 py-2.5 rounded-full text-[11px] sm:text-xs font-bold transition border tracking-widest backdrop-blur-md ${
                       filter === cat 
                       ? "bg-brand-accent border-brand-accent/50 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
                       : "bg-[var(--brand-surface)] border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:bg-[var(--brand-card-hover)] hover:text-[var(--brand-text)] hover:shadow-sm"
@@ -168,9 +169,10 @@ const MemberDirectory = () => {
                           transition={{ duration: 0.3 }}
                         >
                           <MemberCard 
+                            headingLevel="h3"
                             name={member.nombre}
                             role={member.rol}
-                            image={member.image_url || "/images/placeholder-member.png"}
+                            image={member.image_url || ""}
                             linkedin={member.linkedin}
                             github={member.github}
                             interests={member.interests || []}

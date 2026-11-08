@@ -42,13 +42,35 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     applyTheme(initial);
   }, []);
 
+  // Cambio de tema parejo: antes cada elemento cambiaba de color a su propio
+  // ritmo (sus transiciones iban de 150 a 1000 ms) y el cambio se veía
+  // desordenado. Ahora se pausan las transiciones durante el cambio y, si el
+  // navegador lo soporta, toda la página hace un solo fundido corto.
   const toggleTheme = () => {
-    setTheme((prev) => {
-      const next = prev === "dark" ? "light" : "dark";
+    const next: Theme = theme === "dark" ? "light" : "dark";
+    try {
       localStorage.setItem("ieee-theme", next);
+    } catch {
+      // modo privado / almacenamiento bloqueado: el tema igual cambia
+    }
+
+    const root = document.documentElement;
+    const swap = () => {
+      root.classList.add("theme-switching");
       applyTheme(next);
-      return next;
-    });
+      setTheme(next);
+      // Se quitan después de que el navegador pintó el tema nuevo
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => root.classList.remove("theme-switching"))
+      );
+    };
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduceMotion && typeof document.startViewTransition === "function") {
+      document.startViewTransition(swap);
+    } else {
+      swap();
+    }
   };
 
   return (

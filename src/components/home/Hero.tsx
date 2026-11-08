@@ -45,7 +45,7 @@ const Spline = dynamic(() => import("@splinetool/react-spline"), {
 //
 //  📌 COLOR DEL TEXTO
 //    • `text-[var(--brand-text)]`        → blanco/oscuro según tema
-//    • `text-brand-accent`               → azul IEEE (#2563EB aprox)
+//    • `text-brand-accent-text`               → azul IEEE (#2563EB aprox)
 //    • `text-[var(--brand-text-muted)]`  → gris suave
 //    • Puedes usar cualquier color Tailwind: text-white, text-blue-400…
 //
@@ -64,7 +64,7 @@ const Spline = dynamic(() => import("@splinetool/react-spline"), {
 
 const Hero = () => {
   return (
-    <section className="relative pt-28 pb-16 px-6 md:px-12 lg:px-24 min-h-[90vh] flex items-center overflow-hidden">
+    <section className="relative pt-28 pb-16 px-6 md:px-12 lg:px-24 min-h-[90svh] flex items-center overflow-hidden">
 
       {/* Fondo manejado globalmente en page.tsx */}
 
@@ -132,7 +132,7 @@ const Hero = () => {
               │                                                          │
               │  👉 COLOR por línea:                                     │
               │     Línea blanca  → `text-[var(--brand-text)]`           │
-              │     Línea azul    → `text-brand-accent`                  │
+              │     Línea azul    → `text-brand-accent-text`                  │
               │     Color custom  → `text-[#FF5733]`                     │
               │                                                          │
               │  👉 LÍNEA AZUL más grande (como en la imagen):           │
@@ -159,8 +159,8 @@ const Hero = () => {
               {/* Línea 3 — "el futuro." (azul + itálica) */}
               {/* 👉 Para hacerla más grande que las otras: agrega `lg:text-8xl` aquí */}
               {/* 👉 Para quitar la itálica: elimina la clase `italic` */}
-              {/* 👉 Color: `text-brand-accent` = azul IEEE */}
-              <span className="block italic text-brand-accent lg:text-[130px]">
+              {/* 👉 Color: `text-brand-accent-text` = azul IEEE */}
+              <span className="block italic text-brand-accent-text lg:text-[130px]">
                 el futuro.
               </span>
             </h1>
@@ -201,7 +201,7 @@ const Hero = () => {
               {/* Botón secundario — semi-transparente con icono play */}
               <Link
                 href="/nosotros"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] text-[var(--brand-text)] text-lg font-semibold hover:bg-[var(--brand-card-hover)] hover:border-brand-accent transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-[var(--brand-card)] backdrop-blur-md border border-[var(--brand-border)] text-[var(--brand-text)] text-lg font-semibold hover:bg-[var(--brand-card-hover)] hover:border-brand-accent transition duration-300 hover:scale-105 active:scale-95 shadow-sm"
               >
                 <span className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 text-blue-500">
                   <HiPlay size={10} className="ml-0.5" />
