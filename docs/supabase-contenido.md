@@ -38,6 +38,18 @@ Si no ves el cambio, recarga con **Ctrl + F5**.
 `practicis2.webp`) y actualiza la URL. Si sobrescribes el mismo archivo, la
 caché puede seguir mostrando la imagen vieja durante un tiempo.
 
+### Carruseles (sin tablas)
+
+Estos carruseles muestran **todas las imágenes de una carpeta**, en orden
+alfabético (máximo 10). Basta con subir o borrar archivos:
+
+| Carrusel | Bucket / carpeta |
+| --- | --- |
+| Hero de /nosotros | bucket `aboutus`, carpeta `about` |
+| Hero de /eventos | bucket `hero-eventos` (raíz) |
+
+Para elegir el orden, nómbralas `01-...`, `02-...`, etc.
+
 Las imágenes con fondo transparente (PNG/WebP) se adaptan al modo claro y al
 oscuro. Las imágenes verticales se muestran completas en el detalle del proyecto.
 
