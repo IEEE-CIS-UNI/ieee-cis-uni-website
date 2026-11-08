@@ -26,7 +26,7 @@ const BlogPostView = ({ post }: { post: BlogPostWithAuthor }) => {
     <div className="relative overflow-hidden about-page-bg min-h-screen">
       <div className="fixed inset-0 z-0 pointer-events-none">
         <NeuralNetworkBackground />
-        <div className="absolute inset-0 backdrop-blur-[2px] bg-[var(--brand-accent)]/5" />
+        <div className="absolute inset-0 md:backdrop-blur-[2px] bg-[var(--brand-accent)]/5" />
         <div className="absolute inset-0 about-radial-gradient" />
       </div>
 

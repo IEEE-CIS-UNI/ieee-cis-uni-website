@@ -64,6 +64,17 @@ agregar notas.
     del texto**. Lo pidió Ismael porque así funcionaba bien.
   - En **/proyectos** solo en escritorio; en celular sale `hero_image.png`
     porque esa escena pesa demasiado para el teléfono. Mantenerlo así.
+- **Fondo de redes neuronales (`NeuralNetworkBackground.tsx`):** la red se crea
+  una sola vez y solo se reubica al cambiar el tamaño. El canvas mide
+  `max(100%, 100lvh)` para que la barra del navegador del celular no lo
+  redimensione al hacer scroll (antes se reconstruía en cada scroll y
+  parpadeaba o desaparecía). Sin degradados por cuadro (sprite pre-renderizado),
+  30 fps en táctil, pausa si no se ve y responde al dedo. El desenfoque encima
+  (`backdrop-blur`) solo va desde `md:`.
+- **Orbes de fondo quietos en celular** (<768px) y con "reducir movimiento".
+- **Dominio único en `src/lib/site.ts` (`SITE_URL`)**: lo usan el sitemap,
+  `robots.txt` y las vistas previas (`metadataBase`). Si cambia el dominio, se
+  cambia solo ahí.
 - **Tags y categorías no se tocan en código:** los filtros se generan a partir
   de lo que se escriba en Supabase.
 - **Equipo del proyecto:** columna `proyectos.autores` (`text[]`), formato JSON
@@ -88,6 +99,10 @@ agregar notas.
   `console.error` en `Hero.tsx` silencian errores internos inofensivos del motor 3D.
 - **Verificar en celular:** el Chrome headless tiene un ancho mínimo de ~500px;
   para 390px usar puppeteer con `setViewport`.
+- **Caché de datos de Next:** las páginas estáticas guardan la respuesta de
+  Supabase. Todo lo que lea Supabase en el servidor necesita `revalidate`
+  (detalles 5 min, sitemap 1 h), o se queda con datos viejos hasta el
+  próximo deploy. Localmente: `rm -rf .next/cache/fetch-cache`.
 - **`ruleta.md`** en la raíz es el prototipo HTML original de la ruleta, no
   documentación.
 
@@ -96,6 +111,8 @@ agregar notas.
 - [ ] Footer: logo como botón "Volver arriba" (pedido del webmaster).
 - [ ] Colores del robot y franja blanca: se cambian en el editor de Spline, no en código.
 - [ ] Probar en un celular real si el robot del Inicio impide bajar la página al deslizar sobre él.
+- [ ] Avisar a Google Search Console del nuevo sitemap
+      (`https://ieee.cis.uni.edu.pe/sitemap.xml`), si el capítulo tiene acceso.
 - [ ] Datos en Supabase: despublicar "Publicación de prueba" del blog; completar
       enlaces faltantes de LinkedIn/GitHub en `miembros`.
 
@@ -105,6 +122,23 @@ agregar notas.
 
 > Al cerrar cada conversación, agregar una entrada arriba de la anterior
 > (fecha, qué se hizo, decisiones, pendientes nuevos).
+
+### 2026-11-08 — Fondo de redes neuronales en celular y revisión general
+
+- El fondo de redes neuronales parpadeaba o desaparecía en el celular porque
+  se reconstruía cada vez que la barra del navegador cambiaba de tamaño. Se
+  reescribió: red estable, más liviana (sin degradados por cuadro), 30 fps en
+  táctil, pausa cuando no se ve y responde al dedo. Con CPU 4× más lenta, el
+  peor tirón bajó de 250 ms a 133 ms.
+- Se quitó el `backdrop-blur` encima del fondo en celular y se frenaron los
+  orbes animados en pantallas chicas.
+- Bug de CSS: la regla de "reducir movimiento" estaba antes de la animación de
+  los orbes y nunca se aplicaba. Corregido.
+- SEO: el sitemap, `robots.txt` y las vistas previas apuntaban a
+  `ieeecisuni.vercel.app` (ya da 404). Ahora usan `ieee.cis.uni.edu.pe`, y el
+  sitemap se regenera cada hora (antes seguía mostrando `/proyectos/proyectos`).
+- Revisión: `tsc`, `eslint` y `next build` sin errores; las 9 páginas
+  recorridas en un celular simulado sin errores de consola ni desborde horizontal.
 
 ### 2026-11-04 / 08 — Bugs del webmaster, versión móvil y equipo del proyecto
 

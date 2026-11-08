@@ -69,14 +69,6 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Respetar a quien pide menos movimiento en el sistema operativo */
-@media (prefers-reduced-motion: reduce) {
-  .hero-orb-a,
-  .hero-orb-b {
-    animation: none;
-  }
-}
-
 /* ============================================================
    LOGO FILTER UTILITY
    Used on Navbar and Footer logo images
@@ -302,6 +294,18 @@ body {
   animation: orb-breathe-b 11s ease-in-out infinite;
   animation-delay: -4s;   /* empieza en mitad del ciclo para variedad */
   will-change: transform, opacity;
+}
+
+/* Orbes quietos (va después de .hero-orb-a/b para poder anular su animación):
+   - quien pide menos movimiento en el sistema operativo;
+   - celulares: animar círculos de 600px con blur de 140–160px gasta mucha GPU
+     y batería, y sobre el fondo de red neuronal causaba tirones al hacer scroll. */
+@media (prefers-reduced-motion: reduce), (max-width: 767px) {
+  .hero-orb-a,
+  .hero-orb-b {
+    animation: none;
+    will-change: auto;
+  }
 }
 
 /* ============================================================

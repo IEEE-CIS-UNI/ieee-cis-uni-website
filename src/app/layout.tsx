@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeProvider from "@/components/ThemeProvider";
 import SplineErrorSuppressor from "@/components/SplineErrorSuppressor";
+import { SITE_URL } from "@/lib/site";
 
 const poppins = Poppins({ 
   subsets: ["latin"],
@@ -13,6 +14,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "IEEE CIS UNI - Capítulo Estudiantil",
     template: "%s | IEEE CIS UNI"
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_PE",
-    url: "https://ieeecisuni.vercel.app",
+    url: SITE_URL,
     title: "IEEE CIS UNI - Computational Intelligence Society",
     description: "Innovación y tecnología en Inteligencia Computacional en la Universidad Nacional de Ingeniería.",
     siteName: "IEEE CIS UNI",

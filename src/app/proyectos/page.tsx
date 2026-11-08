@@ -18,7 +18,7 @@ export default function ProyectosPage() {
       <div className="fixed inset-0 z-0 pointer-events-none">
         <NeuralNetworkBackground />
         {/* Capa de difuminado muy suave para no ocultar la red */}
-        <div className="absolute inset-0 backdrop-blur-[2px] bg-[var(--brand-accent)]/5" />
+        <div className="absolute inset-0 md:backdrop-blur-[2px] bg-[var(--brand-accent)]/5" />
         {/* Gradiente radial para legibilidad, adaptativo */}
         <div className="absolute inset-0 about-radial-gradient" />
       </div>

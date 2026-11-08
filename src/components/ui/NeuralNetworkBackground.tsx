@@ -3,23 +3,26 @@
 /**
  * NeuralNetworkBackground
  * ─────────────────────────────────────────────────────────────────────────────
- * Canvas que simula una red neuronal profunda real:
+ * Canvas que simula una red neuronal profunda (MLP de 5 capas) con "señales"
+ * que viajan entre capas. Los nodos cercanos al cursor (o al dedo, en celular)
+ * se activan y aceleran las señales.
  *
- * Arquitectura:
- *  - 5 capas (input → 3 hidden → output) con nodos de distinto tamaño.
- *  - Las conexiones van de izquierda a derecha entre capas adyacentes,
- *    como en un MLP (Multi-Layer Perceptron) real.
- *  - Además de las conexiones estructurales hay partículas de "señal"
- *    que viajan a lo largo de las conexiones, simulando propagación de datos.
+ * Pensado para usarse como fondo fijo a pantalla completa:
+ *   <div className="fixed inset-0 ..."><NeuralNetworkBackground /></div>
  *
- * Interacción con el cursor:
- *  - Al pasar el cursor cerca de un nodo, ese nodo y todas sus conexiones
- *    se "activan": brillan más y las señales se aceleran.
- *  - El halo de activación se propaga visualmente hacia las capas siguientes.
- *
- * Performance:
+ * Rendimiento y celular:
+ *  - La altura del canvas usa `100lvh` (alto de pantalla con la barra del
+ *    navegador oculta), así no cambia de tamaño cada vez que la barra de
+ *    direcciones del celular aparece o desaparece al hacer scroll. Antes eso
+ *    reconstruía la red en cada scroll y el fondo parpadeaba o desaparecía.
+ *  - Si el tamaño cambia de verdad (girar el celular, redimensionar la
+ *    ventana), los nodos se reubican en vez de crear una red nueva.
+ *  - Sin degradados por cuadro: las conexiones son trazos de color sólido y
+ *    los brillos se dibujan con un sprite pre-renderizado.
+ *  - En celular (puntero táctil) se dibuja a 30 fps; se pausa si la pestaña
+ *    está oculta o el canvas no se ve.
+ *  - Con "reducir movimiento" activado se dibuja un solo cuadro estático.
  *  - pointer-events: none → nunca bloquea clicks.
- *  - Cleanup correcto de requestAnimationFrame y ResizeObserver.
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -29,18 +32,23 @@ import { useEffect, useRef } from "react";
 // Nodos por capa: [input, hidden1, hidden2, hidden3, output]
 const LAYER_SIZES   = [4, 7, 9, 7, 3];
 const COLOR_ACTIVE  = "6, 107, 243";   // RGB: brand-accent (#066BF3)
-const COLOR_IDLE    = "80, 130, 230";  // azul más suave para idle
+const COLOR_LINE    = "43, 118, 236";  // mezcla del azul idle y el activo
 const CURSOR_RADIUS = 220;             // px: radio de influencia del cursor
-const SIGNAL_SPEED  = 1.8;            // velocidad base de las señales (px/frame)
+const SIGNAL_SPEED  = 1.8;             // velocidad base de las señales (px por cuadro a 60 fps)
+const MAX_SIGNALS   = 120;             // tope de señales simultáneas
+const MOBILE_FPS    = 30;
 /* ─────────────────────────────────────────────────────────────── */
 
 interface NetworkNode {
+  /** Posición relativa (0..1) dentro del canvas; x/y se recalculan al redimensionar */
+  fx: number;
+  fy: number;
   x: number;
   y: number;
   layer: number;
-  index: number;
   radius: number;
-  activation: number;   // 0..1, qué tan activado está (para animación)
+  activation: number;   // 0..1
+  outgoing: Connection[];
 }
 
 interface Connection {
@@ -56,6 +64,23 @@ interface Signal {
   opacity: number;
 }
 
+/** Brillo radial azul pre-renderizado una sola vez (reemplaza createRadialGradient por cuadro). */
+function createGlowSprite(size = 64): HTMLCanvasElement {
+  const sprite = document.createElement("canvas");
+  sprite.width = sprite.height = size;
+  const g = sprite.getContext("2d");
+  if (g) {
+    const r = size / 2;
+    const grad = g.createRadialGradient(r, r, 0, r, r, r);
+    grad.addColorStop(0, `rgba(${COLOR_ACTIVE}, 1)`);
+    grad.addColorStop(0.4, `rgba(${COLOR_ACTIVE}, 0.33)`);
+    grad.addColorStop(1, `rgba(${COLOR_ACTIVE}, 0)`);
+    g.fillStyle = grad;
+    g.fillRect(0, 0, size, size);
+  }
+  return sprite;
+}
+
 const NeuralNetworkBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -65,163 +90,139 @@ const NeuralNetworkBackground = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    /* Cursor fantasma */
-    const mouse = { x: -9999, y: -9999 };
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const frameInterval = isTouch ? 1000 / MOBILE_FPS : 0;
+    // Las velocidades están pensadas para 60 fps; a 30 fps cada paso avanza el doble.
+    const stepScale = isTouch ? 60 / MOBILE_FPS : 1;
 
-    /* ── Construye la red según el tamaño del canvas ── */
-    const buildNetwork = (W: number, H: number) => {
-      const nodes: NetworkNode[] = [];
-      const connections: Connection[] = [];
+    const glow = createGlowSprite();
 
-      const layerCount = LAYER_SIZES.length;
-      /* Margen horizontal para que los nodos no queden en el borde */
-      const xMargin = W * 0.12;
-      const xStep   = (W - xMargin * 2) / (layerCount - 1);
+    /* Cursor / dedo fuera de pantalla por defecto */
+    const pointer = { x: -9999, y: -9999 };
 
-      /* Crear nodos */
-      for (let l = 0; l < layerCount; l++) {
-        const count = LAYER_SIZES[l];
-        const x = xMargin + l * xStep;
-        const yStep = H / (count + 1);
+    /* ── Construye la red una sola vez (posiciones relativas) ── */
+    const nodes: NetworkNode[] = [];
+    const connections: Connection[] = [];
+    const layerCount = LAYER_SIZES.length;
+    const byLayer: NetworkNode[][] = [];
 
-        /* Nodos más grandes en capas extremas (input/output) */
-        const baseRadius = l === 0 || l === layerCount - 1 ? 7 : 5;
+    for (let l = 0; l < layerCount; l++) {
+      const count = LAYER_SIZES[l];
+      const baseRadius = l === 0 || l === layerCount - 1 ? 7 : 5;
+      const layerNodes: NetworkNode[] = [];
+      for (let i = 0; i < count; i++) {
+        const node: NetworkNode = {
+          fx: 0.12 + (0.76 * l) / (layerCount - 1),
+          fy: (i + 1) / (count + 1),
+          x: 0,
+          y: 0,
+          layer: l,
+          radius: baseRadius + Math.random() * 1.5,
+          activation: Math.random() * 0.3,
+          outgoing: [],
+        };
+        layerNodes.push(node);
+        nodes.push(node);
+      }
+      byLayer.push(layerNodes);
+    }
 
-        for (let i = 0; i < count; i++) {
-          nodes.push({
-            x,
-            y: yStep * (i + 1),
-            layer: l,
-            index: i,
-            radius: baseRadius + Math.random() * 1.5,
-            activation: Math.random() * 0.3,  // activación inicial baja
-          });
+    for (let l = 0; l < layerCount - 1; l++) {
+      for (const from of byLayer[l]) {
+        for (const to of byLayer[l + 1]) {
+          const conn = { from, to, weight: 0.2 + Math.random() * 0.8 };
+          connections.push(conn);
+          from.outgoing.push(conn);
         }
       }
+    }
 
-      /* Crear conexiones: cada nodo conecta con TODOS los nodos de la siguiente capa */
-      const byLayer = LAYER_SIZES.map((_, l) => nodes.filter(n => n.layer === l));
-
-      for (let l = 0; l < layerCount - 1; l++) {
-        for (const fromNode of byLayer[l]) {
-          for (const toNode of byLayer[l + 1]) {
-            connections.push({
-              from: fromNode,
-              to: toNode,
-              /* Peso visual aleatorio: simula que no todas las conexiones son igual de fuertes */
-              weight: 0.2 + Math.random() * 0.8,
-            });
-          }
-        }
-      }
-
-      return { nodes, connections };
-    };
-
-    /* ── Estado de señales que viajan por la red ── */
     const signals: Signal[] = [];
+    for (let i = 0; i < connections.length; i += 2 + Math.floor(Math.random() * 3)) {
+      signals.push({
+        conn: connections[i],
+        progress: Math.random(),
+        speed: SIGNAL_SPEED * (0.6 + Math.random() * 0.8),
+        opacity: 0.5 + Math.random() * 0.5,
+      });
+    }
 
-    /* ── Inicializa señales dispersas en todas las conexiones ── */
-    const spawnInitialSignals = (connections: Connection[]) => {
-      signals.length = 0;
-      /* Una señal por cada ~3 conexiones, con progreso inicial aleatorio */
-      for (let i = 0; i < connections.length; i += 2 + Math.floor(Math.random() * 3)) {
-        signals.push({
-          conn: connections[i],
-          progress: Math.random(),
-          speed: SIGNAL_SPEED * (0.6 + Math.random() * 0.8),
-          opacity: 0.5 + Math.random() * 0.5,
-        });
+    /* ── Tamaño: solo reubica nodos, nunca recrea la red ── */
+    let W = 0;
+    let H = 0;
+    const resize = () => {
+      const w = Math.round(canvas.clientWidth);
+      const h = Math.round(canvas.clientHeight);
+      if (w === 0 || h === 0 || (w === W && h === H)) return;
+      W = canvas.width = w;
+      H = canvas.height = h;
+      for (const n of nodes) {
+        n.x = n.fx * W;
+        n.y = n.fy * H;
       }
     };
-
-    /* ── Resize ── */
-    const resize = () => {
-      canvas.width  = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-
     resize();
-    let { nodes, connections } = buildNetwork(canvas.width, canvas.height);
-    spawnInitialSignals(connections);
 
-    /* ── Eventos del cursor ── */
-    const handleMouseMove = (e: MouseEvent) => {
+    /* ── Puntero (mouse en escritorio, dedo en celular) ── */
+    // El canvas tiene pointer-events: none, así que se escucha a nivel de ventana.
+    const handlePointer = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
+      pointer.x = e.clientX - rect.left;
+      pointer.y = e.clientY - rect.top;
     };
-    const handleMouseLeave = () => { mouse.x = -9999; mouse.y = -9999; };
+    const resetPointer = () => { pointer.x = -9999; pointer.y = -9999; };
+    const handlePointerEnd = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") resetPointer();
+    };
+    window.addEventListener("pointermove", handlePointer, { passive: true });
+    window.addEventListener("pointerdown", handlePointer, { passive: true });
+    window.addEventListener("pointerup", handlePointerEnd, { passive: true });
+    window.addEventListener("pointercancel", handlePointerEnd, { passive: true });
+    document.documentElement.addEventListener("mouseleave", resetPointer);
 
-    // El canvas tiene pointer-events: none (para no bloquear clicks), así que
-    // nunca recibe eventos propios: se escucha el cursor a nivel de ventana.
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    document.documentElement.addEventListener("mouseleave", handleMouseLeave);
-
-    /* ── Inyecta señales nuevas periódicamente desde los nodos de input ── */
-    let signalTimer = 0;
-
-    /* ── Loop principal ── */
-    let rafId: number;
-
-    const draw = () => {
-      const W = canvas.width;
-      const H = canvas.height;
+    /* ── Dibujo de un cuadro ── */
+    let tick = 0;
+    const draw = (animate: boolean) => {
       ctx.clearRect(0, 0, W, H);
 
-      /* — 1. Actualizar activación de cada nodo según la distancia al cursor — */
+      /* 1. Activación de cada nodo según la distancia al puntero */
       for (const n of nodes) {
-        const dx = mouse.x - n.x;
-        const dy = mouse.y - n.y;
+        const dx = pointer.x - n.x;
+        const dy = pointer.y - n.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         const target = dist < CURSOR_RADIUS
-          ? 0.6 + (1 - dist / CURSOR_RADIUS) * 0.4   // 0.6..1.0 al estar cerca
-          : 0.05 + Math.random() * 0.05;               // idle: activación mínima
-        /* Interpolación suave hacia el target */
-        n.activation += (target - n.activation) * 0.06;
+          ? 0.6 + (1 - dist / CURSOR_RADIUS) * 0.4
+          : 0.05 + Math.random() * 0.05;
+        n.activation += (target - n.activation) * Math.min(1, 0.06 * stepScale);
       }
 
-      /* — 2. Dibujar conexiones — */
-      for (const conn of connections) {
-        const { from, to, weight } = conn;
-
-        /* Activación media de los dos nodos extremos */
+      /* 2. Conexiones: trazo sólido (sin degradado por cuadro) */
+      for (const { from, to, weight } of connections) {
         const act = (from.activation + to.activation) / 2;
-
-        /* Opacidad base proporcional al peso y la activación */
-        const baseAlpha = weight * 0.12;
-        const activeAlpha = weight * act * 0.55;
-        const alpha = baseAlpha + activeAlpha;
-
+        const alpha = weight * 0.12 + weight * act * 0.55;
         ctx.beginPath();
         ctx.moveTo(from.x, from.y);
         ctx.lineTo(to.x, to.y);
-
-        /* Gradiente de color a lo largo de la conexión */
-        const grad = ctx.createLinearGradient(from.x, from.y, to.x, to.y);
-        grad.addColorStop(0, `rgba(${COLOR_IDLE}, ${alpha * 0.7})`);
-        grad.addColorStop(1, `rgba(${COLOR_ACTIVE}, ${alpha})`);
-        ctx.strokeStyle = grad;
+        ctx.strokeStyle = `rgba(${COLOR_LINE}, ${alpha * 0.85})`;
         ctx.lineWidth = 0.6 + act * 1.4;
         ctx.stroke();
       }
 
-      /* — 3. Actualizar y dibujar señales (partículas que viajan) — */
-      signalTimer++;
-
-      /* Generar señales nuevas desde input cada N frames */
-      if (signalTimer % 18 === 0) {
-        const inputNodes = nodes.filter(n => n.layer === 0);
-        const randomInput = inputNodes[Math.floor(Math.random() * inputNodes.length)];
-        const outgoing = connections.filter(c => c.from === randomInput);
-        if (outgoing.length > 0) {
-          const conn = outgoing[Math.floor(Math.random() * outgoing.length)];
-          signals.push({
-            conn,
-            progress: 0,
-            speed: SIGNAL_SPEED * (0.8 + Math.random() * 0.6),
-            opacity: 0.8 + Math.random() * 0.2,
-          });
+      /* 3. Señales */
+      if (animate) {
+        tick += stepScale;
+        if (tick >= 18) {
+          tick = 0;
+          const input = byLayer[0][Math.floor(Math.random() * byLayer[0].length)];
+          if (input.outgoing.length > 0 && signals.length < MAX_SIGNALS) {
+            signals.push({
+              conn: input.outgoing[Math.floor(Math.random() * input.outgoing.length)],
+              progress: 0,
+              speed: SIGNAL_SPEED * (0.8 + Math.random() * 0.6),
+              opacity: 0.8 + Math.random() * 0.2,
+            });
+          }
         }
       }
 
@@ -229,125 +230,118 @@ const NeuralNetworkBackground = () => {
         const sig = signals[i];
         const { from, to } = sig.conn;
 
-        /* Velocidad aumenta si la señal está cerca del cursor */
-        const midX = from.x + (to.x - from.x) * sig.progress;
-        const midY = from.y + (to.y - from.y) * sig.progress;
-        const distMid = Math.sqrt((mouse.x - midX) ** 2 + (mouse.y - midY) ** 2);
-        const speedMult = distMid < CURSOR_RADIUS
-          ? 1 + (1 - distMid / CURSOR_RADIUS) * 2.5
-          : 1;
+        let sx = from.x + (to.x - from.x) * sig.progress;
+        let sy = from.y + (to.y - from.y) * sig.progress;
+        const distMid = Math.sqrt((pointer.x - sx) ** 2 + (pointer.y - sy) ** 2);
+        const speedMult = distMid < CURSOR_RADIUS ? 1 + (1 - distMid / CURSOR_RADIUS) * 2.5 : 1;
 
-        /* Avanzar la señal a lo largo de la conexión */
-        const connLen = Math.sqrt((to.x - from.x) ** 2 + (to.y - from.y) ** 2);
-        sig.progress += (sig.speed * speedMult) / connLen;
+        if (animate) {
+          const connLen = Math.max(1, Math.sqrt((to.x - from.x) ** 2 + (to.y - from.y) ** 2));
+          sig.progress += (sig.speed * speedMult * stepScale) / connLen;
 
-        if (sig.progress >= 1) {
-          /* La señal llegó al nodo destino → actívalo y propágala */
-          sig.conn.to.activation = Math.min(1, sig.conn.to.activation + 0.3);
-
-          /* Propagar: generar señal en la siguiente capa */
-          const nextConns = connections.filter(c => c.from === sig.conn.to);
-          if (nextConns.length > 0 && Math.random() > 0.35) {
-            const nextConn = nextConns[Math.floor(Math.random() * nextConns.length)];
-            signals.push({
-              conn: nextConn,
-              progress: 0,
-              speed: sig.speed * (0.85 + Math.random() * 0.3),
-              opacity: sig.opacity * 0.85,
-            });
+          if (sig.progress >= 1) {
+            /* Llegó al nodo destino → lo activa y se propaga a la siguiente capa */
+            to.activation = Math.min(1, to.activation + 0.3);
+            if (to.outgoing.length > 0 && Math.random() > 0.35 && signals.length < MAX_SIGNALS) {
+              signals.push({
+                conn: to.outgoing[Math.floor(Math.random() * to.outgoing.length)],
+                progress: 0,
+                speed: sig.speed * (0.85 + Math.random() * 0.3),
+                opacity: sig.opacity * 0.85,
+              });
+            }
+            signals.splice(i, 1);
+            continue;
           }
-          /* Eliminar señal que terminó */
-          signals.splice(i, 1);
-          continue;
+          sx = from.x + (to.x - from.x) * sig.progress;
+          sy = from.y + (to.y - from.y) * sig.progress;
         }
 
-        /* Dibujar la señal como un punto brillante */
-        const sx = from.x + (to.x - from.x) * sig.progress;
-        const sy = from.y + (to.y - from.y) * sig.progress;
-
-        /* Halo de la señal */
+        /* Halo (sprite) + núcleo blanco */
         const glowRadius = 8 + speedMult * 3;
-        const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, glowRadius);
-        glow.addColorStop(0, `rgba(${COLOR_ACTIVE}, ${sig.opacity * 0.9})`);
-        glow.addColorStop(0.4, `rgba(${COLOR_ACTIVE}, ${sig.opacity * 0.3})`);
-        glow.addColorStop(1, `rgba(${COLOR_ACTIVE}, 0)`);
-        ctx.beginPath();
-        ctx.arc(sx, sy, glowRadius, 0, Math.PI * 2);
-        ctx.fillStyle = glow;
-        ctx.fill();
-
-        /* Núcleo de la señal */
+        ctx.globalAlpha = sig.opacity * 0.9;
+        ctx.drawImage(glow, sx - glowRadius, sy - glowRadius, glowRadius * 2, glowRadius * 2);
+        ctx.globalAlpha = 1;
         ctx.beginPath();
         ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${sig.opacity})`;
         ctx.fill();
       }
 
-      /* — 4. Dibujar nodos — */
+      /* 4. Nodos */
       for (const n of nodes) {
         const act = n.activation;
-
-        /* Halo exterior de activación */
         if (act > 0.15) {
-          const halo = ctx.createRadialGradient(
-            n.x, n.y, n.radius,
-            n.x, n.y, n.radius * (3 + act * 4)
-          );
-          halo.addColorStop(0, `rgba(${COLOR_ACTIVE}, ${act * 0.35})`);
-          halo.addColorStop(1, `rgba(${COLOR_ACTIVE}, 0)`);
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, n.radius * (3 + act * 4), 0, Math.PI * 2);
-          ctx.fillStyle = halo;
-          ctx.fill();
+          const haloR = n.radius * (3 + act * 4);
+          ctx.globalAlpha = act * 0.35;
+          ctx.drawImage(glow, n.x - haloR, n.y - haloR, haloR * 2, haloR * 2);
+          ctx.globalAlpha = 1;
         }
-
-        /* Relleno del nodo: gradiente radial */
-        const nodeGrad = ctx.createRadialGradient(
-          n.x - n.radius * 0.3, n.y - n.radius * 0.3, 0,
-          n.x, n.y, n.radius
-        );
-        nodeGrad.addColorStop(0, `rgba(255, 255, 255, ${0.3 + act * 0.7})`);
-        nodeGrad.addColorStop(1, `rgba(${COLOR_ACTIVE}, ${0.4 + act * 0.6})`);
-
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
-        ctx.fillStyle = nodeGrad;
+        ctx.fillStyle = `rgba(${COLOR_ACTIVE}, ${0.4 + act * 0.6})`;
         ctx.fill();
-
-        /* Borde del nodo */
+        // Brillo blanco interior (antes era un degradado radial por nodo)
+        ctx.beginPath();
+        ctx.arc(n.x - n.radius * 0.25, n.y - n.radius * 0.25, n.radius * 0.55, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${0.2 + act * 0.6})`;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
         ctx.strokeStyle = `rgba(${COLOR_ACTIVE}, ${0.4 + act * 0.6})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
-
-      rafId = requestAnimationFrame(draw);
     };
 
-    draw();
+    /* ── Loop: limitado a 30 fps en táctil; pausado si no se ve ── */
+    let rafId = 0;
+    let lastFrame = 0;
+    let visible = true;
 
-    /* ── ResizeObserver: reconstruye la red al redimensionar ── */
+    const loop = (now: number) => {
+      rafId = requestAnimationFrame(loop);
+      if (!visible || document.hidden) return;
+      if (frameInterval && now - lastFrame < frameInterval - 2) return;
+      lastFrame = now;
+      draw(true);
+    };
+
     const ro = new ResizeObserver(() => {
       resize();
-      const net = buildNetwork(canvas.width, canvas.height);
-      nodes = net.nodes;
-      connections = net.connections;
-      spawnInitialSignals(connections);
+      if (reducedMotion) draw(false);
     });
     ro.observe(canvas);
 
+    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
+    io.observe(canvas);
+
+    if (reducedMotion) {
+      draw(false);
+    } else {
+      rafId = requestAnimationFrame(loop);
+    }
+
     return () => {
       cancelAnimationFrame(rafId);
-      window.removeEventListener("mousemove", handleMouseMove);
-      document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("pointermove", handlePointer);
+      window.removeEventListener("pointerdown", handlePointer);
+      window.removeEventListener("pointerup", handlePointerEnd);
+      window.removeEventListener("pointercancel", handlePointerEnd);
+      document.documentElement.removeEventListener("mouseleave", resetPointer);
       ro.disconnect();
+      io.disconnect();
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      style={{ pointerEvents: "none" }}
-      className="absolute inset-0 w-full h-full opacity-80"
+      // max(100%, 100lvh): en celular toma el alto con la barra del navegador
+      // oculta, así el canvas no cambia de tamaño al hacer scroll. Si el
+      // navegador no soporta `lvh`, se ignora y queda h-full.
+      style={{ pointerEvents: "none", height: "max(100%, 100lvh)" }}
+      className="absolute inset-x-0 top-0 w-full h-full opacity-80"
       aria-hidden="true"
     />
   );

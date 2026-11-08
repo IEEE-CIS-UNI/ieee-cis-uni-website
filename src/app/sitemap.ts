@@ -1,8 +1,13 @@
 import { MetadataRoute } from 'next'
 import { supabase } from '@/lib/supabase'
+import { SITE_URL } from '@/lib/site'
+
+// Se regenera cada hora con datos frescos de Supabase. Sin esto quedaba fijo
+// desde el build (con slugs viejos) hasta el siguiente deploy.
+export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://ieeecisuni.vercel.app'
+  const baseUrl = SITE_URL
 
   // Static routes
   const staticRoutes = [
@@ -10,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/nosotros',
     '/miembros',
     '/proyectos',
+    '/proyectos/ruleta',
     '/eventos',
     '/blog',
     '/contacto',
