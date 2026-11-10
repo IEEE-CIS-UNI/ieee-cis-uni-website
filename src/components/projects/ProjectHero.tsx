@@ -1,6 +1,6 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import LazySpline from "@/components/ui/LazySpline";
 import Image from "next/image";
 import { useIsDesktop } from "@/lib/useIsDesktop";
 
@@ -20,14 +20,6 @@ if (typeof window !== "undefined") {
   };
 }
 
-const Spline = dynamic(() => import("@splinetool/react-spline"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="w-10 h-10 border-4 border-brand-accent border-t-transparent rounded-full animate-spin" />
-    </div>
-  ),
-});
 
 const ProjectHero = () => {
   // En celular no se carga la escena 3D (pesada y bloquea el scroll táctil).
@@ -70,7 +62,7 @@ const ProjectHero = () => {
               {/* 3D Model Box */}
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] backdrop-blur-md flex items-center justify-center pointer-events-auto">
                 {isDesktop ? (
-                  <Spline scene="https://prod.spline.design/HE4AYvwMqlguAv2S/scene.splinecode" />
+                  <LazySpline scene="https://prod.spline.design/HE4AYvwMqlguAv2S/scene.splinecode" />
                 ) : (
                   <Image
                     src="/images/hero_image.png"

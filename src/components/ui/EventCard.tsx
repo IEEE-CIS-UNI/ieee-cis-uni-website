@@ -2,6 +2,7 @@ import Image from "next/image";
 import { HiClock, HiLocationMarker, HiUser } from "react-icons/hi";
 import Button from "@/components/ui/Button";
 import { normalizeUrl } from "@/lib/url";
+import BlurredBackdrop from "@/components/ui/BlurredBackdrop";
 
 interface EventCardProps {
   date: string;
@@ -31,10 +32,7 @@ const EventCard = ({ date, title, time, location, speaker, category, link: rawLi
         {imageUrl ? (
           <>
             {/* Fondo borroso para rellenar espacio en imágenes landscape */}
-            <div
-              className="absolute inset-0 bg-cover bg-center scale-110 blur-xl opacity-30"
-              style={{ backgroundImage: `url('${imageUrl}')` }}
-            />
+            <BlurredBackdrop src={imageUrl} className="scale-110 blur-xl opacity-30" />
             <Image
               src={imageUrl}
               alt={title}

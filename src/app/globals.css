@@ -88,6 +88,10 @@ body {
   overflow-x: clip;
 }
 
+/* Controles nativos (barras de scroll, inputs, autocompletado) acordes al tema */
+:root { color-scheme: dark; }
+:root:not(.dark) { color-scheme: light; }
+
 /* Celular: sin destello azul al tocar, sin inflar el texto al girar la pantalla,
    y toques sin el retraso de doble-toque en controles. */
 html {
@@ -429,6 +433,27 @@ body {
   to   { opacity: 1; transform: scale(1); }
 }
 
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Entradas por CSS: arrancan apenas llega el HTML. Con Framer Motion el
+   contenido venía del servidor con opacity:0 y quedaba invisible hasta que
+   cargaba el JavaScript (varios segundos en un celular lento). */
+.animate-fade-in-left {
+  animation: fadeInLeft 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.4s ease-out both;
 }
@@ -465,5 +490,6 @@ body {
 /* Reducir movimiento: se mantiene el fundido, se quita el desplazamiento/escala */
 @media (prefers-reduced-motion: reduce) {
   @keyframes fadeInUp { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeInLeft { from { opacity: 0; } to { opacity: 1; } }
   @keyframes fadeInScale { from { opacity: 0; } to { opacity: 1; } }
 }

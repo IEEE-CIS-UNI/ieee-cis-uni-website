@@ -8,9 +8,11 @@ import { motion, Variants } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { Member } from "@/types/database";
 
-const Team = () => {
-  const [boardMembers, setBoardMembers] = useState<Member[]>([]);
-  const [loading, setLoading] = useState(true);
+const Team = ({ initialMembers }: { initialMembers?: Member[] | null }) => {
+  // Datos iniciales desde el servidor (ver src/lib/queries.ts): el contenido sale en el
+  // primer pintado; la consulta de abajo sigue corriendo para mostrar cambios recientes.
+  const [boardMembers, setBoardMembers] = useState<Member[]>(initialMembers ?? []);
+  const [loading, setLoading] = useState(!initialMembers);
 
   useEffect(() => {
     let ignore = false;

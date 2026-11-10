@@ -4,13 +4,21 @@ import GlobalCIS from "@/components/about/GlobalCIS";
 import Institutional from "@/components/about/Institutional";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import BrandOrbs from "@/components/ui/BrandOrbs";
+import { getStorageImages } from "@/lib/queries";
+
+// Los datos se piden en el servidor y van en el HTML (ver src/lib/queries.ts).
+// Se regenera como máximo cada 60 s; los componentes además consultan en segundo
+// plano, así un cambio en Supabase se ve al recargar como antes.
+export const revalidate = 60;
 
 export const metadata = {
   title: "Nosotros",
   description: "Conoce al capítulo estudiantil IEEE Computational Intelligence Society de la Universidad Nacional de Ingeniería: nuestra misión, trayectoria y red institucional.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const heroImages = await getStorageImages("aboutus", "about");
+
   return (
     <div className="relative overflow-hidden about-page-bg">
       {/* ── Fondo dinámico: red neuronal interactiva ────────────────────────
@@ -29,7 +37,7 @@ export default function AboutPage() {
 
       {/* ── Contenido principal ── */}
       <main className="relative z-10">
-        <AboutHero />
+        <AboutHero initialImages={heroImages} />
         <Stats />
         <GlobalCIS />
         <Institutional />

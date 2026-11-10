@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/ui/Button";
-import dynamic from "next/dynamic";
+import LazySpline from "@/components/ui/LazySpline";
 import Link from "next/link";
 import { HiArrowRight, HiPlay } from "react-icons/hi";
 
@@ -15,14 +15,6 @@ if (typeof window !== "undefined") {
   };
 }
 
-const Spline = dynamic(() => import("@splinetool/react-spline"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="w-10 h-10 border-4 border-brand-accent border-t-transparent rounded-full animate-spin" />
-    </div>
-  ),
-});
 
 // ============================================================
 //  HERO COMPONENT — GUÍA RÁPIDA DE EDICIÓN
@@ -82,7 +74,7 @@ const Hero = () => {
           */}
           {/* En celular el robot va arriba del texto (order-first) y en escritorio a la izquierda. */}
           <div className="relative w-full h-[380px] md:h-[480px] lg:h-[620px] lg:-ml-16 overflow-hidden order-first">
-            <Spline scene="https://prod.spline.design/bteTxASGaK5f18Hi/scene.splinecode" />
+            <LazySpline scene="https://prod.spline.design/bteTxASGaK5f18Hi/scene.splinecode" />
             {/* Etiqueta que cubre el badge "Built with Spline" */}
             <div className="absolute bottom-[16px] right-[16px] z-20 w-[150px] h-[42px] flex items-center justify-center rounded-full bg-brand-accent text-white text-xs font-bold tracking-widest select-none shadow-lg">
               IEEE CIS UNI

@@ -148,6 +148,17 @@ const NeuralNetworkBackground = () => {
       });
     }
 
+    /* ── Capa de líneas guardada ──
+       Las 175 conexiones casi no cambian entre cuadros: se dibujan en esta capa
+       y en cada cuadro solo se copia (drawImage). Se redibuja cada 4 cuadros en
+       reposo, o en cada cuadro mientras el cursor/dedo está cerca de la red.
+       Antes se trazaban una por una en cada cuadro y en celular eso ocupaba la
+       mayor parte del procesador de la página. */
+    const lineLayer = document.createElement("canvas");
+    const lctx = lineLayer.getContext("2d");
+    let linesDirty = true;
+    let frameCount = 0;
+
     /* ── Tamaño: solo reubica nodos, nunca recrea la red ── */
     let W = 0;
     let H = 0;
@@ -157,6 +168,9 @@ const NeuralNetworkBackground = () => {
       if (w === 0 || h === 0 || (w === W && h === H)) return;
       W = canvas.width = w;
       H = canvas.height = h;
+      lineLayer.width = w;
+      lineLayer.height = h;
+      linesDirty = true;
       for (const n of nodes) {
         n.x = n.fx * W;
         n.y = n.fy * H;
@@ -181,33 +195,58 @@ const NeuralNetworkBackground = () => {
     window.addEventListener("pointercancel", handlePointerEnd, { passive: true });
     document.documentElement.addEventListener("mouseleave", resetPointer);
 
+    /* Dibuja todas las conexiones en la capa guardada, agrupando las de
+       intensidad y grosor parecidos en un solo trazo (~12 trazos en vez de 175). */
+    const drawLines = () => {
+      if (!lctx) return;
+      lctx.clearRect(0, 0, W, H);
+      const buckets = new Map<string, Connection[]>();
+      for (const conn of connections) {
+        const act = (conn.from.activation + conn.to.activation) / 2;
+        const alpha = (conn.weight * 0.12 + conn.weight * act * 0.55) * 0.85;
+        const a = Math.round(alpha * 40) / 40;           // pasos de 0.025: imperceptible
+        const lw = Math.round((0.6 + act * 1.4) * 4) / 4; // pasos de 0.25 px
+        const key = `${a}|${lw}`;
+        const list = buckets.get(key);
+        if (list) list.push(conn); else buckets.set(key, [conn]);
+      }
+      for (const [key, list] of buckets) {
+        const [a, lw] = key.split("|").map(Number);
+        if (a <= 0) continue;
+        lctx.beginPath();
+        for (const { from, to } of list) {
+          lctx.moveTo(from.x, from.y);
+          lctx.lineTo(to.x, to.y);
+        }
+        lctx.strokeStyle = `rgba(${COLOR_LINE}, ${a})`;
+        lctx.lineWidth = lw;
+        lctx.stroke();
+      }
+      linesDirty = false;
+    };
+
     /* ── Dibujo de un cuadro ── */
     let tick = 0;
     const draw = (animate: boolean) => {
       ctx.clearRect(0, 0, W, H);
 
       /* 1. Activación de cada nodo según la distancia al puntero */
+      let interacting = false;
       for (const n of nodes) {
         const dx = pointer.x - n.x;
         const dy = pointer.y - n.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CURSOR_RADIUS) interacting = true;
         const target = dist < CURSOR_RADIUS
           ? 0.6 + (1 - dist / CURSOR_RADIUS) * 0.4
           : 0.05 + Math.random() * 0.05;
         n.activation += (target - n.activation) * Math.min(1, 0.06 * stepScale);
       }
 
-      /* 2. Conexiones: trazo sólido (sin degradado por cuadro) */
-      for (const { from, to, weight } of connections) {
-        const act = (from.activation + to.activation) / 2;
-        const alpha = weight * 0.12 + weight * act * 0.55;
-        ctx.beginPath();
-        ctx.moveTo(from.x, from.y);
-        ctx.lineTo(to.x, to.y);
-        ctx.strokeStyle = `rgba(${COLOR_LINE}, ${alpha * 0.85})`;
-        ctx.lineWidth = 0.6 + act * 1.4;
-        ctx.stroke();
-      }
+      /* 2. Conexiones: desde la capa guardada */
+      frameCount++;
+      if (linesDirty || interacting || !animate || frameCount % 4 === 0) drawLines();
+      ctx.drawImage(lineLayer, 0, 0);
 
       /* 3. Señales */
       if (animate) {
@@ -226,6 +265,8 @@ const NeuralNetworkBackground = () => {
         }
       }
 
+      // Núcleos blancos de las señales, agrupados por opacidad y dibujados al final
+      const cores = new Map<number, number[]>();
       for (let i = signals.length - 1; i >= 0; i--) {
         const sig = signals[i];
         const { from, to } = sig.conn;
@@ -262,9 +303,17 @@ const NeuralNetworkBackground = () => {
         ctx.globalAlpha = sig.opacity * 0.9;
         ctx.drawImage(glow, sx - glowRadius, sy - glowRadius, glowRadius * 2, glowRadius * 2);
         ctx.globalAlpha = 1;
+        const o = Math.round(sig.opacity * 20) / 20;
+        const pts = cores.get(o);
+        if (pts) pts.push(sx, sy); else cores.set(o, [sx, sy]);
+      }
+      for (const [o, pts] of cores) {
         ctx.beginPath();
-        ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${sig.opacity})`;
+        for (let k = 0; k < pts.length; k += 2) {
+          ctx.moveTo(pts[k] + 2.5, pts[k + 1]);
+          ctx.arc(pts[k], pts[k + 1], 2.5, 0, Math.PI * 2);
+        }
+        ctx.fillStyle = `rgba(255, 255, 255, ${o})`;
         ctx.fill();
       }
 

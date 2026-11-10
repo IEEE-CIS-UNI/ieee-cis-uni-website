@@ -5,10 +5,16 @@ import { HiCalendar } from "react-icons/hi";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 
-const EventHero = () => {
-  const [images, setImages] = useState<string[]>([]);
+const EventHero = ({ initialImages }: { initialImages?: string[] | null }) => {
+  // Imágenes iniciales desde el servidor (ver src/lib/queries.ts): la primera foto
+  // se descarga desde el HTML, sin esperar al JavaScript.
+  const [images, setImages] = useState<string[]>(initialImages ?? []);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialImages);
+  // Fotos montadas: la actual y la siguiente. Antes se montaban todas a la vez y el
+  // celular descargaba 6–10 fotos junto con la primera, que es la única visible.
+  const [revealed, setRevealed] = useState(1);
+
 
   useEffect(() => {
     let ignore = false;
@@ -62,7 +68,11 @@ const EventHero = () => {
     if (images.length <= 1) return;
     
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
+      setCurrentIndex((prev) => {
+        const next = (prev + 1) % images.length;
+        setRevealed((r) => Math.max(r, next + 1));
+        return next;
+      });
     }, 5000); // Change image every 5 seconds
     
     return () => clearInterval(interval);
@@ -105,7 +115,7 @@ const EventHero = () => {
                 {images.length > 0 ? (
                   /* CSS crossfade: all images mounted, only current is visible */
                   <>
-                    {images.map((url, i) => (
+                    {images.map((url, i) => i > revealed ? null : (
                       <div
                         key={url}
                         className="absolute inset-0 transition-opacity duration-700"
@@ -117,6 +127,7 @@ const EventHero = () => {
                           fill
                           sizes="(max-width: 768px) 100vw, 50vw"
                           className="object-cover"
+                          priority={i === 0}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-background)]/80 to-transparent mix-blend-multiply opacity-50" />
                       </div>

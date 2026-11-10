@@ -36,46 +36,34 @@ const BlogPostView = ({ post }: { post: BlogPostWithAuthor }) => {
       <main className="relative z-10 min-h-svh pt-32 pb-20 px-6 md:px-12 lg:px-24">
         <div className="max-w-4xl mx-auto">
         {/* Back Button */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-12"
-        >
+        <div
+          className="animate-fade-in-left mb-12">
           <Button href="/blog" variant="outline" size="sm" icon={<HiArrowLeft />}>
             Volver al Blog
           </Button>
-        </motion.div>
+        </div>
 
         {/* Header Section */}
         <header className="mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-wrap gap-3 mb-6"
-          >
+          <div
+            className="animate-fade-in-up flex flex-wrap gap-3 mb-6">
             <span className="text-[11px] font-black text-brand-accent-text bg-brand-accent/10 px-4 py-1.5 rounded-full uppercase tracking-widest border border-brand-accent/20">
               {post.category}
             </span>
             <span className="text-[11px] font-black text-[var(--brand-text-muted)] bg-[var(--brand-surface)] px-4 py-1.5 rounded-full uppercase tracking-widest border border-[var(--brand-border)]">
               {post.level}
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-black text-[var(--brand-text)] mb-8 tracking-tighter uppercase leading-none drop-shadow-sm"
-          >
+          <h1
+            className="animate-fade-in-up text-4xl md:text-6xl font-black text-[var(--brand-text)] mb-8 tracking-tighter uppercase leading-none drop-shadow-sm"
+           style={{ animationDelay: "0.1s" }}>
             {post.titulo}
-          </motion.h1>
+          </h1>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-wrap items-center gap-6 text-[var(--brand-text-muted)] text-sm"
-          >
+          <div
+            className="animate-fade-in-up flex flex-wrap items-center gap-6 text-[var(--brand-text-muted)] text-sm"
+           style={{ animationDelay: "0.2s" }}>
             <div className="flex items-center gap-2">
               <HiCalendar className="text-brand-accent-text" />
               <span>{formattedDate}</span>
@@ -84,16 +72,13 @@ const BlogPostView = ({ post }: { post: BlogPostWithAuthor }) => {
               <HiClock className="text-brand-accent-text" />
               <span>{post.read_time || "5 min"} de lectura</span>
             </div>
-          </motion.div>
+          </div>
         </header>
 
         {/* Featured Image / Placeholder */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
-          className="relative aspect-video rounded-[2.5rem] overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] backdrop-blur-md mb-16"
-        >
+        <div
+          className="animate-fade-in-scale relative aspect-video rounded-[2.5rem] overflow-hidden border border-[var(--brand-border)] shadow-2xl bg-[var(--brand-card)] backdrop-blur-md mb-16"
+         style={{ animationDelay: "0.3s" }}>
           {post.image_url ? (
             <Image
               src={post.image_url}
@@ -112,7 +97,7 @@ const BlogPostView = ({ post }: { post: BlogPostWithAuthor }) => {
               <p className="text-[var(--brand-text-muted)] font-black uppercase tracking-[0.3em] text-xs mt-8">Knowledge Post</p>
             </div>
           )}
-        </motion.div>
+        </div>
 
         {/* Article Content */}
         <article className="prose prose-lg max-w-none mb-20">

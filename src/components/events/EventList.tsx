@@ -7,9 +7,11 @@ import { supabase } from "@/lib/supabase";
 import { Event } from "@/types/database";
 import { isPastEvent } from "@/lib/events";
 
-const EventList = () => {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
+const EventList = ({ initialEvents }: { initialEvents?: Event[] | null }) => {
+  // Datos iniciales desde el servidor (ver src/lib/queries.ts): el contenido sale en el
+  // primer pintado; la consulta de abajo sigue corriendo para mostrar cambios recientes.
+  const [events, setEvents] = useState<Event[]>(initialEvents ?? []);
+  const [loading, setLoading] = useState(!initialEvents);
   const [filter, setFilter] = useState("TODOS");
   const [search, setSearch] = useState("");
 

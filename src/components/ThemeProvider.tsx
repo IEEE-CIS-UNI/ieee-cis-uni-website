@@ -19,6 +19,13 @@ export const useTheme = () => useContext(ThemeContext);
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
 
+  // La barra del navegador del celular sigue el tema elegido en la web, no el del
+  // sistema (las dos etiquetas theme-color se igualan al color del tema activo).
+  const syncThemeColor = (t: Theme) => {
+    const color = t === "dark" ? "#000711" : "#EEF3FF";
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute("content", color));
+  };
+
   const applyTheme = (t: Theme) => {
     const root = document.documentElement;
     if (t === "dark") {
@@ -28,18 +35,17 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     }
   };
 
-  // On mount: read saved preference or system preference.
-  // This must stay in an effect (not a lazy useState initializer): localStorage/matchMedia
-  // don't exist during SSR, and resolving the real theme on the very first client render
-  // would mismatch the server-rendered markup (e.g. Navbar's sun/moon icon), causing a
-  // hydration error instead of this one extra render.
+  // Al montar: el script de <head> (layout.tsx) ya puso la clase correcta antes
+  // del primer pintado; aquí solo se lee para que el ícono de sol/luna coincida.
+  // No se vuelve a aplicar el tema: hacerlo después de cargar disparaba un
+  // cambio visible de colores en celulares.
+  // Sigue en un efecto (no en el estado inicial) para no desajustar el HTML
+  // del servidor con el del cliente al hidratar.
   useEffect(() => {
-    const saved = localStorage.getItem("ieee-theme") as Theme | null;
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initial = saved ?? (prefersDark ? "dark" : "light");
+    const initial: Theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(initial);
-    applyTheme(initial);
+    syncThemeColor(initial);
   }, []);
 
   // Cambio de tema parejo: antes cada elemento cambiaba de color a su propio
@@ -58,6 +64,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     const swap = () => {
       root.classList.add("theme-switching");
       applyTheme(next);
+      syncThemeColor(next);
       setTheme(next);
       // Se quitan después de que el navegador pintó el tema nuevo
       requestAnimationFrame(() =>

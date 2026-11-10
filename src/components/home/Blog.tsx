@@ -14,9 +14,11 @@ interface BlogPostWithAuthor extends BlogPost {
   };
 }
 
-const Blog = () => {
-  const [posts, setPosts] = useState<BlogPostWithAuthor[]>([]);
-  const [loading, setLoading] = useState(true);
+const Blog = ({ initialPosts }: { initialPosts?: BlogPostWithAuthor[] | null }) => {
+  // Datos iniciales desde el servidor (ver src/lib/queries.ts): el contenido sale en el
+  // primer pintado; la consulta de abajo sigue corriendo para mostrar cambios recientes.
+  const [posts, setPosts] = useState<BlogPostWithAuthor[]>(initialPosts ?? []);
+  const [loading, setLoading] = useState(!initialPosts);
 
   useEffect(() => {
     let ignore = false;

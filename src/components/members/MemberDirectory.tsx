@@ -17,9 +17,11 @@ const TABS: { id: ViewMode; label: string; icon: React.ReactNode }[] = [
   { id: "organigrama", label: "Organigrama", icon: <TbHierarchy3 size={15} /> },
 ];
 
-const MemberDirectory = () => {
-  const [members, setMembers] = useState<Member[]>([]);
-  const [loading, setLoading] = useState(true);
+const MemberDirectory = ({ initialMembers }: { initialMembers?: Member[] | null }) => {
+  // Datos iniciales desde el servidor (ver src/lib/queries.ts): el contenido sale en el
+  // primer pintado; la consulta de abajo sigue corriendo para mostrar cambios recientes.
+  const [members, setMembers] = useState<Member[]>(initialMembers ?? []);
+  const [loading, setLoading] = useState(!initialMembers);
   const [filter, setFilter] = useState("TODOS");
   const [search, setSearch] = useState("");
   const [view, setView] = useState<ViewMode>("directorio");

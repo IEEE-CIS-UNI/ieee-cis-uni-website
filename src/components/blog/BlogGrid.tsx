@@ -12,9 +12,11 @@ interface BlogPostWithAuthor extends BlogPost {
   };
 }
 
-const BlogGrid = () => {
-  const [posts, setPosts] = useState<BlogPostWithAuthor[]>([]);
-  const [loading, setLoading] = useState(true);
+const BlogGrid = ({ initialPosts }: { initialPosts?: BlogPostWithAuthor[] | null }) => {
+  // Datos iniciales desde el servidor (ver src/lib/queries.ts): el contenido sale en el
+  // primer pintado; la consulta de abajo sigue corriendo para mostrar cambios recientes.
+  const [posts, setPosts] = useState<BlogPostWithAuthor[]>(initialPosts ?? []);
+  const [loading, setLoading] = useState(!initialPosts);
   const [filter, setFilter] = useState("TODOS");
   const [search, setSearch] = useState("");
 

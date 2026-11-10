@@ -14,6 +14,11 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
+// Se ejecuta en <head>, antes de pintar: lee el tema guardado o, si no hay,
+// el del sistema, y deja la clase `dark` puesta. Debe coincidir con la lógica
+// de ThemeProvider (clave "ieee-theme").
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem("ieee-theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.classList.toggle("dark",t==="dark")}catch(e){}})();`;
+
 // Barra del navegador del celular con el color de fondo de la web (claro/oscuro)
 export const viewport: Viewport = {
   themeColor: [
@@ -63,6 +68,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="scroll-smooth dark" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        {/* Tema antes del primer pintado: sin esto la página se pintaba siempre en
+            oscuro y cambiaba a claro recién al terminar de cargar el JavaScript
+            (en celular, varios segundos después, con un salto de colores). */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className={`${poppins.className} bg-[var(--brand-background)] text-[var(--brand-text)] min-h-svh flex flex-col transition-colors duration-400`} suppressHydrationWarning>
         <ThemeProvider>
           <MotionProvider>

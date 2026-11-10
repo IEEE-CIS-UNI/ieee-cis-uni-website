@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { FaInstagram } from "react-icons/fa";
+import BlurredBackdrop from "@/components/ui/BlurredBackdrop";
 
 const InstagramShowcase = () => {
   const instagramUrl = process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://instagram.com";
@@ -38,10 +39,7 @@ const InstagramShowcase = () => {
               style={{ animationDelay: `${idx * 0.1}s` }}
             >
               {/* Blurred bg fill for portrait images */}
-              <div
-                className="absolute inset-0 bg-cover bg-center scale-110 blur-lg opacity-30"
-                style={{ backgroundImage: `url('${post.image}')` }}
-              />
+              <BlurredBackdrop src={post.image} className="scale-110 blur-lg opacity-30" />
               <Image
                 src={post.image}
                 alt={post.alt}

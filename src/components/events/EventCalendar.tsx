@@ -7,11 +7,15 @@ import { Event } from "@/types/database";
 import { isPastEvent } from "@/lib/events";
 import EventTicket from "@/components/ui/EventTicket";
 
-const EventCalendar = () => {
+const EventCalendar = ({ initialEvents }: { initialEvents?: Event[] | null }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [events, setEvents] = useState<Event[]>([]);
+  // Datos iniciales desde el servidor (ver src/lib/queries.ts), ordenados como los
+  // pide el calendario (del más antiguo al más reciente).
+  const [events, setEvents] = useState<Event[]>(() =>
+    initialEvents ? [...initialEvents].sort((a, b) => a.fecha.localeCompare(b.fecha)) : []
+  );
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialEvents);
   const detailRef = useRef<HTMLDivElement>(null);
 
   // Constants
@@ -25,7 +29,6 @@ const EventCalendar = () => {
     let ignore = false;
     
     const fetchEvents = async () => {
-      setLoading(true);
       try {
         const { data, error } = await supabase
           .from('eventos')

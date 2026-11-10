@@ -9,11 +9,13 @@ import { supabase } from "@/lib/supabase";
 import { Event } from "@/types/database";
 import { todayInLima } from "@/lib/events";
 
-const Events = () => {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
+const Events = ({ initialData }: { initialData?: { events: Event[]; showingPast: boolean } | null }) => {
+  // Datos iniciales desde el servidor (ver src/lib/queries.ts): el contenido sale en el
+  // primer pintado; la consulta de abajo sigue corriendo para mostrar cambios recientes.
+  const [events, setEvents] = useState<Event[]>(initialData?.events ?? []);
+  const [loading, setLoading] = useState(!initialData);
   // true cuando no hay eventos futuros y se muestran los más recientes
-  const [showingPast, setShowingPast] = useState(false);
+  const [showingPast, setShowingPast] = useState(initialData?.showingPast ?? false);
 
   useEffect(() => {
     let ignore = false;
@@ -34,7 +36,7 @@ const Events = () => {
         if (error) throw error;
 
         if (data && data.length > 0) {
-          if (!ignore) setEvents(data);
+          if (!ignore) { setEvents(data); setShowingPast(false); }
           return;
         }
 

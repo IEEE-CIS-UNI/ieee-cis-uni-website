@@ -2,6 +2,7 @@ import Image from "next/image";
 import { HiClock, HiLocationMarker, HiUser } from "react-icons/hi";
 import Button from "@/components/ui/Button";
 import { normalizeUrl } from "@/lib/url";
+import BlurredBackdrop from "@/components/ui/BlurredBackdrop";
 
 interface EventTicketProps {
   date: string;
@@ -95,10 +96,7 @@ const EventTicket = ({ date, title, time, location, speaker, category, link: raw
       {imageUrl && variant === 'full' && (
         <div className="hidden md:flex relative w-48 lg:w-64 flex-shrink-0 overflow-hidden border-l border-[var(--brand-border)]/50 bg-[var(--brand-surface)] items-center justify-center">
           {/* Blurred bg fill for portrait images */}
-          <div
-            className="absolute inset-0 bg-cover bg-center scale-110 blur-lg opacity-25"
-            style={{ backgroundImage: `url('${imageUrl}')` }}
-          />
+          <BlurredBackdrop src={imageUrl} className="scale-110 blur-lg opacity-25" />
           <Image
             src={imageUrl}
             alt={title}

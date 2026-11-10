@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { HiArrowRight, HiLightningBolt } from "react-icons/hi";
+import BlurredBackdrop from "@/components/ui/BlurredBackdrop";
 
 interface ProjectCardProps {
   title: string;
@@ -47,10 +48,7 @@ const ProjectCard = ({
           {image ? (
             <>
               {/* Blurred background for non-portrait images */}
-              <div
-                className="absolute inset-0 bg-cover bg-center scale-110 blur-xl opacity-25"
-                style={{ backgroundImage: `url('${image}')` }}
-              />
+              <BlurredBackdrop src={image} className="scale-110 blur-xl opacity-25" />
               <Image
                 src={image}
                 alt={title}

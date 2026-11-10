@@ -7,9 +7,11 @@ import { supabase } from "@/lib/supabase";
 import { Project } from "@/types/database";
 import { RULETA_PROJECT } from "@/data/hardcoded-projects";
 
-const ProjectGrid = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+const ProjectGrid = ({ initialProjects }: { initialProjects?: Project[] | null }) => {
+  // Datos iniciales desde el servidor (ver src/lib/queries.ts): el contenido sale en el
+  // primer pintado; la consulta de abajo sigue corriendo para mostrar cambios recientes.
+  const [projects, setProjects] = useState<Project[]>(initialProjects ? [RULETA_PROJECT, ...initialProjects] : []);
+  const [loading, setLoading] = useState(!initialProjects);
   const [filter, setFilter] = useState("TODOS");
   const [search, setSearch] = useState("");
 

@@ -2,6 +2,12 @@ import ProjectHero from "@/components/projects/ProjectHero";
 import ProjectGrid from "@/components/projects/ProjectGrid";
 import NeuralNetworkBackground from "@/components/ui/NeuralNetworkBackground";
 import BrandOrbs from "@/components/ui/BrandOrbs";
+import { getAllProjects } from "@/lib/queries";
+
+// Los datos se piden en el servidor y van en el HTML (ver src/lib/queries.ts).
+// Se regenera como máximo cada 60 s; los componentes además consultan en segundo
+// plano, así un cambio en Supabase se ve al recargar como antes.
+export const revalidate = 60;
 
 export const metadata = {
   // El sufijo " | IEEE CIS UNI" lo agrega la plantilla de src/app/layout.tsx
@@ -9,7 +15,9 @@ export const metadata = {
   description: "Explora los proyectos de investigación y desarrollo del capítulo estudiantil IEEE CIS de la Universidad Nacional de Ingeniería.",
 };
 
-export default function ProyectosPage() {
+export default async function ProyectosPage() {
+  const projects = await getAllProjects();
+
   return (
     <div className="relative overflow-hidden about-page-bg min-h-svh">
       {/* ── Fondo dinámico: red neuronal interactiva ────────────────────────
@@ -29,7 +37,7 @@ export default function ProyectosPage() {
       {/* ── Contenido principal ── */}
       <main className="relative z-10">
         <ProjectHero />
-        <ProjectGrid />
+        <ProjectGrid initialProjects={projects} />
       </main>
     </div>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 
 const MemberHero = () => {
@@ -11,11 +10,7 @@ const MemberHero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text Content */}
           <div className="text-center lg:text-left order-2 lg:order-1">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div className="animate-fade-in-left">
               <span className="text-[var(--brand-accent-label)] font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Nuestra Comunidad
               </span>
@@ -27,17 +22,13 @@ const MemberHero = () => {
               <p className="text-xl text-[var(--brand-text-muted)] leading-relaxed mb-8">
                 Conoce a los estudiantes e investigadores que conforman el capítulo CIS UNI. Un equipo multidisciplinario dedicado al avance de la inteligencia computacional.
               </p>
-            </motion.div>
+            </div>
           </div>
 
           {/* Tech Placeholder Content */}
           <div className="order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              className="relative group"
-            >
+            <div
+              className="animate-fade-in-scale relative group">
 
               {/* Photo — object-contain para ver la imagen completa sin recortes */}
               <div className="relative w-full rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl group bg-[var(--brand-surface)]/20 backdrop-blur-md" style={{ minHeight: "280px" }}>
@@ -58,7 +49,7 @@ const MemberHero = () => {
               {/* Decorative Tech Elements */}
               <div className="absolute -top-4 -right-4 w-12 h-12 border-t-2 border-r-2 border-brand-accent rounded-tr-xl" />
               <div className="absolute -bottom-4 -left-4 w-12 h-12 border-b-2 border-l-2 border-brand-accent rounded-bl-xl" />
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

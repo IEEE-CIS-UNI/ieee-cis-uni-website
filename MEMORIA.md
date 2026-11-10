@@ -84,6 +84,17 @@ Copiadas de `arness_inicial` el 2026-11-08. Se usan para trabajo de UI/UX:
   parpadeaba o desaparecía). Sin degradados por cuadro (sprite pre-renderizado),
   30 fps en táctil, pausa si no se ve y responde al dedo. El desenfoque encima
   (`backdrop-blur`) solo va desde `md:`.
+- **El tema se decide en el `<head>`, antes de pintar** (`THEME_INIT_SCRIPT`
+  en `layout.tsx`, clave `ieee-theme`). No volver a calcular ni aplicar el tema
+  en un efecto al cargar: eso causaba el salto oscuro → claro en celulares.
+- **Rendimiento (no volver atrás):**
+  - Datos de las páginas: pedirlos en el servidor con `src/lib/queries.ts` y
+    pasarlos como `initial*` a los componentes, no solo en un `useEffect`.
+  - Contenido visible al cargar (heroes, detalle): animar con las clases CSS
+    `animate-fade-in-*`, no con `initial={{ opacity: 0 }}` de Framer Motion.
+  - Nunca `background-image: url(foto original)` para fondos difuminados: usar
+    `BlurredBackdrop`.
+  - Escenas de Spline siempre con `LazySpline`.
 - **Dos azules:** `--brand-accent` para fondos y botones con texto blanco, y
   `--brand-accent-text` para texto (más luminoso en modo oscuro). Un solo tono
   no puede cumplir 4,5:1 en los dos casos.
@@ -131,7 +142,6 @@ Copiadas de `arness_inicial` el 2026-11-08. Se usan para trabajo de UI/UX:
 - [ ] Footer: logo como botón "Volver arriba" (pedido del webmaster).
 - [ ] Colores del robot y franja blanca: se cambian en el editor de Spline, no en código.
 - [ ] Probar en un celular real si el robot del Inicio impide bajar la página al deslizar sobre él.
-- [ ] Revisar en localhost los arreglos de la auditoría y publicarlos (commit + push) si todo se ve bien.
 - [ ] Confirmar el texto "Soluciones Realidad" del hero de /proyectos (¿"Reales"?).
 - [ ] Avisar a Google Search Console del nuevo sitemap
       (`https://ieee.cis.uni.edu.pe/sitemap.xml`), si el capítulo tiene acceso.
@@ -144,6 +154,46 @@ Copiadas de `arness_inicial` el 2026-11-08. Se usan para trabajo de UI/UX:
 
 > Al cerrar cada conversación, agregar una entrada arriba de la anterior
 > (fecha, qué se hizo, decisiones, pendientes nuevos).
+
+### 2026-11-10 — Rendimiento en celular (sin cambios visuales)
+
+Medido en celular simulado lento (CPU 4×, red 4G lenta), versión anterior vs
+nueva con el mismo servidor, mediana de 3 corridas:
+
+| Página | Contenido principal | CPU bloqueada al cargar | Al hacer scroll |
+|---|---|---|---|
+| Inicio | 2,3 → 1,1 s | 13,5 → 1,3 s | 4,1 → 0 s |
+| Nosotros | 6,1 → 1,4 s | 2,3 → 0,1 s | 1,2 → 0 s |
+| Miembros | 4,2 → 1,2 s | 1,0 → 0,2 s | 0 → 0 s |
+| Eventos | 9,1 → 1,5 s | 1,2 → 0,3 s | 0,2 → 0 s |
+| Proyectos* | 3,5 → 3,2 s | 8,3 → 0,2 s | 1,1 → 0 s |
+| Blog* | 9,0 → 2,4 s | 7,2 → 0,3 s | 1,0 → 0 s |
+
+\* Proyectos y Blog comparados contra la web publicada.
+
+- Datos de Supabase pedidos en el servidor (`src/lib/queries.ts`) y enviados en
+  el HTML; los componentes los reciben como valor inicial y siguen consultando
+  en segundo plano. Páginas con `revalidate = 60`.
+- Fondo de redes neuronales: líneas en una capa guardada y trazos agrupados
+  (era la función que más CPU usaba de toda la web).
+- Robot 3D (`LazySpline`): se pausa fuera de pantalla; en táctil carga cuando la
+  página ya terminó.
+- Entradas de los heroes y detalles con CSS en vez de Framer Motion (el
+  contenido llegaba con `opacity:0` hasta que cargaba el JavaScript).
+- Fondos difuminados con `BlurredBackdrop` (imagen optimizada de 48 px) en vez
+  de `background-image` con el original: en /eventos se bajaban ~7 MB.
+- Carruseles: la primera foto con prioridad y las demás se cargan de a una.
+
+### 2026-11-10 — Tema correcto desde el primer pintado (celular)
+
+- Problema: `<html>` llegaba siempre con `dark` y el tema real se aplicaba al
+  terminar de cargar el JavaScript. En un celular lento con modo claro se veía
+  oscuro ~5 s y luego saltaba a claro, con muchas transiciones de color a la vez.
+- Arreglo: script mínimo en el `<head>` (`THEME_INIT_SCRIPT` en `layout.tsx`)
+  que pone la clase antes de pintar; `ThemeProvider` solo lee esa clase. La barra
+  del navegador (`theme-color`) y `color-scheme` siguen al tema elegido.
+- Verificado (CPU 4×, red lenta): el tema queda puesto antes del primer pintado,
+  0 transiciones al cargar; las 4 combinaciones guardado/sistema funcionan.
 
 ### 2026-11-08 — Arreglos de la auditoría (en revisión local, sin publicar)
 

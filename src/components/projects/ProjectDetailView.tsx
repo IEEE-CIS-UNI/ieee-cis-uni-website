@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 import { HiArrowLeft, HiOutlineExternalLink, HiCode, HiLightningBolt, HiUserGroup } from "react-icons/hi";
 import { FaLinkedin } from "react-icons/fa";
@@ -10,6 +9,7 @@ import { Project } from "@/types/database";
 import { normalizeUrl } from "@/lib/url";
 import { ProjectAuthor } from "@/lib/authors";
 import BrandOrbs from "@/components/ui/BrandOrbs";
+import BlurredBackdrop from "@/components/ui/BlurredBackdrop";
 
 interface ProjectDetailViewProps {
   project: Project;
@@ -33,22 +33,16 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
 
       <main className="relative z-10 min-h-svh pt-32 pb-20 px-6 md:px-12 lg:px-24">
         <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-        >
+        <div className="animate-fade-in-left">
           <Button href="/proyectos" variant="outline" size="sm" className="mb-12" icon={<HiArrowLeft />}>
             Volver
           </Button>
-        </motion.div>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
           {/* Project Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+          <div className="animate-fade-in-up"
+           style={{ animationDelay: "0.2s" }}>
             <div className="flex flex-wrap gap-2 mb-8">
               {(project.tags || []).map(tag => (
                 <span key={tag} className="max-w-full break-words text-[11px] font-black text-brand-accent-text bg-brand-accent/10 px-4 py-1.5 rounded-full uppercase tracking-widest border border-brand-accent/20">
@@ -129,15 +123,12 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
                 </ul>
               </section>
             )}
-          </motion.div>
+          </div>
 
           {/* Project Image/Frame */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4 }}
-            className="relative group lg:sticky lg:top-32"
-          >
+          <div
+            className="animate-fade-in-scale relative group lg:sticky lg:top-32"
+           style={{ animationDelay: "0.4s" }}>
             <div className="absolute -inset-10 bg-brand-accent/20 blur-[100px] rounded-full -z-10 group-hover:bg-brand-accent/30 transition duration-500" />
 
             {/* Con imagen, el recuadro toma la forma de la imagen (vertical u horizontal)
@@ -152,10 +143,7 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
               {project.image_url ? (
                 <>
                   {/* Fondo difuminado de la misma imagen (igual que en las tarjetas) */}
-                  <div
-                    className="absolute inset-0 bg-cover bg-center scale-110 blur-2xl opacity-30"
-                    style={{ backgroundImage: `url('${project.image_url}')` }}
-                  />
+                  <BlurredBackdrop src={project.image_url} className="scale-110 blur-2xl opacity-30" />
                   {/* width/height solo reservan espacio mientras carga; w-auto h-auto hace
                       que se use la proporción real de la imagen, limitada por max-h. */}
                   <Image
@@ -185,7 +173,7 @@ const ProjectDetailView = ({ project, authors = [] }: ProjectDetailViewProps) =>
             {/* Decorative Tech Elements */}
             <div className="absolute -top-4 -right-4 w-12 h-12 border-t-2 border-r-2 border-brand-accent rounded-tr-xl opacity-50" />
             <div className="absolute -bottom-4 -left-4 w-12 h-12 border-b-2 border-l-2 border-brand-accent rounded-bl-xl opacity-50" />
-          </motion.div>
+          </div>
         </div>
       </div>
       </main>

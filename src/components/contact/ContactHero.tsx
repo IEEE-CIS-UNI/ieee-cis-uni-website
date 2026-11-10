@@ -1,7 +1,6 @@
 "use client";
 
 
-import { motion } from "framer-motion";
 
 const ContactHero = () => {
   return (
@@ -12,11 +11,7 @@ const ContactHero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text Content */}
           <div className="text-center lg:text-left order-2 lg:order-1">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div className="animate-fade-in-left">
               <span className="text-[var(--brand-accent-label)] font-bold uppercase tracking-[0.3em] text-sm mb-6 block">
                 Contáctanos
               </span>
@@ -31,17 +26,13 @@ const ContactHero = () => {
               <p className="text-xl text-[var(--brand-text-muted)] leading-relaxed mb-8">
                 ¿Tienes una idea, quieres colaborar o simplemente saludar? Envíanos un mensaje y nuestro equipo se pondrá en contacto contigo a la brevedad.
               </p>
-            </motion.div>
+            </div>
           </div>
 
           {/* Image Content with Tech Frame - Styled Map */}
           <div className="order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              className="relative group"
-            >
+            <div
+              className="animate-fade-in-scale relative group">
               {/* Outer Glow */}
               <div className="absolute -inset-10 bg-brand-accent/15 rounded-full blur-[100px] group-hover:bg-brand-accent/25 transition-colors duration-500" />
 
@@ -63,7 +54,7 @@ const ContactHero = () => {
               {/* Decorative Tech Elements */}
               <div className="absolute -top-4 -right-4 w-12 h-12 border-t-2 border-r-2 border-brand-accent rounded-tr-xl" />
               <div className="absolute -bottom-4 -left-4 w-12 h-12 border-b-2 border-l-2 border-brand-accent rounded-bl-xl" />
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
