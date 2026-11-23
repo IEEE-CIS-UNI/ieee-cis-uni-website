@@ -31,15 +31,15 @@ const MemberHero = () => {
               className="animate-fade-in-scale relative group">
 
               {/* Photo — object-contain para ver la imagen completa sin recortes */}
-              <div className="relative w-full rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl group bg-[var(--brand-surface)]/20 backdrop-blur-md" style={{ minHeight: "280px" }}>
+              <div className="relative w-full rounded-3xl overflow-hidden border border-[var(--brand-border)] shadow-2xl group bg-[var(--brand-surface)]/20 backdrop-blur-md">
                 {/* Glow overlay sutil, ahora con colores más fuertes y mix-blend */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-brand-accent/50 via-transparent to-[#7C3AED]/50 z-10 pointer-events-none rounded-3xl mix-blend-color" />
 
                 <Image
-                  src="/images/Teamcis.jpeg"
+                  src="/images/equipo-cis-2026.jpg"
                   alt="Equipo IEEE CIS UNI"
-                  width={900}
-                  height={600}
+                  width={1800}
+                  height={1350}
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-500 ease-out rounded-3xl"
                   priority
